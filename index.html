@@ -47,8 +47,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 #fire-btn{position:fixed;right:18px;bottom:20px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,80,80,0.6),rgba(140,0,0,0.4));border:3px solid rgba(255,70,70,0.7);font-size:32px;display:flex;align-items:center;justify-content:center;z-index:35;pointer-events:all;cursor:pointer;box-shadow:0 0 30px rgba(255,50,50,0.5),inset 0 0 15px rgba(255,100,100,0.2);backdrop-filter:blur(8px);transition:transform 0.06s,box-shadow 0.06s;}
 #fire-btn:active{transform:scale(0.85);box-shadow:0 0 45px rgba(255,50,50,0.9);}
 #reload-btn{position:fixed;right:126px;bottom:40px;width:60px;height:60px;border-radius:50%;background:rgba(255,200,50,0.12);border:2px solid rgba(255,200,50,0.5);font-size:24px;display:flex;align-items:center;justify-content:center;z-index:35;pointer-events:all;cursor:pointer;backdrop-filter:blur(6px);transition:transform 0.1s;box-shadow:0 0 15px rgba(255,200,50,0.2);}
-#reload-btn:active{transform:scale(0.88);}#grenade-btn{position:fixed;right:18px;bottom:130px;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,100,0.35),rgba(0,80,0,0.35));border:2px solid rgba(0,255,100,0.6);font-size:24px;display:flex;align-items:center;justify-content:center;z-index:35;pointer-events:all;cursor:pointer;backdrop-filter:blur(6px);transition:transform 0.1s;box-shadow:0 0 15px rgba(0,255,100,0.2);}#grenade-btn:active{transform:scale(0.88);}
-#mercenary-btn{position:fixed;right:126px;bottom:110px;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,0,0.35),rgba(0,50,0,0.35));border:2px solid rgba(0,255,0,0.6);font-size:16px;display:flex;align-items:center;justify-content:center;z-index:35;pointer-events:all;cursor:pointer;backdrop-filter:blur(6px);transition:transform 0.1s;box-shadow:0 0 15px rgba(0,255,0,0.2);opacity:0.5;}
+#reload-btn:active{transform:scale(0.88);}#grenade-btn{position:fixed;right:18px;bottom:130px;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,100,0.35),rgba(0,80,0,0.35));border:2px solid rgba(0,255,100,0.6);font-size:24px;display:flex;align-items:center;justify-content:center;z-index:35;pointer-events:all;cursor:pointer;backdrop-filter:blur(6px);transition:transform 0.1s;box-shadow:0 0 15px rgba(0,255,100,0.2);}#grenade-btn:active{transform:scale(0.88);}#mercenary-btn{position:fixed;right:126px;bottom:110px;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,0,0.35),rgba(0,50,0,0.35));border:2px solid rgba(0,255,0,0.6);font-size:16px;display:flex;align-items:center;justify-content:center;z-index:35;pointer-events:all;cursor:pointer;backdrop-filter:blur(6px);transition:transform 0.1s;box-shadow:0 0 15px rgba(0,255,0,0.2);opacity:0.5;}
 #mercenary-btn:active{transform:scale(0.88);}
 #minimap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:110px;height:110px;border:2px solid rgba(0,200,255,0.5);border-radius:50%;background:rgba(0,0,0,0.8);z-index:25;overflow:hidden;box-shadow:0 0 20px rgba(0,150,255,0.3);}
 #minimap canvas{width:100%;height:100%;}
@@ -97,8 +96,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .inventory-merc-item{min-width:170px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,255,100,0.3);padding:12px;border-radius:10px;text-align:center;transition:all 0.3s;}.inventory-merc-item:hover{background:rgba(0,255,100,0.1);border-color:#0f8;}.inventory-merc-name{font-weight:bold;font-size:14px;margin-bottom:6px;color:#0f8;}
 .inventory-merc-desc{font-size:10px;color:#aaa;margin-bottom:6px;}.inventory-merc-health{font-size:11px;color:#00ff88;margin-bottom:8px;font-weight:bold;}
 .inventory-merc-btn{background:linear-gradient(135deg,#0f8,#0a0);color:#000;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:12px;transition:all 0.3s;width:100%;}.inventory-merc-btn:hover{background:#0a0;transform:scale(1.03);}
-.inventory-close{margin-top:20px;padding:12px 30px;background:rgba(255,0,0,0.3);border:1px solid #f00;color:#f00;cursor:pointer;border-radius:8px;font-size:16px;transition:all 0.3s;}
-.inventory-close:hover{background:rgba(255,0,0,0.5);box-shadow:0 0 15px rgba(255,0,0,0.3);}
+.inventory-close{margin-top:20px;padding:12px 30px;background:rgba(255,0,0,0.3);border:1px solid #f00;color:#f00;cursor:pointer;border-radius:8px;font-size:16px;transition:all 0.3s;}.inventory-close:hover{background:rgba(255,0,0,0.5);box-shadow:0 0 15px rgba(255,0,0,0.3);}
 #menu{position:fixed;inset:0;background:linear-gradient(135deg,#050510,#0a1525,#050510);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;}
 #menu h1{font-size:56px;font-weight:900;letter-spacing:8px;color:#fff;text-shadow:0 0 30px rgba(0,200,255,0.7),0 0 70px rgba(0,200,255,0.3);margin-bottom:8px;}
 #menu p{font-size:12px;color:rgba(0,200,255,0.7);letter-spacing:10px;margin-bottom:55px;}
@@ -112,6 +110,13 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .go-s{font-size:13px;color:#666;margin-top:8px;letter-spacing:4px;}
 #retry-btn{margin-top:40px;padding:16px 48px;background:transparent;border:2px solid rgba(255,50,50,0.6);color:#f33;font-size:15px;letter-spacing:6px;cursor:pointer;border-radius:4px;font-family:'Courier New',monospace;transition:all 0.3s;}
 #retry-btn:active{background:rgba(255,50,50,0.12);box-shadow:0 0 30px rgba(255,50,50,0.5);}
+
+/* ===== إضافات جديدة: أزرار لعبة جديدة ومسح التقدم ===== */
+#new-game-btn{margin-top:15px;padding:14px 40px;background:transparent;border:2px solid rgba(0,255,136,0.6);color:#0f8;font-size:14px;letter-spacing:5px;cursor:pointer;border-radius:4px;font-family:'Courier New',monospace;transition:all 0.3s;}
+#new-game-btn:active{background:rgba(0,255,136,0.12);box-shadow:0 0 30px rgba(0,255,136,0.5);}
+#reset-all-btn{margin-top:10px;padding:12px 36px;background:transparent;border:2px solid rgba(255,170,0,0.6);color:#ffaa00;font-size:13px;letter-spacing:4px;cursor:pointer;border-radius:4px;font-family:'Courier New',monospace;transition:all 0.3s;}
+#reset-all-btn:active{background:rgba(255,170,0,0.12);box-shadow:0 0 30px rgba(255,170,0,0.5);}
+
 #power-up-ui{position:fixed;top:120px;left:50%;transform:translateX(-50%);font-size:14px;color:#ff0;letter-spacing:3px;opacity:0;transition:opacity 0.3s;text-shadow:0 0 15px #ff0;z-index:10;font-weight:bold;}
 #killstreak-ui{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:bold;color:#ff0;text-shadow:0 0 25px #ff0;opacity:0;pointer-events:none;z-index:45;transition:all 0.3s;}
 #achievement-popup{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);border:1px solid #ffd700;color:#ffd700;padding:12px 24px;border-radius:8px;font-size:15px;opacity:0;pointer-events:none;z-index:50;transition:all 0.5s;text-align:center;box-shadow:0 0 20px rgba(255,215,0,0.3);}
@@ -140,8 +145,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <div class="shop-tabs">
 <div class="shop-tab active" onclick="switchShopTab('potions')">💊 جرعات</div>
 <div class="shop-tab" onclick="switchShopTab('permanent')">🔧 دائم</div>
-<div class="shop-tab" onclick="switchShopTab('weapons')">🔫 أسلحة</div>
-<div class="shop-tab" onclick="switchShopTab('ammo')">📦 ذخيرة</div><div class="shop-tab" onclick="switchShopTab('mercenaries')">👥 المرتزقة</div>
+<div class="shop-tab" onclick="switchShopTab('weapons')">🔫 أسلحة</div><div class="shop-tab" onclick="switchShopTab('ammo')">📦 ذخيرة</div><div class="shop-tab" onclick="switchShopTab('mercenaries')">👥 المرتزقة</div>
 <div class="shop-tab" onclick="switchShopTab('upgrades')">⚙️ ترقيات</div>
 </div>
 <div id="tab-potions" class="shop-tab-content active">
@@ -190,8 +194,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <div class="shop-item-info">
 <div class="shop-item-name">🔫 شوتجان (Shotgun)</div>
 <div class="shop-item-desc">ضرر عالي جداً، مدى قصير | ضرر: 85 | ذخيرة: 8/32</div><div class="shop-item-price">💰 3000 نقطة</div>
-</div>
-<button class="shop-item-btn" id="btn-shotgun" onclick="buyOrEquipWeapon('shotgun')">شراء</button>
+</div><button class="shop-item-btn" id="btn-shotgun" onclick="buyOrEquipWeapon('shotgun')">شراء</button>
 </div>
 <div class="shop-item">
 <div class="shop-item-info"><div class="shop-item-name">🔫 مسدس سريع (SMG)</div><div class="shop-item-desc">إطلاق آلي عند الضغط المطول | ضرر: 18 | ذخيرة: 50/250</div><div class="shop-item-price">💰 3200 نقطة</div>
@@ -240,8 +243,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 </div><button class="shop-item-btn" onclick="buyWeaponAmmo('shotgun')">شراء</button>
 </div>
 <div class="shop-item" style="padding:10px;margin-bottom:8px;">
-<div class="shop-item-info">
-<div class="shop-item-name">ذخيرة مسدس سريع</div><div class="shop-item-desc">+50 طلقة احتياطية</div><div class="shop-item-price">💰 250 نقطة</div>
+<div class="shop-item-info"><div class="shop-item-name">ذخيرة مسدس سريع</div><div class="shop-item-desc">+50 طلقة احتياطية</div><div class="shop-item-price">💰 250 نقطة</div>
 </div>
 <button class="shop-item-btn" onclick="buyWeaponAmmo('smg')">شراء</button></div>
 <div class="shop-item" style="padding:10px;margin-bottom:8px;">
@@ -290,8 +292,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <div id="upgrades-list"></div>
 <div style="color:#666;font-size:11px;text-align:center;margin-top:10px">* الترقيات ضعيفة التأثير وغالية السعر حسب الطلب</div></div><button class="shop-close" onclick="closeShop()">❌ العودة للقتال</button>
 </div>
-</div>
-<div id="inventory-ui">
+</div><div id="inventory-ui">
 <div class="inventory-container"><h2>🎒 المخزون الشخصي</h2>
 
 <!-- ===== إضافة جديدة: صندوق السلاح المؤقت ===== -->
@@ -327,6 +328,9 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <div class="go-r">النقاط: <span id="go-score">0</span></div>
 <div class="go-s">الموجة: <span id="go-wave">1</span></div>
 <button id="retry-btn" onclick="retryGame()">↺ إعادة المحاولة</button>
+<!-- ===== إضافات جديدة: زرا لعبة جديدة ومسح التقدم ===== -->
+<button id="new-game-btn" onclick="newGame()">🔄 لعبة جديدة</button>
+<button id="reset-all-btn" onclick="resetAllProgress()">🗑️ مسح كل التقدم</button>
 </div>
 <div id="wave-notif"></div>
 <div id="power-up-ui">🔥 DAMAGE BOOST ACTIVE 🔥</div>
@@ -337,11 +341,11 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <div id="fire-flash"></div>
 <!-- ===== إضافة جديدة: إشعار الغنيمة ===== -->
 <div id="loot-notification"></div>
-<div id="hud">
-<div id="crosshair"><div class="ch-h"></div><div class="ch-v"></div><div class="ch-dot"></div></div>
+<div id="hud"><div id="crosshair"><div class="ch-h"></div><div class="ch-v"></div><div class="ch-dot"></div></div>
 <div id="hitmarker">✕</div>
 <div id="hp-wrap">
-<div id="hp-title">HEALTH</div><div id="hp-bar"><div id="hp-fill"></div></div>
+<div id="hp-title">HEALTH</div>
+<div id="hp-bar"><div id="hp-fill"></div></div>
 <div id="hp-num">100</div>
 </div>
 <div id="ammo-wrap"><div id="ammo-main">30</div>
@@ -386,8 +390,7 @@ class ObjectPool {
   constructor(createFn, resetFn, initialSize = 20) {
     this.createFn = createFn;
     this.resetFn = resetFn;
-    this.pool = [];
-    this.active = [];
+    this.pool = [];    this.active = [];
     for (let i = 0; i < initialSize; i++) this.pool.push(createFn());
   }
   get() {    const obj = this.pool.length > 0 ? this.pool.pop() : this.createFn();
@@ -436,8 +439,7 @@ function initAudio() {  if (!actx) actx = new (window.AudioContext || window.web
 function playSound(type, params = {}) {
   if (!actx) return;
   const t = actx.currentTime;
-  switch (type) {
-    case 'shot': {
+  switch (type) {    case 'shot': {
       const noise = actx.createBuffer(1, actx.sampleRate * 0.12, actx.sampleRate);
       const data = noise.getChannelData(0);      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 3) * 0.7;
       const src = actx.createBufferSource(), gain = actx.createGain(), filter = actx.createBiquadFilter();
@@ -486,8 +488,7 @@ function playSound(type, params = {}) {
       osc.connect(gn2); gn2.connect(actx.destination); osc.start(); osc.stop(t + 0.06);
       break;
     }
-    case 'merc': {
-      const os = actx.createOscillator(), gn3 = actx.createGain();
+    case 'merc': {      const os = actx.createOscillator(), gn3 = actx.createGain();
       os.type = 'sine'; os.frequency.setValueAtTime(400, t); os.frequency.linearRampToValueAtTime(700, t + 0.15);      gn3.gain.setValueAtTime(0.2, t); gn3.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
       os.connect(gn3); gn3.connect(actx.destination); os.start(); os.stop(t + 0.2);
       break;
@@ -536,8 +537,7 @@ scene.add(new THREE.AmbientLight(0x304060, 2.0));
 const sun = new THREE.DirectionalLight(0xffeedd, 2.5);
 sun.position.set(10, 20, 10); sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.camera.left = -40; sun.shadow.camera.right = 40;
-sun.shadow.camera.top = 40; sun.shadow.camera.bottom = -40;sun.shadow.camera.far = 120; sun.shadow.bias = -0.0001;
+sun.shadow.camera.left = -40; sun.shadow.camera.right = 40;sun.shadow.camera.top = 40; sun.shadow.camera.bottom = -40;sun.shadow.camera.far = 120; sun.shadow.bias = -0.0001;
 scene.add(sun);
 const pl1 = new THREE.PointLight(0xff4400, 4.0, 25); pl1.position.set(8, 4, 8); scene.add(pl1);
 const pl2 = new THREE.PointLight(0x3366ff, 4.0, 25); pl2.position.set(-8, 4, -8); scene.add(pl2);
@@ -586,8 +586,7 @@ const sparkPool = new ObjectPool(
   (p) => { p.mesh.visible = false; p.life = 0; }
 );
 
-function sparks(pos, count = 8, col1 = 0xffaa00, col2 = 0xff5500) {  for (let i = 0; i < count; i++) {
-    const p = sparkPool.get();
+function sparks(pos, count = 8, col1 = 0xffaa00, col2 = 0xff5500) {  for (let i = 0; i < count; i++) {    const p = sparkPool.get();
     p.mesh.visible = true;
     p.mesh.material.color.setHex(Math.random() > 0.5 ? col1 : col2);
     p.mesh.material.opacity = 1;
@@ -637,7 +636,6 @@ const shells = [];function ejectShell() {
     life: 60
   });  playSound('shell');
 }
-
 function updateShells() {
   for (let i = shells.length - 1; i >= 0; i--) {
     const s = shells[i];
@@ -686,8 +684,7 @@ const weapons = {
   'smg': {name: 'مسدس سريع', damage: 18, fireRate: 3, clipSize: 50, reserve: 250, price: 3200, owned: false, autoFire: true, ammoPrice: 250, color: 0x44ff88, currentClip: 50, reserveAmmo: 250, upgrades: {damage: 0, mag: 0, reload: 0}},
   'm4a1': {name: 'رشاش آلي', damage: 38, fireRate: 8, clipSize: 35, reserve: 175, price: 15000, owned: false, autoFire: true, ammoPrice: 320, color: 0x8888ff, waveLock: 10, currentClip: 35, reserveAmmo: 175, upgrades: {damage: 0, mag: 0, reload: 0}}};
 
-const upgradeDefs = {
-  damage: {name: 'زيادة ضرر بسيطة', desc: '+2 ضرر فقط', cost: 1800, max: 3, effect: (w) => { w.damage += 2; }},
+const upgradeDefs = {  damage: {name: 'زيادة ضرر بسيطة', desc: '+2 ضرر فقط', cost: 1800, max: 3, effect: (w) => { w.damage += 2; }},
   mag: {name: 'سعة مخزن صغيرة', desc: '+5 طلقات فقط', cost: 1500, max: 2, effect: (w) => { w.clipSize += 5; w.reserve += 5; }},
   reload: {name: 'تعمير أسرع قليلاً', desc: '-8% وقت التعمير', cost: 1200, max: 2, effect: (w) => {}}
 };
@@ -736,8 +733,7 @@ function buyWeapon(key) {
     document.getElementById(`btn-${key}`).textContent = '✓ مملوك';    document.getElementById(`btn-${key}`).disabled = true;
     playSound('ui', {freq: 900});
     showKillstreak(`🔫 تم شراء ${w.name}!`);
-    updateInventoryUI();
-    updateUpgradesTab();
+    updateInventoryUI();    updateUpgradesTab();
     updateShopScoreUI();
     saveGame();
   } else if (w.owned) equipWeapon(key); else playSound('ui', {freq: 150});
@@ -786,8 +782,7 @@ function updateUpgradesTab() {
     item.innerHTML = `<div style="font-weight:bold;color:#0f8;margin-bottom:8px">${w.name}</div>`;
     Object.keys(upgradeDefs).forEach(type => {
       const up = upgradeDefs[type], cur = w.upgrades[type] || 0;
-      const row = document.createElement('div');
-      row.style.cssText = 'width:100%;display:flex;justify-content:space-between;align-items:center;margin:4px 0;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)';
+      const row = document.createElement('div');      row.style.cssText = 'width:100%;display:flex;justify-content:space-between;align-items:center;margin:4px 0;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)';
       row.innerHTML = `<div style="font-size:12px"><span style="color:#aaa">${up.name}</span><br><small style="color:#666">${up.desc} | ${cur}/${up.max}</small></div><button class="shop-item-btn" style="padding:6px 14px;font-size:11px"${cur >= up.max || gs.score < up.cost ? 'disabled' : ''} onclick="buyUpgrade('${key}','${type}')">${cur >= up.max ? '✓ كامل' : `${up.cost}💰`}</button>`;
       item.appendChild(row);
     });
@@ -836,8 +831,7 @@ function updateInventoryUI() {
   if (!mc) return;
   mc.innerHTML = '';
   if (gs.mercenariesInventory > 0) {
-    for (let i = 0; i < gs.mercenariesInventory; i++) {
-      const proj = 80 + Math.floor(gs.wave / 5) * 30;
+    for (let i = 0; i < gs.mercenariesInventory; i++) {      const proj = 80 + Math.floor(gs.wave / 5) * 30;
       const item = document.createElement('div');
       item.className = 'inventory-merc-item';
       item.innerHTML = `<div class="inventory-merc-name">👥 مرتزق عادي</div><div class="inventory-merc-desc">ضرر: 22-30</div><div class="inventory-merc-health">❤️ صحة: ${proj}</div><button class="inventory-merc-btn" onclick="deployFromInventory('normal')">استدعاء</button>`;
@@ -886,7 +880,6 @@ const gs = {
 const enemies = [], enemyBullets = [], allyBullets = [];
 const lootDrops = [];
 const KNAMES = ['الصقر', 'العقرب', 'الظل', 'الرعد', 'المارد', 'الشبح', 'الفهد', 'التنين'];
-
 function getBlock(wave) { return Math.floor((wave - 1) / 5); }
 function calcStat(base, perWave, wave) { return base + getBlock(wave) * Math.round(perWave * 5 / 2); }
 
@@ -936,8 +929,7 @@ function createMercenary(isElite = false) {
   const body = new THREE.Mesh(bodyGeo, new THREE.MeshStandardMaterial({color: bodyColor, roughness: 0.4, metalness: 0.5}));
   body.position.y = 1.1; body.castShadow = true; g.add(body);
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 8, 8), new THREE.MeshStandardMaterial({color: isElite ? 0x005522 : 0x00aa44, roughness: 0.3}));
-  head.position.y = 1.9; head.castShadow = true; g.add(head);
-  const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({color: isElite ? 0x002211 : 0x005522, roughness: 0.3, metalness: 0.7}));
+  head.position.y = 1.9; head.castShadow = true; g.add(head);  const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({color: isElite ? 0x002211 : 0x005522, roughness: 0.3, metalness: 0.7}));
   helmet.position.y = 1.9; g.add(helmet);
   const gunGroup = new THREE.Group();
   const gunBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 0.7, 8), new THREE.MeshStandardMaterial({color: 0x2a2a2a, metalness: 0.8}));
@@ -986,8 +978,7 @@ function updateAllyBullets() {  for (let i = allyBullets.length - 1; i >= 0; i--
     for (let j = 0; j < enemies.length; j++) {
       const en = enemies[j];
       if (!en.alive) continue;
-      if (b.mesh.position.distanceTo(en.g.position) < 1.2) {
-        const dmg = b.isElite ? (b.damage.min + Math.random() * (b.damage.max - b.damage.min)) : (22 + Math.random() * 8);
+      if (b.mesh.position.distanceTo(en.g.position) < 1.2) {        const dmg = b.isElite ? (b.damage.min + Math.random() * (b.damage.max - b.damage.min)) : (22 + Math.random() * 8);
         en.hp -= dmg;
         en.hit = 6;
         sparks(b.mesh.position, b.isElite ? 10 : 6, b.isElite ? 0x00ff88 : 0x00ff00, 0xffffff);
@@ -1036,8 +1027,7 @@ function updateEnemies() {  enemies.forEach(en => {
     const dist = dir.length();
 
     let moveDir = new THREE.Vector3();
-    if (en.aiState === 'chase') {
-      if (dist > 7) { dir.normalize(); moveDir.copy(dir); }
+    if (en.aiState === 'chase') {      if (dist > 7) { dir.normalize(); moveDir.copy(dir); }
     } else if (en.aiState === 'flank') {
       const perp = new THREE.Vector3(-dir.z, 0, dir.x).normalize();
       moveDir.copy(perp).multiplyScalar(en.flankDir);
@@ -1086,8 +1076,7 @@ function spawnWave(w) {
   }
   const n = Math.min(baseCount, 28);
   const armoredChance = w >= 7 ? Math.min(0.35, 0.05 + (w - 7) * 0.02) : 0;
-  for (let i = 0; i < n; i++) {
-    const isArmored = Math.random() < armoredChance;
+  for (let i = 0; i < n; i++) {    const isArmored = Math.random() < armoredChance;
     const a = (i / n) * Math.PI * 2 + Math.random() * 0.5, r = 28 - Math.random() * 5;
     mkEnemy(Math.cos(a) * r, Math.sin(a) * r, w, isArmored);
   }
@@ -1136,8 +1125,7 @@ function updateWeather() {
   fogOverlay.style.opacity = fogOpacity;
   if (weatherState.type === 'rain' || weatherState.type === 'lightRain' || weatherState.type === 'storm') {
     const maxDrops = weatherState.type === 'storm' ? 300 : weatherState.type === 'rain' ? 150 : 60;
-    const spawnRate = weatherState.type === 'storm' ? 8 : weatherState.type === 'rain' ? 4 : 2;
-    while (rainDrops.length < maxDrops && Math.random() < spawnRate / 60) {
+    const spawnRate = weatherState.type === 'storm' ? 8 : weatherState.type === 'rain' ? 4 : 2;    while (rainDrops.length < maxDrops && Math.random() < spawnRate / 60) {
       rainDrops.push({x: Math.random() * rainCanvas.width, y: -10, speed: 8 + Math.random() * (weatherState.type === 'storm' ? 12 : 6), length: 15 + Math.random() * 20, opacity: 0.3 + Math.random() * 0.4});
     }
     for (let i = rainDrops.length - 1; i >= 0; i--) {
@@ -1186,7 +1174,6 @@ function shoot() {
   gs.cd = weapon.fireRate;
   updateAmmoUI();
   shake = weapon.fireRate < 10 ? 0.08 : 0.06;
-
   gs.camPitch += 0.015 + Math.random() * 0.01;
   gs.camYaw += (Math.random() - 0.5) * 0.008;
 
@@ -1236,8 +1223,7 @@ function shoot() {
     playSound('hit');
     showHit();
     showDamageNumber(best.g.position.clone().add(new THREE.Vector3(0, 2.5, 0)), finalDmg, isHeadshot);
-    if (best.hp <= 0) killEnemy(best); else updateEnemyBar(best);
-  } else {
+    if (best.hp <= 0) killEnemy(best); else updateEnemyBar(best);  } else {
     ray.setFromCamera(new THREE.Vector2(0, 0), camera);
     const ms = [];
     enemies.filter(e => e.alive).forEach(en => en.g.traverse(c => { if (c.isMesh) ms.push(c); }));
@@ -1287,7 +1273,6 @@ function killEnemy(en) {
       spawnLoot(en.g.position.clone(), 'normal');
     }
   }
-
   if (!enemies.some(e => e.alive)) setTimeout(() => nextWave(), 1800);
   playSound('enemyDeath');
 }
@@ -1295,13 +1280,13 @@ function killEnemy(en) {
 function spawnLoot(pos, forceRarity = null) {
   let type, color, name, effect, duration = 15000;
     if (forceRarity === 'legendary') {
-    type = 'legendary'; color = 0xffd700; duration = 45000; // زيادة المدة إلى 45 ثانية
+    type = 'legendary'; color = 0xffd700; duration = 45000;
     const wKeys = Object.keys(weapons);
     const wKey = wKeys[Math.floor(Math.random() * wKeys.length)];
     name = `🟡 [أسطوري] ${weapons[wKey].name}`;
     effect = 'weapon_legendary';
   } else if (forceRarity === 'rare') {
-    type = 'rare'; color = 0x0088ff; duration = 30000; // زيادة المدة إلى 30 ثانية
+    type = 'rare'; color = 0x0088ff; duration = 30000;
     const wKeys = Object.keys(weapons);
     const wKey = wKeys[Math.floor(Math.random() * wKeys.length)];
     name = `🔵 [نادر] ${weapons[wKey].name}`;
@@ -1336,8 +1321,7 @@ function showLootNotification(text, color) {
     if (el) {
       el.style.opacity = '0';
       el.style.transform = 'translateX(-50%) scale(1)';
-    }
-  }, 2500);
+    }  }, 2500);
 }
 
 function updateLoot() {
@@ -1361,7 +1345,6 @@ function updateLoot() {
         updateScoreUI(); 
         showLootNotification('⭐ +50 نقطة!', '#0088ff');
       } 
-      // ===== إصلاح: تبديل السلاح الفعلي عند الالتقاط =====
       else if (loot.effect === 'weapon_rare' || loot.effect === 'weapon_legendary') {
         const wKeys = Object.keys(weapons);
         const wKey = wKeys[Math.floor(Math.random() * wKeys.length)];
@@ -1378,7 +1361,6 @@ function updateLoot() {
           desc: rarity === 'legendary' ? '+50% ضرر | مؤقت 45 ثانية' : '+15% ضرر | مؤقت 30 ثانية'
         };
         
-        // تبديل السلاح والذخيرة فوراً
         currentWeapon = wKey;
         gs.ammo = weapons[wKey].clipSize;
         gs.reserve = weapons[wKey].reserve;
@@ -1388,8 +1370,7 @@ function updateLoot() {
         showLootNotification(`🎁 حصلت على: ${gs.temporaryWeapon.name}!`, rarity === 'legendary' ? '#ffd700' : '#0088ff');
         playSound('loot_rare');
       }
-      
-      playSound('loot');
+            playSound('loot');
       scene.remove(loot.mesh);      lootDrops.splice(i, 1);
       updateInventoryUI();
     } else if (now - loot.spawnTime > loot.duration) {
@@ -1398,7 +1379,6 @@ function updateLoot() {
     }
   }
 
-  // ===== إصلاح: العودة الآمنة للسلاح الأصلي عند انتهاء الوقت =====
   if (gs.temporaryWeapon && now > gs.temporaryWeapon.expiry) {
     const prev = gs.temporaryWeapon.prevWeapon;
     const prevAmmo = gs.temporaryWeapon.prevAmmo;
@@ -1439,8 +1419,7 @@ function throwGrenade() {
 }
 
 function updateGrenades() {  for (let i = grenades.length - 1; i >= 0; i--) {
-    const g = grenades[i];
-    if (!g.exploded) {
+    const g = grenades[i];    if (!g.exploded) {
       g.position.add(g.velocity);
       g.velocity.y -= 0.01;
       g.mesh.position.copy(g.position);
@@ -1489,8 +1468,7 @@ function switchShopTab(name) {
   document.getElementById(`tab-${name}`).classList.add('active');  if (name === 'permanent') {
     const el = document.getElementById('maxhp-display');
     if (el) el.textContent = gs.maxHp;
-  }
-  if (name === 'weapons') {
+  }  if (name === 'weapons') {
     Object.keys(weapons).forEach(key => {
       const btn = document.getElementById(`btn-${key}`), w = weapons[key];
       if (btn && w) {
@@ -1539,8 +1517,7 @@ function buySpeedBoost() {
 function buyMovementFix() {
   if (gs.score >= 300) {
     gs.score -= 300; gs.movementEnhanced = true; updateScoreUI(); updateShopScoreUI();
-    playSound('ui', {freq: 900}); showKillstreak('🔧 حركة محسنة!');
-    saveGame();
+    playSound('ui', {freq: 900}); showKillstreak('🔧 حركة محسنة!');    saveGame();
   } else playSound('ui', {freq: 150});
 }
 
@@ -1589,8 +1566,7 @@ function startReload() {
     const w = weapons[currentWeapon], reloadMult = 1 - (w.upgrades?.reload || 0) * 0.08;
     const duration = 1.4 * reloadMult;
     requestAnimationFrame(() => { rp.style.transition = `width ${duration}s linear`; rp.style.width = '100%'; });
-  }
-  playSound('reload');
+  }  playSound('reload');
 }
 
 function finishReload() {
@@ -1639,8 +1615,7 @@ function gameOver() {  gs.running = false;
   if (goScreen) goScreen.style.display = 'flex';
 }
 
-function nextWave() {
-  gs.wave++;
+function nextWave() {  gs.wave++;
   spawnWave(gs.wave);
   gs.hp = Math.min(gs.maxHp, gs.hp + 35);
   updateHpUI();
@@ -1689,8 +1664,7 @@ function showKillstreak(text) {
   setTimeout(() => {
     el.style.opacity = '0';
     el.style.transform = 'translate(-50%,-50%) scale(1)';
-  }, 2000);
-}
+  }, 2000);}
 
 const achievements = {
   firstKill: {unlocked: false, title: 'أول دم', description: 'اقتل أول عدو'},
@@ -1739,8 +1713,7 @@ document.addEventListener('touchmove', e => {
       joy.dy = len > 0 ? (dy / len * cl / JMAX) : 0;
       const nx = len > 0 ? -dx / len * cl : 0, ny = len > 0 ? dy / len * cl : 0;
       jKnob.style.transform = `translate(calc(-50% + ${nx}px), calc(-50% + ${ny}px))`;
-    }
-    if (t.identifier === look.id) {
+    }    if (t.identifier === look.id) {
       const diffX = (t.clientX - look.lx) * 0.0055, diffY = (t.clientY - look.ly) * 0.0045;
       gs.camYaw -= diffX; gs.camPitch -= diffY;
       swayX = THREE.MathUtils.lerp(swayX, diffX * 12, 0.2);
@@ -1789,8 +1762,7 @@ document.getElementById('reload-btn').addEventListener('touchstart', e => { e.pr
 const keys = {};
 document.addEventListener('keydown', e => {
   keys[e.code] = true;
-  if (e.code === 'Space' || e.code === 'KeyF') {
-    isFiring = true;
+  if (e.code === 'Space' || e.code === 'KeyF') {    isFiring = true;
     const w = weapons[currentWeapon];
     if (w.autoFire) { shoot(); autoFireInterval = setInterval(() => { if (isFiring && gs.running) shoot(); }, w.fireRate * 15); }
     else shoot();
@@ -1839,8 +1811,7 @@ function updatePlayer() {
   if (keys['KeyS'] || keys['ArrowDown']) dy = 1;
   if (keys['KeyA'] || keys['ArrowLeft']) dx = -1;
   if (keys['KeyD'] || keys['ArrowRight']) dx = 1;
-  if (dx !== 0 || dy !== 0) {
-    camera.getWorldDirection(viewDir);
+  if (dx !== 0 || dy !== 0) {    camera.getWorldDirection(viewDir);
     viewDir.y = 0; viewDir.normalize();
     sideDir.set(0, 1, 0).cross(viewDir).normalize();
     pVelX += (sideDir.x * dx - viewDir.x * dy) * baseSpd;
@@ -1889,8 +1860,7 @@ function updateMinimap() {
   minimapCtx.fillStyle = '#00ff00';
   minimapCtx.beginPath();
   minimapCtx.arc(cx + camera.position.x * scale, cy + camera.position.z * scale, 3, 0, Math.PI * 2);
-  minimapCtx.fill();
-  minimapCtx.fillStyle = '#ff0000';
+  minimapCtx.fill();  minimapCtx.fillStyle = '#ff0000';
   enemies.forEach(en => {
     if (!en.alive) return;
     minimapCtx.beginPath();
@@ -1931,7 +1901,6 @@ function updateEnemyBullets() {
 
 const tv = new THREE.Vector3();
 
-// ========== إصلاح: حماية دالة تحديث المرتزقة لمنع التجمد ==========
 function updateMercenaries() {
   for (let i = gs.mercenaries.length - 1; i >= 0; i--) {
     const merc = gs.mercenaries[i];
@@ -1940,8 +1909,7 @@ function updateMercenaries() {
       gs.mercenaries.splice(i, 1);
       continue;
     }
-    
-    let target = null;
+        let target = null;
     let maxThreat = -1;
     
     enemies.forEach(en => {
@@ -1990,8 +1958,7 @@ function updateMercenaries() {
         shootAllyBullet(merc.g.position, target.g.position, merc);
       }
     }
-    
-    for (let bi = enemyBullets.length - 1; bi >= 0; bi--) {
+        for (let bi = enemyBullets.length - 1; bi >= 0; bi--) {
       const b = enemyBullets[bi];
       if (b.mesh.position.distanceTo(merc.g.position) < 0.8) {
         merc.hp -= 8 + Math.random() * 6;
@@ -2012,7 +1979,6 @@ function updateMercenaries() {
   }
 }
 
-// ===== إصلاح: حماية دالة تحديث زر المرتزقة =====
 function updateMercenaryUI() {
   const btn = document.getElementById('mercenary-btn');  if (!btn) return;
   const count = (gs.mercenariesInventory || 0) + (gs.eliteMercenariesInventory || 0);
@@ -2020,7 +1986,6 @@ function updateMercenaryUI() {
   btn.style.opacity = count > 0 ? '1' : '0.5';
 }
 
-// ===== إصلاح جذري: منع تجمد اللعبة عند استدعاء المرتزق =====
 function deployMercenary() {
   if (!gs.running) return;
   try {
@@ -2043,7 +2008,6 @@ function deployMercenary() {
     console.error("Error in deployMercenary:", e);
   }
 }
-
 function saveGame() {
   const data = {
     score: gs.score,
@@ -2093,7 +2057,6 @@ function loadGame() {
     }
   } catch(e) {}
 }
-
 function animate() {
   requestAnimationFrame(animate);
   if (gs.running) {
@@ -2139,6 +2102,73 @@ function retryGame() {
   resetGame();
 }
 
+// ===== إضافات جديدة: دالة لعبة جديدة (تحافظ على الأسلحة والإنجازات) =====
+function newGame() {
+  if (!confirm('هل تريد بدء لعبة جديدة؟\n\n✅ ستحتفظ بـ:\n- جميع الأسلحة المشتراة\n- الترقيات (الملحقات)\n- الإنجازات\n- المرتزقة في المخزون\n\n❌ سيتم تصفير:\n- الموجة → 1\n- النقاط → 0\n- القتلى → 0')) return;
+    // تصفير حالة اللعبة فقط (الموجة والنقاط والقتلى)
+  gs.wave = 1;
+  gs.score = 0;
+  gs.kills = 0;
+  gs.hp = gs.maxHp;
+  gs.mercenaries = [];
+  gs.mercenaryCount = 0;
+  
+  // إعادة تعيين ذخيرة الأسلحة
+  Object.keys(weapons).forEach(key => {
+    const w = weapons[key];
+    if (w.owned) {
+      w.currentClip = w.clipSize;
+      w.reserveAmmo = w.reserve;
+    }
+  });
+  
+  // حفظ التقدم الجديد
+  saveGame();
+  
+  // إخفاء شاشة الانتهاء والعودة للعبة
+  document.getElementById('gameover').style.display = 'none';
+  resetGame();
+}
+
+// ===== إضافات جديدة: دالة مسح كل التقدم =====
+function resetAllProgress() {
+  if (!confirm('⚠️ تحذير: سيتم مسح كل التقدم نهائياً!\n\nسيتم حذف:\n- جميع الأسلحة المشتراة\n- جميع الترقيات\n- جميع الإنجازات\n- جميع المرتزقة\n- النقاط والمستوى\n\nهل أنت متأكد؟')) return;
+  
+  // مسح localStorage بالكامل
+  try {
+    localStorage.removeItem('shadowOps_save');
+  } catch(e) {}
+  
+  // إعادة تعيين كل شيء للحالة الأولية
+  gs.score = 0;
+  gs.wave = 1;
+  gs.kills = 0;
+  gs.maxHp = 100;
+  gs.hp = 100;
+  gs.movementEnhanced = false;
+  gs.mercenariesInventory = 0;
+  gs.eliteMercenariesInventory = 0;
+  gs.mercenaries = [];
+  gs.mercenaryCount = 0;
+  
+  // إعادة تعيين الأسلحة
+  Object.keys(weapons).forEach(key => {
+    const w = weapons[key];
+    w.owned = (key === 'pistol');    w.currentClip = w.clipSize;
+    w.reserveAmmo = w.reserve;
+    w.upgrades = {damage: 0, mag: 0, reload: 0};
+  });
+  
+  // إعادة تعيين الإنجازات
+  Object.keys(achievements).forEach(k => {
+    achievements[k].unlocked = false;
+  });
+  
+  // إخفاء شاشة الانتهاء والعودة للعبة
+  document.getElementById('gameover').style.display = 'none';
+  resetGame();
+}
+
 function resetGame() {
   enemies.forEach(e => scene.remove(e.g));
   enemies.length = 0;
@@ -2173,8 +2203,7 @@ function resetGame() {
   initWeather();
   updateHpUI();
   updateAmmoUI();
-  updateGrenadeUI();
-  updateMercenaryUI();
+  updateGrenadeUI();  updateMercenaryUI();
   updateInventoryUI();
   updateUpgradesTab();
   updateScoreUI();
@@ -2207,4 +2236,4 @@ updateGrenadeUI();
 updateMercenaryUI();
 </script>
 </body>
-  </html>
+    </html>
