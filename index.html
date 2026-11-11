@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SHADOW OPS - v2.3 Final</title>
+<title>SHADOW OPS - v2.4</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;user-select:none;}
@@ -187,14 +187,16 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .menu-title .sp{width:16px;}
 @keyframes letterFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
 .menu-sub{position:relative;font-size:13px;color:rgba(0,220,255,.8);letter-spacing:12px;margin:10px 0 4px;}
-.menu-divider{position:relative;display:flex;align-items:center;gap:10px;margin:18px 0 30px;width:min(320px,70vw);}
+.menu-divider{position:relative;display:flex;align-items:center;gap:10px;margin:18px 0 22px;width:min(320px,70vw);}
 .menu-divider span{flex:1;height:1px;background:linear-gradient(90deg,transparent,#0cf);box-shadow:0 0 8px #0cf;}
 .menu-divider span:last-child{background:linear-gradient(270deg,transparent,#0cf);}
 .menu-divider i{color:#0cf;font-style:normal;font-size:10px;animation:radarSpin 6s linear infinite;}
 #start-btn{position:relative;overflow:hidden;padding:20px 60px;background:linear-gradient(135deg,rgba(0,200,255,.12),rgba(0,80,160,.18));border:2px solid rgba(0,220,255,.8);color:#fff;font-size:17px;font-family:'Courier New',monospace;letter-spacing:8px;cursor:pointer;border-radius:6px;animation:btnPulse 2.4s ease-in-out infinite;}
 @keyframes btnPulse{0%,100%{box-shadow:0 0 25px rgba(0,200,255,.35);}50%{box-shadow:0 0 45px rgba(0,220,255,.7);}}
 #start-btn:active{transform:scale(.96);}
-.m-hint{position:relative;margin-top:30px;font-size:11px;color:rgba(180,220,255,.45);letter-spacing:1px;text-align:center;line-height:2.1;padding:12px 26px;border:1px solid rgba(0,200,255,.15);border-radius:8px;background:rgba(0,20,40,.35);}
+#difficulty-btn{position:relative;margin-top:14px;padding:12px 32px;background:rgba(255,215,0,0.08);border:1.5px solid rgba(255,215,0,0.5);color:#ffd700;font-size:13px;font-family:'Courier New',monospace;letter-spacing:4px;cursor:pointer;border-radius:6px;transition:all .25s;box-shadow:0 0 15px rgba(255,215,0,0.2);}
+#difficulty-btn:active{transform:scale(.96);}
+.m-hint{position:relative;margin-top:22px;font-size:11px;color:rgba(180,220,255,.45);letter-spacing:1px;text-align:center;line-height:2.1;padding:12px 26px;border:1px solid rgba(0,200,255,.15);border-radius:8px;background:rgba(0,20,40,.35);}
 .menu-ver{position:absolute;bottom:14px;font-size:10px;letter-spacing:3px;color:rgba(0,200,255,.4);}
 .portrait{width:58px;height:58px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid rgba(255,255,255,.25);margin-left:10px;flex:0 0 auto;}
 #wave-notif{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40px;font-weight:900;color:#fff;letter-spacing:8px;text-shadow:0 0 30px rgba(0,200,255,0.9);opacity:0;pointer-events:none;z-index:50;transition:opacity 0.4s;}
@@ -222,7 +224,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 @keyframes dmgFloat{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-40px);}}
 .headshot-text{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);font-size:32px;font-weight:900;color:#ff0;text-shadow:0 0 20px #ff0,0 0 40px #f80;pointer-events:none;z-index:46;animation:headshotAnim 1s forwards;letter-spacing:4px;}
 @keyframes headshotAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5);}20%{opacity:1;transform:translate(-50%,-50%) scale(1.3);}100%{opacity:0;transform:translate(-50%,-50%) scale(1);}}
-/* ✅ إصلاح الغنائم - أكبر في المنتصف */
 #loot-notification{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%) scale(0.9);font-size:26px;font-weight:bold;padding:14px 30px;border-radius:12px;opacity:0;pointer-events:none;z-index:60;transition:opacity 0.25s ease-out,transform 0.25s ease-out;text-align:center;background:rgba(0,0,0,0.92);border:2px solid transparent;box-shadow:0 0 25px rgba(0,0,0,0.8);letter-spacing:1px;}
 #confirm-dialog{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:2000;flex-direction:column;align-items:center;justify-content:center;}
 .confirm-box{background:linear-gradient(135deg,#0a0a0a,#1a1a1a);border:2px solid #0f8;padding:30px;border-radius:15px;max-width:450px;width:90%;color:#fff;text-align:center;}
@@ -257,6 +258,30 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .tutorial-row span{font-size:20px;min-width:30px;text-align:center;}
 .tutorial-hint{margin-top:15px;text-align:center;color:#0cf;font-size:12px;animation:tutorialPulse 1.5s infinite;}
 @keyframes tutorialPulse{0%,100%{opacity:0.6;}50%{opacity:1;}}
+/* ═══ نافذة اختيار الصعوبة ═══ */
+#difficulty-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:2002;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.difficulty-box{background:linear-gradient(135deg,#0a0a0a,#1a1a1a);border:2px solid #ffd700;padding:25px;border-radius:15px;max-width:420px;width:95%;color:#fff;box-shadow:0 0 40px rgba(255,215,0,0.25);}
+.difficulty-box h2{color:#ffd700;text-align:center;margin-bottom:6px;font-size:20px;letter-spacing:2px;}
+.difficulty-box .diff-subtitle{text-align:center;color:#888;font-size:11px;margin-bottom:18px;letter-spacing:1px;}
+.diff-option{width:100%;display:flex;align-items:center;gap:12px;padding:12px 15px;margin-bottom:9px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;cursor:pointer;transition:all 0.2s;text-align:right;font-family:inherit;color:#ccc;}
+.diff-option:active{transform:scale(0.97);}
+.diff-option.active{transform:scale(1.02);}
+.diff-option .diff-icon{font-size:24px;flex-shrink:0;}
+.diff-option .diff-info{flex:1;}
+.diff-option .diff-name{font-weight:bold;font-size:15px;margin-bottom:2px;color:#fff;}
+.diff-option .diff-desc{font-size:11px;color:#888;}
+.diff-option.active[data-diff="very_easy"]{border-color:#00ff88;background:rgba(0,255,136,0.13);box-shadow:0 0 15px rgba(0,255,136,0.4);}
+.diff-option.active[data-diff="easy"]{border-color:#88ff88;background:rgba(136,255,136,0.13);box-shadow:0 0 15px rgba(136,255,136,0.4);}
+.diff-option.active[data-diff="normal"]{border-color:#ffd700;background:rgba(255,215,0,0.13);box-shadow:0 0 15px rgba(255,215,0,0.4);}
+.diff-option.active[data-diff="hard"]{border-color:#ff8800;background:rgba(255,136,0,0.13);box-shadow:0 0 15px rgba(255,136,0,0.4);}
+.diff-option.active[data-diff="very_hard"]{border-color:#ff2222;background:rgba(255,34,34,0.13);box-shadow:0 0 15px rgba(255,34,34,0.4);}
+.diff-option.active[data-diff="very_easy"] .diff-name{color:#00ff88;}
+.diff-option.active[data-diff="easy"] .diff-name{color:#88ff88;}
+.diff-option.active[data-diff="normal"] .diff-name{color:#ffd700;}
+.diff-option.active[data-diff="hard"] .diff-name{color:#ff8800;}
+.diff-option.active[data-diff="very_hard"] .diff-name{color:#ff2222;}
+.difficulty-close{width:100%;margin-top:10px;padding:12px;background:rgba(255,0,0,0.15);border:1.5px solid rgba(255,0,0,0.5);color:#f44;border-radius:8px;cursor:pointer;font-weight:bold;font-size:14px;font-family:inherit;letter-spacing:2px;}
+.difficulty-close:active{transform:scale(0.97);}
 </style>
 </head>
 <body>
@@ -278,6 +303,50 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
       <button class="confirm-yes" id="confirm-yes">نعم</button>
       <button class="confirm-no" id="confirm-no">إلغاء</button>
     </div>
+  </div>
+</div>
+
+<!-- ═══ نافذة اختيار الصعوبة ═══ -->
+<div id="difficulty-overlay">
+  <div class="difficulty-box">
+    <h2>⚙ اختر الصعوبة</h2>
+    <div class="diff-subtitle">لا يمكن التغيير بعد بدء المهمة</div>
+    <button class="diff-option" data-diff="very_easy" onclick="selectDifficulty('very_easy')">
+      <span class="diff-icon">🟢</span>
+      <div class="diff-info">
+        <div class="diff-name">سهل جداً</div>
+        <div class="diff-desc">صحة ×0.5 | ضرر ×0.4 | أعداء ×0.6</div>
+      </div>
+    </button>
+    <button class="diff-option" data-diff="easy" onclick="selectDifficulty('easy')">
+      <span class="diff-icon">🟢</span>
+      <div class="diff-info">
+        <div class="diff-name">سهل</div>
+        <div class="diff-desc">صحة ×0.75 | ضرر ×0.65 | أعداء ×0.8</div>
+      </div>
+    </button>
+    <button class="diff-option active" data-diff="normal" onclick="selectDifficulty('normal')">
+      <span class="diff-icon">🟡</span>
+      <div class="diff-info">
+        <div class="diff-name">متوسط (افتراضي)</div>
+        <div class="diff-desc">تجربة متوازنة - كما هي اللعبة الأساسية</div>
+      </div>
+    </button>
+    <button class="diff-option" data-diff="hard" onclick="selectDifficulty('hard')">
+      <span class="diff-icon">🟠</span>
+      <div class="diff-info">
+        <div class="diff-name">صعب</div>
+        <div class="diff-desc">صحة ×1.4 | ضرر ×1.4 | أعداء ×1.15</div>
+      </div>
+    </button>
+    <button class="diff-option" data-diff="very_hard" onclick="selectDifficulty('very_hard')">
+      <span class="diff-icon">🔴</span>
+      <div class="diff-info">
+        <div class="diff-name">صعب جداً</div>
+        <div class="diff-desc">صحة ×1.9 | ضرر ×2.0 | أعداء ×1.3</div>
+      </div>
+    </button>
+    <button class="difficulty-close" onclick="closeDifficultyUI()">إلغاء</button>
   </div>
 </div>
 
@@ -408,11 +477,12 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <p class="menu-sub">TACTICAL SHOOTER</p>
 <div class="menu-divider"><span></span><i>◆</i><span></span></div>
 <button id="start-btn" onclick="startGame()">▶ ابدأ القتال</button>
+<button id="difficulty-btn" onclick="openDifficultyUI()">⚙ الصعوبة: 🟡 متوسط</button>
 <div class="m-hint">
 👈 عصا التحرك | 👉 الكاميرا<br>
 🔥 إطلاق | ↺ تعمير | 💣 قنبلة | ⚙ إعدادات
 </div>
-<div class="menu-ver">v2.3 FINAL // AEGIS CORP</div>
+<div class="menu-ver">v2.4 // AEGIS CORP</div>
 </div>
 
 <div id="gameover">
@@ -508,14 +578,34 @@ const CFG = {
 const isMobile = /Android|iPhone|iPad|iPod|Mobile|Opera Mini/i.test(navigator.userAgent) ||
                  (navigator.maxTouchPoints > 0 && window.innerWidth < 900);
 
-// ✅ الإعدادات الافتراضية الجديدة
-const settings = { sensitivity: 0.75, soundEnabled: true, hapticEnabled: true, gameSpeed: 0.6 };
+// ═══ الصعوبات ═══
+const DIFFICULTY = {
+  very_easy: { id: 'very_easy', name: 'سهل جداً', icon: '🟢', color: '#00ff88',
+    hpMul: 0.50, dmgMul: 0.40, countMul: 0.60, speedMul: 0.80,
+    aimAssist: 0.30, pointsMul: 0.80, fireRateMul: 0.70, maxEnemies: 14 },
+  easy: { id: 'easy', name: 'سهل', icon: '🟢', color: '#88ff88',
+    hpMul: 0.75, dmgMul: 0.65, countMul: 0.80, speedMul: 0.90,
+    aimAssist: 0.26, pointsMul: 0.90, fireRateMul: 0.85, maxEnemies: 19 },
+  normal: { id: 'normal', name: 'متوسط', icon: '🟡', color: '#ffd700',
+    hpMul: 1.00, dmgMul: 1.00, countMul: 1.00, speedMul: 1.00,
+    aimAssist: 0.22, pointsMul: 1.00, fireRateMul: 1.00, maxEnemies: 24 },
+  hard: { id: 'hard', name: 'صعب', icon: '🟠', color: '#ff8800',
+    hpMul: 1.40, dmgMul: 1.40, countMul: 1.15, speedMul: 1.10,
+    aimAssist: 0.17, pointsMul: 1.20, fireRateMul: 1.18, maxEnemies: 26 },
+  very_hard: { id: 'very_hard', name: 'صعب جداً', icon: '🔴', color: '#ff2222',
+    hpMul: 1.90, dmgMul: 2.00, countMul: 1.30, speedMul: 1.25,
+    aimAssist: 0.12, pointsMul: 1.50, fireRateMul: 1.43, maxEnemies: 26 }
+};
+
+// ═══ الإعدادات ═══
+const settings = { sensitivity: 0.75, soundEnabled: true, hapticEnabled: true, gameSpeed: 0.6, difficulty: 'normal' };
 try {
   const s = JSON.parse(localStorage.getItem('shadowOps_settings') || '{}');
   if (typeof s.sensitivity === 'number') settings.sensitivity = Math.max(0.3, Math.min(2.5, s.sensitivity));
   if (typeof s.soundEnabled === 'boolean') settings.soundEnabled = s.soundEnabled;
   if (typeof s.hapticEnabled === 'boolean') settings.hapticEnabled = s.hapticEnabled;
   if (typeof s.gameSpeed === 'number') settings.gameSpeed = Math.max(0.4, Math.min(1.2, s.gameSpeed));
+  if (typeof s.difficulty === 'string' && DIFFICULTY[s.difficulty]) settings.difficulty = s.difficulty;
 } catch (e) {}
 function saveSettings() { try { localStorage.setItem('shadowOps_settings', JSON.stringify(settings)); } catch (e) {} }
 
@@ -561,6 +651,8 @@ const D = {
   settingsUI: document.getElementById('settings-ui'),
   tutorialOverlay: document.getElementById('tutorial-overlay'),
   confirmDialog: document.getElementById('confirm-dialog'),
+  difficultyOverlay: document.getElementById('difficulty-overlay'),
+  difficultyBtn: document.getElementById('difficulty-btn'),
   mercCmds: document.getElementById('merc-commands'),
   shopScoreVal: document.getElementById('shop-score-val'),
   shopLevelDisplay: document.getElementById('shop-level-display'),
@@ -757,7 +849,6 @@ const viewDir = new THREE.Vector3(), sideDir = new THREE.Vector3();
 const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _v3 = new THREE.Vector3();
 
 let isFiring = false;
-
 let deltaTime = 1;
 let lastFrameTime = 0;
 const MIN_FRAME_MS = 1000 / 62;
@@ -1304,7 +1395,6 @@ function setMercCommand(idx, cmd) {
   const merc = gs.mercenaries[idx];
   if (!merc || !merc.alive) return;
   merc.command = merc.command === cmd ? 'auto' : cmd;
-  // ✅ إصلاح: وقت حقيقي بدل عدّاد إطارات
   merc.commandEndTime = merc.command === 'auto' ? 0 : performance.now() + 15000;
   showMercCommandIcon(merc);
   updateMercenaryManagementUI();
@@ -1315,7 +1405,6 @@ function commandAllMercs(cmd) {
   gs.mercenaries.forEach(merc => {
     if (merc && merc.alive) {
       merc.command = cmd;
-      // ✅ إصلاح: وقت حقيقي
       merc.commandEndTime = performance.now() + 15000;
       showMercCommandIcon(merc);
       count++;
@@ -1378,12 +1467,15 @@ const gs = {
   damageBoost: false, speedBoost: false, speedBoostEndTime: 0,
   armorActive: false, armorTimer: 0, movementEnhanced: false,
   mercenaries: [], mercenaryCount: 0, mercenariesInventory: 0, eliteMercenariesInventory: 0,
-  stepTimer: 0, temporaryWeapon: null, shopLevel: 1, armors: []
+  stepTimer: 0, temporaryWeapon: null, shopLevel: 1, armors: [],
+  difficulty: 'normal'
 };
 const enemies = [], enemyBullets = [], allyBullets = [], lootDrops = [];
 const KNAMES = ['الصقر', 'العقرب', 'الظل', 'الرعد', 'المارد', 'الشبح', 'الفهد', 'التنين'];
-function getBlock(wave) { return Math.floor((wave - 1) / 5); }
-function calcStat(base, perWave, wave) { return base + getBlock(wave) * Math.round(perWave * 5 / 2); }
+
+function calcStat(base, perWave, wave) { 
+  return base + Math.floor((wave - 1) * perWave * 0.4); 
+}
 
 function stdMat(color, rough = 0.7, metal = 0.3) { return new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal }); }
 function glowMat(color) { return new THREE.MeshBasicMaterial({ color }); }
@@ -1522,8 +1614,11 @@ function mkEnemy(x, z, wave, isArmored = false) {
   if (tex) { g = makeCharacterBillboard(tex, isArmored ? 2.4 : 2.2); fgB = addHealthBar(g, isArmored ? 2.6 : 2.4, 0x00ff44); }
   else { const b = isArmored ? buildArmoredTrooper() : buildStandardTrooper(); g = b.g; fgB = b.fgB; }
   g.position.set(x, 0, z);
-  const hp = isArmored ? calcStat(200, 30, wave) : calcStat(50, 15, wave);
-  const speed = isArmored ? (0.005 + wave * 0.0015) : (0.010 + wave * 0.0025);
+  const diff = DIFFICULTY[gs.difficulty] || DIFFICULTY.normal;
+  const baseHp = isArmored ? calcStat(200, 30, wave) : calcStat(50, 15, wave);
+  const hp = Math.round(baseHp * diff.hpMul);
+  const baseSpeed = isArmored ? (0.005 + wave * 0.0015) : (0.010 + wave * 0.0025);
+  const speed = baseSpeed * diff.speedMul;
   const en = { g, fgB, hp, maxHp: hp, speed, alive: true, sTmr: 50 + Math.random() * 70, bob: Math.random() * Math.PI * 2, hit: 0, isArmored, aiState: 'chase', stateTimer: 0, flankDir: 1 };
   scene.add(g); enemies.push(en);
 }
@@ -1537,7 +1632,6 @@ function createMercenary(isElite = false) {
   g.position.copy(sp); scene.add(g);
   const startHp = isElite ? calcStat(300, 25, gs.wave) : calcStat(80, 12, gs.wave);
   const dmg = isElite ? { min: calcStat(60, 5, gs.wave), max: calcStat(85, 7, gs.wave) } : { min: calcStat(22, 2, gs.wave), max: calcStat(30, 3, gs.wave) };
-  // ✅ إصلاح: commandEndTime بدل commandTimer
   const merc = { g, hpBar, hp: startHp, maxHp: startHp, alive: true, shootTimer: isElite ? 35 : 25, isElite, damage: dmg, command: 'auto', commandEndTime: 0, commandIcon: null };
   gs.mercenaries.push(merc); gs.mercenaryCount++;
   return merc;
@@ -1593,7 +1687,11 @@ function updateEnemies() {
     }
     if (dist < 40) {
       en.sTmr -= dt;
-      if (en.sTmr <= 0) { en.sTmr = 60 + Math.random() * 70; shootEnemyBullet(en.g.position, targetPos); }
+      if (en.sTmr <= 0) { 
+        const fireMul = (DIFFICULTY[gs.difficulty] || DIFFICULTY.normal).fireRateMul;
+        en.sTmr = (60 + Math.random() * 70) / fireMul;
+        shootEnemyBullet(en.g.position, targetPos); 
+      }
     }
   }
 }
@@ -1601,7 +1699,8 @@ function updateEnemies() {
 function spawnWave(w) {
   let baseCount = 3 + w * 2;
   if (w > 5) { const chance = w > 10 ? 0.25 : 0.15; if (Math.random() < chance) baseCount += Math.floor(Math.random() * 3) + 1; }
-  const n = Math.min(baseCount, CFG.MAX_ENEMIES);
+  const diff = DIFFICULTY[gs.difficulty] || DIFFICULTY.normal;
+  const n = Math.min(Math.round(baseCount * diff.countMul), diff.maxEnemies);
   const armoredChance = w >= CFG.ARMORED_WAVE_START ? Math.min(0.35, 0.05 + (w - CFG.ARMORED_WAVE_START) * 0.02) : 0;
   for (let i = 0; i < n; i++) {
     const isArmored = Math.random() < armoredChance;
@@ -1609,7 +1708,7 @@ function spawnWave(w) {
     mkEnemy(Math.cos(a) * r, Math.sin(a) * r, w, isArmored);
   }
   gs.waveTotal = n; gs.waveKilled = 0;
-  if (D.waveFill) D.waveFill.style.width = '0%';
+  if (D.waveFill) D.waveFill.style.fill.width = '0%';
   D.waveNotif.textContent = `WAVE ${w}`;
   D.waveNotif.style.opacity = '1';
   setTimeout(() => D.waveNotif.style.opacity = '0', 2200);
@@ -1704,13 +1803,14 @@ function shoot() {
   }
   let best = null, bd = Infinity;
   const maxRange = weapon.name === 'شوتجان' ? 20 : 45;
+  const aimAssist = (DIFFICULTY[gs.difficulty] || DIFFICULTY.normal).aimAssist;
   for (let i = 0; i < enemies.length; i++) {
     const en = enemies[i];
     if (!en.alive) continue;
     _v1.copy(en.g.position).add(_v2.set(0, 1.5, 0)).project(camera);
     const d = Math.sqrt(_v1.x * _v1.x + _v1.y * _v1.y);
     const wd = camera.position.distanceTo(en.g.position);
-    if (d < CFG.AIM_ASSIST && wd < maxRange && d < bd) { bd = d; best = en; }
+    if (d < aimAssist && wd < maxRange && d < bd) { bd = d; best = en; }
   }
   let baseDmg = weapon.damage;
   if (gs.damageBoost) baseDmg = Math.floor(baseDmg * 1.5);
@@ -1765,7 +1865,8 @@ function killEnemy(en) {
   en.alive = false;
   sparks(en.g.position.clone().add(_v2.set(0, 1, 0)), 15, 0xff4400, 0xff8800);
   scene.remove(en.g);
-  const points = 15 + gs.wave * 5 + (en.isArmored ? 30 : 0);
+  const pointsMul = (DIFFICULTY[gs.difficulty] || DIFFICULTY.normal).pointsMul;
+  const points = Math.round((15 + gs.wave * 5 + (en.isArmored ? 30 : 0)) * pointsMul);
   gs.score += points; gs.kills++;
   gs.waveKilled = (gs.waveKilled || 0) + 1;
   updateScoreUI();
@@ -1817,8 +1918,6 @@ function spawnLoot(pos, forceRarity = null) {
   scene.add(mesh);
   lootDrops.push({ mesh, type, name, effect, spawnTime: Date.now(), duration });
 }
-
-// ✅ إصلاح الغنائم - عرض واضح في المنتصف
 function showLootNotification(text, color) {
   const el = document.getElementById('loot-notification');
   if (!el) return;
@@ -1837,7 +1936,6 @@ function showLootNotification(text, color) {
     el.style.transform = 'translate(-50%,-50%) scale(0.9)';
   }, 2500);
 }
-
 function updateLoot() {
   const now = Date.now();
   const dt = deltaTime;
@@ -1846,7 +1944,6 @@ function updateLoot() {
     loot.mesh.rotation.y += 0.05 * dt;
     loot.mesh.position.y = 0.5 + Math.sin(now * 0.005) * 0.2;
     if (camera.position.distanceTo(loot.mesh.position) < 1.5) {
-      // ✅ رسائل الغنائم الأصلية الواضحة
       if (loot.effect === 'heal') { gs.hp = Math.min(gs.maxHp, gs.hp + 25); updateHpUI(); showLootNotification('💚 استعدت الصحة!', '#00ff00'); }
       else if (loot.effect === 'ammo') { gs.reserve += 15; weapons[currentWeapon].reserveAmmo += 15; updateAmmoUI(); showLootNotification('📦 حصلت على ذخيرة!', '#ffff00'); }
       else if (loot.effect === 'score') { gs.score += 50; updateScoreUI(); showLootNotification('⭐ +50 نقطة!', '#0088ff'); }
@@ -1978,8 +2075,6 @@ function buyHealth() {
     saveGame();
   } else playSound('ui', { freq: 150 });
 }
-
-// ✅ إصلاح جرعة السرعة - وقت حقيقي
 function buySpeedBoost() {
   if (gs.score >= 500) {
     gs.score -= 500;
@@ -1993,7 +2088,6 @@ function buySpeedBoost() {
     saveGame();
   } else playSound('ui', { freq: 150 });
 }
-
 function buyMercenary() {
   if (gs.score >= 1000) {
     gs.score -= 1000; gs.mercenariesInventory++;
@@ -2168,7 +2262,6 @@ D.joyRing.addEventListener('touchstart', e => {
   joy.sx = t.clientX; joy.sy = t.clientY;
   joy.dx = joy.dy = 0;
 }, { passive: true });
-
 document.addEventListener('touchmove', e => {
   for (const t of e.changedTouches) {
     if (t.identifier === joy.id) {
@@ -2193,7 +2286,6 @@ document.addEventListener('touchmove', e => {
     }
   }
 }, { passive: true });
-
 document.addEventListener('touchend', e => {
   for (const t of e.changedTouches) {
     if (t.identifier === joy.id) {
@@ -2203,7 +2295,6 @@ document.addEventListener('touchend', e => {
     if (t.identifier === look.id) { look.active = false; look.id = null; }
   }
 }, { passive: true });
-
 D.lookArea.addEventListener('touchstart', e => {
   if (!look.active) {
     const t = e.changedTouches[0];
@@ -2219,7 +2310,6 @@ function startFiring() {
   if (!w.autoFire) shoot();
 }
 function stopFiring() { isFiring = false; }
-
 D.fireBtn.addEventListener('touchstart', e => { e.preventDefault(); startFiring(); }, { passive: false });
 D.fireBtn.addEventListener('touchend', e => { e.preventDefault(); stopFiring(); }, { passive: false });
 D.fireBtn.addEventListener('touchcancel', stopFiring, { passive: true });
@@ -2310,7 +2400,6 @@ function updatePlayer() {
   }
   swayX *= Math.pow(0.8, dt); swayY *= Math.pow(0.8, dt);
   if (D.weapon) D.weapon.style.transform = `translate(${swayX * 0.5}px, ${swayY * 0.5}px)`;
-  // ✅ إصلاح: فحص جرعة السرعة بالوقت الحقيقي
   if (gs.speedBoost && performance.now() >= gs.speedBoostEndTime) gs.speedBoost = false;
   if (muzzleTimer > 0) { muzzleTimer -= dt; if (muzzleTimer <= 0) muzzleFlash.material.opacity = 0; }
 }
@@ -2366,12 +2455,13 @@ function shootEnemyBullet(startPos, targetPos) {
 }
 function updateEnemyBullets() {
   const dt = deltaTime;
+  const dmgMult = (DIFFICULTY[gs.difficulty] || DIFFICULTY.normal).dmgMul;
   for (let i = enemyBullets.length - 1; i >= 0; i--) {
     const b = enemyBullets[i];
     b.mesh.position.addScaledVector(b.dir, b.speed * dt);
     b.life -= dt;
     if (b.mesh.position.distanceTo(camera.position) < 1.0) {
-      takeDamage(4 + Math.random() * 5);
+      takeDamage((4 + Math.random() * 5) * dmgMult);
       scene.remove(b.mesh);
       enemyBullets.splice(i, 1);
       continue;
@@ -2428,7 +2518,6 @@ function updateMercenaries() {
       gs.mercenaries.splice(i, 1);
       continue;
     }
-    // ✅ إصلاح: فحص الوقت الحقيقي
     if (merc.commandEndTime > 0 && performance.now() >= merc.commandEndTime) {
       merc.command = 'auto';
       merc.commandEndTime = 0;
@@ -2498,13 +2587,14 @@ function updateMercenaries() {
 }
 function checkMercBulletCollisions() {
   if (gs.mercenaries.length === 0) return;
+  const dmgMult = (DIFFICULTY[gs.difficulty] || DIFFICULTY.normal).dmgMul;
   for (let bi = enemyBullets.length - 1; bi >= 0; bi--) {
     const b = enemyBullets[bi];
     for (let mi = 0; mi < gs.mercenaries.length; mi++) {
       const merc = gs.mercenaries[mi];
       if (!merc.alive) continue;
       if (b.mesh.position.distanceTo(merc.g.position) < 0.8) {
-        merc.hp -= 8 + Math.random() * 6;
+        merc.hp -= (8 + Math.random() * 6) * dmgMult;
         scene.remove(b.mesh);
         enemyBullets.splice(bi, 1);
         const hpPct = Math.max(0, merc.hp / merc.maxHp);
@@ -2591,6 +2681,42 @@ document.getElementById('haptic-toggle')?.addEventListener('click', () => {
   updateSettingsUI();
   haptic(40);
 });
+
+// ═══ اختيار الصعوبة ═══
+function openDifficultyUI() {
+  if (gs.running) return;
+  updateDifficultyUIActive();
+  D.difficultyOverlay.style.display = 'flex';
+}
+function closeDifficultyUI() {
+  D.difficultyOverlay.style.display = 'none';
+}
+function selectDifficulty(id) {
+  if (!DIFFICULTY[id]) return;
+  settings.difficulty = id;
+  saveSettings();
+  updateDifficultyUIActive();
+  updateDifficultyButton();
+  playSound('ui', { freq: 700 });
+  haptic(20);
+  closeDifficultyUI();
+}
+function updateDifficultyUIActive() {
+  document.querySelectorAll('.diff-option').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.diff === settings.difficulty);
+  });
+}
+function updateDifficultyButton() {
+  if (!D.difficultyBtn) return;
+  const diff = DIFFICULTY[settings.difficulty] || DIFFICULTY.normal;
+  D.difficultyBtn.textContent = `⚙ الصعوبة: ${diff.icon} ${diff.name}`;
+  D.difficultyBtn.style.borderColor = diff.color + '99';
+  D.difficultyBtn.style.color = diff.color;
+  D.difficultyBtn.style.background = `linear-gradient(135deg, ${diff.color}15, ${diff.color}28)`;
+  D.difficultyBtn.style.boxShadow = `0 0 15px ${diff.color}40`;
+}
+updateDifficultyUIActive();
+updateDifficultyButton();
 
 function pauseGame() {
   if (!gs.running) return;
@@ -2766,7 +2892,8 @@ function resetGame() {
     reloading: false, reloadTmr: 0, cd: 0, camYaw: 0, camPitch: 0,
     damageBoost: false, speedBoost: false, speedBoostEndTime: 0,
     armorActive: false, armorTimer: 0, mercenaries: [], mercenaryCount: 0,
-    stepTimer: 0, temporaryWeapon: null, waveTotal: 0, waveKilled: 0
+    stepTimer: 0, temporaryWeapon: null, waveTotal: 0, waveKilled: 0,
+    difficulty: settings.difficulty || 'normal'
   });
   camera.position.set(0, 1.8, 0);
   grenadeCount = 3;
@@ -2798,4 +2925,4 @@ updateGrenadeUI();
 updateMercenaryUI();
 </script>
 </body>
-</html>                                                                                                               </html>
+  </html>
