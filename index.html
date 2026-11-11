@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SHADOW OPS - v2.4</title>
+<title>SHADOW OPS - v2.5</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;user-select:none;}
@@ -269,7 +269,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .diff-option .diff-icon{font-size:24px;flex-shrink:0;}
 .diff-option .diff-info{flex:1;}
 .diff-option .diff-name{font-weight:bold;font-size:15px;margin-bottom:2px;color:#fff;}
-.diff-option .diff-desc{font-size:11px;color:#888;}
 .diff-option.active[data-diff="very_easy"]{border-color:#00ff88;background:rgba(0,255,136,0.13);box-shadow:0 0 15px rgba(0,255,136,0.4);}
 .diff-option.active[data-diff="easy"]{border-color:#88ff88;background:rgba(136,255,136,0.13);box-shadow:0 0 15px rgba(136,255,136,0.4);}
 .diff-option.active[data-diff="normal"]{border-color:#ffd700;background:rgba(255,215,0,0.13);box-shadow:0 0 15px rgba(255,215,0,0.4);}
@@ -315,35 +314,30 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
       <span class="diff-icon">🟢</span>
       <div class="diff-info">
         <div class="diff-name">سهل جداً</div>
-        <div class="diff-desc">صحة ×0.5 | ضرر ×0.4 | أعداء ×0.6</div>
       </div>
     </button>
     <button class="diff-option" data-diff="easy" onclick="selectDifficulty('easy')">
       <span class="diff-icon">🟢</span>
       <div class="diff-info">
         <div class="diff-name">سهل</div>
-        <div class="diff-desc">صحة ×0.75 | ضرر ×0.65 | أعداء ×0.8</div>
       </div>
     </button>
     <button class="diff-option active" data-diff="normal" onclick="selectDifficulty('normal')">
       <span class="diff-icon">🟡</span>
       <div class="diff-info">
         <div class="diff-name">متوسط (افتراضي)</div>
-        <div class="diff-desc">تجربة متوازنة - كما هي اللعبة الأساسية</div>
       </div>
     </button>
     <button class="diff-option" data-diff="hard" onclick="selectDifficulty('hard')">
       <span class="diff-icon">🟠</span>
       <div class="diff-info">
         <div class="diff-name">صعب</div>
-        <div class="diff-desc">صحة ×1.4 | ضرر ×1.4 | أعداء ×1.15</div>
       </div>
     </button>
     <button class="diff-option" data-diff="very_hard" onclick="selectDifficulty('very_hard')">
       <span class="diff-icon">🔴</span>
       <div class="diff-info">
         <div class="diff-name">صعب جداً</div>
-        <div class="diff-desc">صحة ×1.9 | ضرر ×2.0 | أعداء ×1.3</div>
       </div>
     </button>
     <button class="difficulty-close" onclick="closeDifficultyUI()">إلغاء</button>
@@ -482,7 +476,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 👈 عصا التحرك | 👉 الكاميرا<br>
 🔥 إطلاق | ↺ تعمير | 💣 قنبلة | ⚙ إعدادات
 </div>
-<div class="menu-ver">v2.4 // AEGIS CORP</div>
+<div class="menu-ver">v2.5 // AEGIS CORP</div>
 </div>
 
 <div id="gameover">
@@ -1708,7 +1702,7 @@ function spawnWave(w) {
     mkEnemy(Math.cos(a) * r, Math.sin(a) * r, w, isArmored);
   }
   gs.waveTotal = n; gs.waveKilled = 0;
-  if (D.waveFill) D.waveFill.style.fill.width = '0%';
+  if (D.waveFill) D.waveFill.style.width = '0%';
   D.waveNotif.textContent = `WAVE ${w}`;
   D.waveNotif.style.opacity = '1';
   setTimeout(() => D.waveNotif.style.opacity = '0', 2200);
@@ -2685,6 +2679,54 @@ document.getElementById('haptic-toggle')?.addEventListener('click', () => {
 // ═══ اختيار الصعوبة ═══
 function openDifficultyUI() {
   if (gs.running) return;
+  
+  // ═══ إذا كانت هناك مهمة جارية، أظهر تأكيد المسح ═══
+  if (gs.wave > 1 || gs.score > 0 || gs.kills > 0) {
+    showConfirmDialog(
+      '⚠️ مهمة جارية',
+      'لديك مهمة جارية حالياً.\n\nلتغيير الصعوبة، يجب مسح تقدم المهمة الحالية أولاً.\n\n❌ سيتم حذف:\n- الموجة الحالية\n- النقاط\n- عدد القتلى\n\n✅ ستحتفظ بـ:\n- الأسلحة والترقيات\n- الإنجازات\n- المرتزقة في الاحتياط\n- مستوى المتجر\n- الدروع\n\nهل تريد مسح التقدم والمتابعة؟',
+      () => {
+        // تصفير تقدم المهمة
+        gs.wave = 1;
+        gs.score = 0;
+        gs.kills = 0;
+        gs.hp = gs.maxHp;
+        
+        // إزالة المرتزقة النشطين
+        for (let i = 0; i < gs.mercenaries.length; i++) {
+          if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) {
+            gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon);
+          }
+          scene.remove(gs.mercenaries[i].g);
+        }
+        gs.mercenaries = [];
+        gs.mercenaryCount = 0;
+        
+        // تنظيف الميدان (احتياطي)
+        for (let i = 0; i < enemies.length; i++) scene.remove(enemies[i].g);
+        enemies.length = 0;
+        for (let i = 0; i < enemyBullets.length; i++) scene.remove(enemyBullets[i].mesh);
+        enemyBullets.length = 0;
+        for (let i = 0; i < allyBullets.length; i++) scene.remove(allyBullets[i].mesh);
+        allyBullets.length = 0;
+        for (let i = 0; i < grenades.length; i++) scene.remove(grenades[i].mesh);
+        grenades.length = 0;
+        for (let i = 0; i < lootDrops.length; i++) scene.remove(lootDrops[i].mesh);
+        lootDrops.length = 0;
+        
+        saveGame();
+        updateScoreUI();
+        updateHpUI();
+        
+        // فتح نافذة الصعوبة
+        updateDifficultyUIActive();
+        D.difficultyOverlay.style.display = 'flex';
+      },
+      true
+    );
+    return;
+  }
+  
   updateDifficultyUIActive();
   D.difficultyOverlay.style.display = 'flex';
 }
@@ -2730,11 +2772,53 @@ function resumeGame() {
   D.pauseUI.style.display = 'none';
   gs.running = true;
 }
+// ═══ العودة للقائمة الرئيسية - مع تأكيد حذف التقدم ═══
 function pauseToMenu() {
-  gs.running = false;
-  D.pauseUI.style.display = 'none';
-  D.menu.style.display = 'flex';
-  saveGame();
+  showConfirmDialog(
+    '🏠 العودة للقائمة الرئيسية',
+    '⚠️ العودة للقائمة الرئيسية ستؤدي إلى:\n\n❌ فقدان الموجة الحالية\n❌ فقدان النقاط المكتسبة\n❌ فقدان المرتزقة في الميدان\n\n✅ ستحتفظ بـ:\n- الأسلحة والترقيات\n- الإنجازات\n- المرتزقة في الاحتياط\n- مستوى المتجر\n- الدروع المشتراة\n\nهل أنت متأكد؟',
+    () => {
+      // إيقاف اللعبة
+      gs.running = false;
+      stopFiring();
+      
+      // تصفير تقدم المهمة
+      gs.wave = 1;
+      gs.score = 0;
+      gs.kills = 0;
+      gs.hp = gs.maxHp;
+      
+      // إزالة المرتزقة النشطين
+      for (let i = 0; i < gs.mercenaries.length; i++) {
+        if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) {
+          gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon);
+        }
+        scene.remove(gs.mercenaries[i].g);
+      }
+      gs.mercenaries = [];
+      gs.mercenaryCount = 0;
+      
+      // تنظيف الميدان
+      for (let i = 0; i < enemies.length; i++) scene.remove(enemies[i].g);
+      enemies.length = 0;
+      for (let i = 0; i < enemyBullets.length; i++) scene.remove(enemyBullets[i].mesh);
+      enemyBullets.length = 0;
+      for (let i = 0; i < allyBullets.length; i++) scene.remove(allyBullets[i].mesh);
+      allyBullets.length = 0;
+      for (let i = 0; i < grenades.length; i++) scene.remove(grenades[i].mesh);
+      grenades.length = 0;
+      for (let i = 0; i < lootDrops.length; i++) scene.remove(lootDrops[i].mesh);
+      lootDrops.length = 0;
+      
+      // حفظ الحالة الجديدة
+      saveGame();
+      
+      // العودة للقائمة
+      D.pauseUI.style.display = 'none';
+      D.menu.style.display = 'flex';
+    },
+    true
+  );
 }
 
 function showTutorialIfNeeded() {
