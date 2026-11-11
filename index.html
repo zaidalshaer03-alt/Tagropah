@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SHADOW OPS - v2.8</title>
+<title>SHADOW OPS - v2.9</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;user-select:none;}
@@ -414,7 +414,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 👈 عصا التحرك | 👉 الكاميرا<br>
 🔥 إطلاق | ↺ تعمير | 💣 قنبلة | ⚙ إعدادات
 </div>
-<div class="menu-ver">v2.8 // AEGIS CORP</div>
+<div class="menu-ver">v2.9 // AEGIS CORP</div>
 </div>
 
 <div id="gameover">
@@ -782,22 +782,25 @@ function showDamageNumber(pos, damage, isHeadshot = false) {
   setTimeout(() => { div.remove(); damageNumbersActive--; }, 1000);
 }
 
+// ✅ الأسعار المعدلة
 const weapons = {
   'pistol': { name: 'مسدس أساسي', damage: 22, fireRate: 10, clipSize: 30, reserve: 120, price: 0, owned: true, autoFire: false, ammoPrice: 200, color: 0xffaa00, currentClip: 30, reserveAmmo: 120, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 1 },
-  'shotgun': { name: 'شوتجان', damage: 85, fireRate: 42, clipSize: 8, reserve: 32, price: 3000, owned: false, autoFire: false, ammoPrice: 400, color: 0xff4444, currentClip: 8, reserveAmmo: 32, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 1 },
-  'smg': { name: 'مسدس سريع', damage: 18, fireRate: 6, clipSize: 50, reserve: 250, price: 3200, owned: false, autoFire: true, ammoPrice: 250, color: 0x44ff88, currentClip: 50, reserveAmmo: 250, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 2 },
-  'ak117': { name: 'AK-117', damage: 32, fireRate: 8, clipSize: 40, reserve: 200, price: 8500, owned: false, autoFire: false, ammoPrice: 350, color: 0x8844ff, currentClip: 40, reserveAmmo: 200, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 2 },
-  'ak47': { name: 'AK-47', damage: 45, fireRate: 11, clipSize: 30, reserve: 150, price: 12000, owned: false, autoFire: true, ammoPrice: 300, color: 0x4488ff, currentClip: 30, reserveAmmo: 150, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 3 },
-  'm4a1': { name: 'رشاش آلي', damage: 38, fireRate: 8, clipSize: 35, reserve: 175, price: 15000, owned: false, autoFire: true, ammoPrice: 320, color: 0x8888ff, currentClip: 35, reserveAmmo: 175, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 3 }
+  'shotgun': { name: 'شوتجان', damage: 85, fireRate: 42, clipSize: 8, reserve: 32, price: 2500, owned: false, autoFire: false, ammoPrice: 400, color: 0xff4444, currentClip: 8, reserveAmmo: 32, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 1 },
+  'smg': { name: 'مسدس سريع', damage: 18, fireRate: 6, clipSize: 50, reserve: 250, price: 2800, owned: false, autoFire: true, ammoPrice: 250, color: 0x44ff88, currentClip: 50, reserveAmmo: 250, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 2 },
+  'ak117': { name: 'AK-117', damage: 32, fireRate: 8, clipSize: 40, reserve: 200, price: 7000, owned: false, autoFire: false, ammoPrice: 350, color: 0x8844ff, currentClip: 40, reserveAmmo: 200, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 2 },
+  'ak47': { name: 'AK-47', damage: 45, fireRate: 11, clipSize: 30, reserve: 150, price: 9500, owned: false, autoFire: true, ammoPrice: 300, color: 0x4488ff, currentClip: 30, reserveAmmo: 150, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 3 },
+  'm4a1': { name: 'رشاش آلي', damage: 38, fireRate: 8, clipSize: 35, reserve: 175, price: 12000, owned: false, autoFire: true, ammoPrice: 320, color: 0x8888ff, currentClip: 35, reserveAmmo: 175, upgrades: { damage: 0, mag: 0, reload: 0 }, shopLevel: 3 }
 };
+// ✅ ترقيات الأسلحة (خصم 500 لكل نوع)
 const upgradeDefs = {
-  damage: { name: 'ملحق: ضرر+', desc: '+2 ضرر', cost: 1800, max: 3, effect: (w) => { w.damage += 2; } },
-  mag: { name: 'ملحق: مخزن موسع', desc: '+5 طلقات', cost: 1500, max: 2, effect: (w) => { w.clipSize += 5; w.reserve += 5; } },
-  reload: { name: 'ملحق: تعمير أسرع', desc: '-8% وقت', cost: 1200, max: 2, effect: () => {} }
+  damage: { name: 'ملحق: ضرر+', desc: '+2 ضرر', cost: 1300, max: 3, effect: (w) => { w.damage += 2; } },
+  mag: { name: 'ملحق: مخزن موسع', desc: '+5 طلقات', cost: 1000, max: 2, effect: (w) => { w.clipSize += 5; w.reserve += 5; } },
+  reload: { name: 'ملحق: تعمير أسرع', desc: '-8% وقت', cost: 700, max: 2, effect: () => {} }
 };
+// ✅ أسعار الدروع
 const armorTypes = {
-  leather: { name: 'درع جلدي', reduction: 0.2, maxHp: 40, price: 900, icon: '🛡️' },
-  iron: { name: 'درع حديدي', reduction: 0.5, maxHp: 100, price: 2200, icon: '🛡️' }
+  leather: { name: 'درع جلدي', reduction: 0.2, maxHp: 40, price: 750, icon: '🛡️' },
+  iron: { name: 'درع حديدي', reduction: 0.5, maxHp: 100, price: 1500, icon: '🛡️' }
 };
 
 let currentWeapon = 'pistol';
@@ -842,7 +845,8 @@ function buyUpgrade(key, type) {
     playSound('ui', { freq: 800 }); showKillstreak(`✅ ${up.name}`); saveGame();
   } else playSound('ui', { freq: 150 });
 }
-function getShopUpgradeCost(level) { return level === 1 ? 2500 : level === 2 ? 6000 : 0; }
+// ✅ تكلفة ترقية المتجر
+function getShopUpgradeCost(level) { return level === 1 ? 2000 : level === 2 ? 4500 : 0; }
 function upgradeShop() {
   const cost = getShopUpgradeCost(gs.shopLevel);
   if (cost === 0 || gs.score < cost) { playSound('ui', { freq: 150 }); return; }
@@ -863,9 +867,10 @@ function renderShop() {
   const hpPct = gs.shopLevel === 1 ? 30 : gs.shopLevel === 2 ? 40 : 50;
   const spPct = gs.shopLevel === 1 ? 20 : gs.shopLevel === 2 ? 30 : 40;
   const spDur = gs.shopLevel === 1 ? 15 : gs.shopLevel === 2 ? 18 : 20;
+  // ✅ أسعار الجرعات
   D.potionsList.innerHTML = `
-    <div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">💚 جرعة صحة</div><div class="shop-item-desc">+${hpPct}% صحة</div><div class="shop-item-price">💰 600</div></div><button class="shop-item-btn" onclick="buyHealth()">شراء</button></div>
-    <div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">⚡ سرعة</div><div class="shop-item-desc">+${spPct}% لمدة ${spDur}ث</div><div class="shop-item-price">💰 500</div></div><button class="shop-item-btn" onclick="buySpeedBoost()">شراء</button></div>`;
+    <div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">💚 جرعة صحة</div><div class="shop-item-desc">+${hpPct}% صحة</div><div class="shop-item-price">💰 500</div></div><button class="shop-item-btn" onclick="buyHealth()">شراء</button></div>
+    <div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">⚡ سرعة</div><div class="shop-item-desc">+${spPct}% لمدة ${spDur}ث</div><div class="shop-item-price">💰 400</div></div><button class="shop-item-btn" onclick="buySpeedBoost()">شراء</button></div>`;
   renderShopWeapons(); renderShopAmmo(); renderShopMercsAndArmor();
 }
 function renderShopWeapons() {
@@ -901,15 +906,16 @@ function renderShopAmmo() {
     c.appendChild(item);
   });
 }
+// ✅ أسعار المرتزقة والدروع في HTML
 function renderShopMercsAndArmor() {
   const c = D.mercsListContainer; if (!c) return;
-  let html = `<div class="shop-item"><img class="portrait" src="art/merc_normal.png"><div class="shop-item-info"><div class="shop-item-name">👥 مرتزق عادي</div><div class="shop-item-desc">صحة: 80+موجة×6</div><div class="shop-item-price">💰 1000</div></div><button class="shop-item-btn" onclick="buyMercenary()">شراء</button></div>`;
+  let html = `<div class="shop-item"><img class="portrait" src="art/merc_normal.png"><div class="shop-item-info"><div class="shop-item-name">👥 مرتزق عادي</div><div class="shop-item-desc">صحة: 80+موجة×6</div><div class="shop-item-price">💰 800</div></div><button class="shop-item-btn" onclick="buyMercenary()">شراء</button></div>`;
   if (gs.shopLevel >= 2) {
-    html += `<div class="shop-item"><img class="portrait" src="art/merc_elite.png"><div class="shop-item-info"><div class="shop-item-name">👑 نخبة</div><div class="shop-item-desc">صحة: 300+موجة×12</div><div class="shop-item-price">💰 2500</div></div><button class="shop-item-btn" onclick="buyEliteMercenary()">شراء</button></div>
-      <div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">🛡️ درع جلدي</div><div class="shop-item-desc">-20% ضرر | 40 HP</div><div class="shop-item-price">💰 900</div></div><button class="shop-item-btn" onclick="buyArmor('leather')">شراء</button></div>`;
+    html += `<div class="shop-item"><img class="portrait" src="art/merc_elite.png"><div class="shop-item-info"><div class="shop-item-name">👑 نخبة</div><div class="shop-item-desc">صحة: 300+موجة×12</div><div class="shop-item-price">💰 1650</div></div><button class="shop-item-btn" onclick="buyEliteMercenary()">شراء</button></div>
+      <div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">🛡️ درع جلدي</div><div class="shop-item-desc">-20% ضرر | 40 HP</div><div class="shop-item-price">💰 750</div></div><button class="shop-item-btn" onclick="buyArmor('leather')">شراء</button></div>`;
   }
   if (gs.shopLevel >= 3) {
-    html += `<div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">🛡️ درع حديدي</div><div class="shop-item-desc">-50% ضرر | 100 HP</div><div class="shop-item-price">💰 2200</div></div><button class="shop-item-btn" onclick="buyArmor('iron')">شراء</button></div>`;
+    html += `<div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">🛡️ درع حديدي</div><div class="shop-item-desc">-50% ضرر | 100 HP</div><div class="shop-item-price">💰 1500</div></div><button class="shop-item-btn" onclick="buyArmor('iron')">شراء</button></div>`;
   }
   c.innerHTML = html;
 }
@@ -1470,12 +1476,13 @@ function shoot() {
   }
 }
 
+// ✅ معادلة الدخل المعدلة
 function killEnemy(en) {
   en.alive = false;
   sparks(en.g.position.clone().add(_v2.set(0, 1, 0)), 15, 0xff4400, 0xff8800);
   scene.remove(en.g);
   const pointsMul = (DIFFICULTY[gs.difficulty] || DIFFICULTY.normal).pointsMul;
-  const points = Math.round((15 + gs.wave * 5 + (en.isArmored ? 30 : 0)) * pointsMul);
+  const points = Math.round((18 + gs.wave * 6 + (en.isArmored ? 40 : 0)) * pointsMul);
   gs.score += points; gs.kills++; gs.waveKilled = (gs.waveKilled || 0) + 1;
   updateScoreUI();
   if (D.waveFill && gs.waveTotal) D.waveFill.style.width = Math.min(100, (gs.waveKilled / gs.waveTotal) * 100) + '%';
@@ -1646,9 +1653,10 @@ function openShop() { if (!gs.running) return; gs.running = false; pauseTimers()
 function closeShop() { resumeTimers(); gs.running = true; D.shopUI.style.display = 'none'; }
 function updateShopScoreUI() { if (D.shopScoreVal) D.shopScoreVal.textContent = gs.score.toLocaleString(); }
 
+// ✅ أسعار الجرعات المعدلة
 function buyHealth() {
-  if (gs.score >= 600) {
-    gs.score -= 600;
+  if (gs.score >= 500) {
+    gs.score -= 500;
     const pct = gs.shopLevel === 1 ? 0.3 : gs.shopLevel === 2 ? 0.4 : 0.5;
     gs.hp = Math.min(gs.maxHp, gs.hp + gs.maxHp * pct);
     updateHpUI(); updateScoreUI(); updateShopScoreUI();
@@ -1656,8 +1664,8 @@ function buyHealth() {
   } else playSound('ui', { freq: 150 });
 }
 function buySpeedBoost() {
-  if (gs.score >= 500) {
-    gs.score -= 500; gs.speedBoost = true;
+  if (gs.score >= 400) {
+    gs.score -= 400; gs.speedBoost = true;
     const pct = gs.shopLevel === 1 ? 20 : gs.shopLevel === 2 ? 30 : 40;
     const dur = gs.shopLevel === 1 ? 15000 : gs.shopLevel === 2 ? 18000 : 20000;
     gs.speedBoostEndTime = performance.now() + dur;
@@ -1665,12 +1673,13 @@ function buySpeedBoost() {
     playSound('ui', { freq: 1000 }); showKillstreak(`⚡ +${pct}% سرعة (${dur/1000}ث)`); saveGame();
   } else playSound('ui', { freq: 150 });
 }
+// ✅ أسعار المرتزقة المعدلة
 function buyMercenary() {
-  if (gs.score >= 1000) { gs.score -= 1000; gs.mercenariesInventory++; updateMercenaryUI(); updateScoreUI(); updateShopScoreUI(); updateInventoryUI(); saveGame(); playSound('ui', { freq: 600 }); showKillstreak('👥 مرتزق!'); }
+  if (gs.score >= 800) { gs.score -= 800; gs.mercenariesInventory++; updateMercenaryUI(); updateScoreUI(); updateShopScoreUI(); updateInventoryUI(); saveGame(); playSound('ui', { freq: 600 }); showKillstreak('👥 مرتزق!'); }
   else playSound('ui', { freq: 150 });
 }
 function buyEliteMercenary() {
-  if (gs.score >= 2500) { gs.score -= 2500; gs.eliteMercenariesInventory++; updateMercenaryUI(); updateScoreUI(); updateShopScoreUI(); updateInventoryUI(); saveGame(); playSound('ui', { freq: 700 }); showKillstreak('👑 نخبة!'); }
+  if (gs.score >= 1650) { gs.score -= 1650; gs.eliteMercenariesInventory++; updateMercenaryUI(); updateScoreUI(); updateShopScoreUI(); updateInventoryUI(); saveGame(); playSound('ui', { freq: 700 }); showKillstreak('👑 نخبة!'); }
   else playSound('ui', { freq: 150 });
 }
 
@@ -2409,4 +2418,4 @@ updateMercenaryUI();
 updateMenuStartButton();
 </script>
 </body>
-      </html>
+                                                                                                                                                                       </html>
