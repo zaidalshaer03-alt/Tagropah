@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SHADOW OPS - v1.5</title>
+<title>SHADOW OPS - v1.5.1</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;user-select:none;}
@@ -89,8 +89,8 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 #grenade-btn:active{transform:scale(0.88);}
 #mercenary-btn{position:fixed;right:126px;bottom:110px;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,0,0.35),rgba(0,50,0,0.35));border:2px solid rgba(0,255,0,0.6);font-size:16px;display:flex;align-items:center;justify-content:center;z-index:35;pointer-events:all;cursor:pointer;transition:transform 0.1s;opacity:0.5;}
 #mercenary-btn:active{transform:scale(0.88);}
-#minimap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:110px;height:110px;border:2px solid rgba(0,200,255,0.5);border-radius:50%;background:rgba(0,0,0,0.8);z-index:25;overflow:hidden;}
-#minimap canvas{width:100%;height:100%;}
+#minimap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:110px;height:110px;border:2px solid rgba(0,200,255,0.6);border-radius:10px;background:rgba(0,0,0,0.85);z-index:25;overflow:hidden;box-shadow:0 0 15px rgba(0,200,255,0.3);}
+#minimap canvas{width:100%;height:100%;display:block;}
 #shop-open-btn{position:fixed;top:12px;left:12px;padding:10px 18px;background:rgba(0,255,136,0.2);border:1px solid #0f8;color:#0f8;z-index:40;cursor:pointer;border-radius:8px;font-weight:bold;pointer-events:auto;font-size:14px;font-family:inherit;}
 #inventory-open-btn{position:fixed;top:12px;left:145px;padding:10px 18px;background:rgba(100,180,255,0.2);border:1px solid #6af;color:#6af;z-index:40;cursor:pointer;border-radius:8px;font-weight:bold;pointer-events:auto;font-size:14px;font-family:inherit;}
 #mercenary-open-btn{position:fixed;top:12px;left:278px;padding:10px 18px;background:rgba(255,215,0,0.2);border:1px solid #ffd700;color:#ffd700;z-index:40;cursor:pointer;border-radius:8px;font-weight:bold;pointer-events:auto;font-size:14px;font-family:inherit;}
@@ -230,13 +230,11 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 #tutorial-menu-btn{position:relative;margin-top:10px;padding:11px 30px;background:rgba(0,200,255,0.08);border:1.5px solid rgba(0,200,255,0.5);color:#0cf;font-size:12px;font-family:'Courier New',monospace;letter-spacing:4px;cursor:pointer;border-radius:6px;transition:all 0.2s;}
 #tutorial-menu-btn:hover{background:rgba(0,200,255,0.15);box-shadow:0 0 20px rgba(0,200,255,0.4);}
 #tutorial-menu-btn:active{transform:scale(0.96);}
-.m-hint{position:relative;margin-top:22px;font-size:11px;color:rgba(180,220,255,.45);text-align:center;line-height:2.1;padding:12px 26px;border:1px solid rgba(0,200,255,.15);border-radius:8px;background:rgba(0,20,40,.35);}
 .menu-ver{position:absolute;bottom:14px;font-size:10px;letter-spacing:3px;color:rgba(0,200,255,.4);}
 .portrait{width:58px;height:58px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid rgba(255,255,255,.25);margin-left:10px;flex:0 0 auto;}
 #wave-notif{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);padding:16px 56px;background:linear-gradient(135deg,rgba(0,0,0,.92),rgba(0,30,60,.92));border:1.5px solid rgba(0,200,255,.6);border-radius:10px;font-size:30px;font-weight:900;color:#fff;letter-spacing:8px;text-shadow:0 0 20px rgba(0,200,255,.9),0 0 40px rgba(0,200,255,.5);opacity:0;pointer-events:none;z-index:50;box-shadow:0 0 40px rgba(0,200,255,.35),inset 0 0 20px rgba(0,200,255,.12);transition:none;}
 #wave-notif.show{animation:waveShow 2.2s cubic-bezier(.34,1.56,.64,1) forwards;}
 @keyframes waveShow{0%{opacity:0;transform:translate(-50%,-50%) scale(.6);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.06);}25%{transform:translate(-50%,-50%) scale(1);}85%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-50%) scale(.9);}}
-
 #wave-countdown{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:51;opacity:0;pointer-events:none;transition:opacity 0.35s ease-out;}
 #wave-countdown.show{opacity:1;}
 #countdown-num{font-size:clamp(80px,22vw,130px);font-weight:900;color:#ffcc00;line-height:1;letter-spacing:4px;text-shadow:0 0 30px rgba(255,200,0,1),0 0 60px rgba(255,100,0,.8),0 0 100px rgba(255,50,0,.5);font-family:'Courier New',monospace;}
@@ -244,7 +242,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 @keyframes countdownNumPop{0%{transform:scale(2);opacity:0;filter:blur(4px);}40%{transform:scale(1);opacity:1;filter:blur(0);}100%{transform:scale(1);opacity:1;}}
 #countdown-label{font-size:clamp(12px,3vw,15px);color:#ffaa00;letter-spacing:8px;margin-top:14px;text-shadow:0 0 20px rgba(255,170,0,.8);font-weight:bold;animation:countdownLabelPulse 1s ease-in-out infinite;}
 @keyframes countdownLabelPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
-
 #gameover{display:none;position:fixed;inset:0;background:#0a0203;flex-direction:column;align-items:center;justify-content:center;z-index:100;}
 .go-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 45%,rgba(160,0,0,.35),transparent 65%);}
 .go-skull{position:relative;font-size:70px;filter:drop-shadow(0 0 25px rgba(255,40,40,.9));}
@@ -296,13 +293,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .pause-btn-main,.pause-btn-secondary{width:100%;padding:14px;margin-top:10px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:15px;font-family:inherit;}
 .pause-btn-main{background:rgba(0,255,136,0.2);border:2px solid #0f8;color:#0f8;}
 .pause-btn-secondary{background:rgba(0,200,255,0.15);border:1px solid rgba(0,200,255,0.6);color:#0cf;}
-#tutorial-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1500;align-items:center;justify-content:center;cursor:pointer;}
-.tutorial-box{background:linear-gradient(135deg,#0a1a2a,#0a0a1a);border:2px solid #0cf;padding:25px 30px;border-radius:15px;max-width:340px;width:88%;color:#fff;text-align:right;}
-.tutorial-box h3{color:#0cf;text-align:center;margin-bottom:18px;font-size:18px;}
-.tutorial-row{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.06);}
-.tutorial-row span{font-size:20px;min-width:30px;text-align:center;}
-.tutorial-hint{margin-top:15px;text-align:center;color:#0cf;font-size:12px;animation:tutorialPulse 1.5s infinite;}
-@keyframes tutorialPulse{0%,100%{opacity:0.6;}50%{opacity:1;}}
 #difficulty-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:2002;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
 .difficulty-box{background:linear-gradient(135deg,#0a0a0a,#1a1a1a);border:2px solid #ffd700;padding:25px;border-radius:15px;max-width:420px;width:95%;color:#fff;}
 .difficulty-box h2{color:#ffd700;text-align:center;margin-bottom:6px;font-size:20px;}
@@ -319,7 +309,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .diff-option.active[data-diff="very_hard"]{border-color:#ff2222;background:rgba(255,34,34,0.13);}
 .difficulty-close{width:100%;margin-top:10px;padding:12px;background:rgba(255,0,0,0.15);border:1.5px solid rgba(255,0,0,0.5);color:#f44;border-radius:8px;cursor:pointer;font-weight:bold;font-size:14px;font-family:inherit;}
 
-/* ══════════ نافذة دليل اللعب الكاملة ══════════ */
 #tutorial-ui{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:2100;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;overflow-y:auto;}
 .tutorial-container{background:linear-gradient(135deg,#0a0f1a,#1a1f2a);border:2px solid #0cf;border-radius:15px;max-width:560px;width:100%;color:#fff;margin-bottom:16px;overflow:hidden;box-shadow:0 0 40px rgba(0,200,255,0.3);}
 .tut-header{padding:18px 20px;background:linear-gradient(180deg,rgba(0,200,255,0.15),rgba(0,200,255,0.02));border-bottom:1px solid rgba(0,200,255,0.3);text-align:center;}
@@ -344,7 +333,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .tutorial-close:hover{background:rgba(0,200,255,0.25);box-shadow:0 0 20px rgba(0,200,255,0.5);}
 .tutorial-close:active{transform:scale(0.97);}
 
-/* ══════════ تحسينات v1.3 ══════════ */
 #crosshair{transition:transform 0.12s cubic-bezier(.34,1.56,.64,1);}
 #crosshair.shooting .ch-h{width:30px !important;opacity:.35;transition:all .06s;}
 #crosshair.shooting .ch-v{height:30px !important;opacity:.35;transition:all .06s;}
@@ -367,7 +355,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 #fire-btn.empty-ammo{border-color:rgba(255,0,0,1) !important;box-shadow:0 0 30px rgba(255,0,0,.8);animation:firePulse .4s ease-in-out infinite;}
 @keyframes firePulse{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
 
-/* ══════════ شاشة الموت — أنيميشن أبطأ ══════════ */
 .go-bg{animation:goBgFade 1.4s ease-out backwards;}
 @keyframes goBgFade{from{opacity:0;}to{opacity:1;}}
 #gameover .go-skull{animation:goSkullIn 1.3s cubic-bezier(.34,1.56,.64,1) backwards,goSkullPulse 2.2s ease-in-out infinite 1.3s;}
@@ -446,19 +433,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
     <p style="color:#888;margin-bottom:20px;font-size:12px;">الموجة: <span id="pause-wave">1</span> | النقاط: <span id="pause-score">0</span></p>
     <button class="pause-btn-main" onclick="resumeGame()">▶ استئناف</button>
     <button class="pause-btn-secondary" onclick="pauseToMenu()">🏠 القائمة الرئيسية</button>
-  </div>
-</div>
-
-<div id="tutorial-overlay">
-  <div class="tutorial-box">
-    <h3>🎮 دليل التحكم السريع</h3>
-    <div class="tutorial-row"><span>👈</span> عصا التحرك (يسار)</div>
-    <div class="tutorial-row"><span>👆</span> اسحب لتدوير الكاميرا</div>
-    <div class="tutorial-row"><span>🔥</span> زر الإطلاق</div>
-    <div class="tutorial-row"><span>↺</span> تعمير السلاح</div>
-    <div class="tutorial-row"><span>💣</span> قنبلة</div>
-    <div class="tutorial-row"><span>⚙</span> إعدادات (سرعة/حساسية)</div>
-    <div class="tutorial-hint">اضغط في أي مكان للمتابعة</div>
   </div>
 </div>
 
@@ -585,11 +559,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <button id="start-btn" onclick="startGame()">▶ ابدأ القتال</button>
 <button id="difficulty-btn" onclick="openDifficultyUI()">⚙ الصعوبة: 🟡 متوسط</button>
 <button id="tutorial-menu-btn" onclick="openTutorialUI()">📖 دليل اللعب</button>
-<div class="m-hint">
-👈 عصا التحرك | 👉 الكاميرا<br>
-🔥 إطلاق | ↺ تعمير | 💣 قنبلة | ⚙ إعدادات
-</div>
-<div class="menu-ver">v1.5 // AEGIS CORP</div>
+<div class="menu-ver">v1.5.1 // AEGIS CORP</div>
 </div>
 
 <div id="gameover">
@@ -773,7 +743,7 @@ const D = {
   menu: document.getElementById('menu'), gameover: document.getElementById('gameover'),
   shopUI: document.getElementById('shop-ui'), inventoryUI: document.getElementById('inventory-ui'),
   mercenaryUI: document.getElementById('mercenary-ui'), pauseUI: document.getElementById('pause-ui'),
-  settingsUI: document.getElementById('settings-ui'), tutorialOverlay: document.getElementById('tutorial-overlay'),
+  settingsUI: document.getElementById('settings-ui'),
   tutorialUI: document.getElementById('tutorial-ui'),
   confirmDialog: document.getElementById('confirm-dialog'), difficultyOverlay: document.getElementById('difficulty-overlay'),
   difficultyBtn: document.getElementById('difficulty-btn'), mercCmds: document.getElementById('merc-commands'),
@@ -815,7 +785,6 @@ function playSound(type, params = {}) {
   }
 }
 
-// ══════════ دوال دليل اللعب ══════════
 function openTutorialUI() { D.tutorialUI.style.display = 'flex'; playSound('ui', { freq: 700 }); }
 function closeTutorialUI() { D.tutorialUI.style.display = 'none'; playSound('ui', { freq: 700 }); }
 function switchTutTab(tab) {
@@ -2415,7 +2384,6 @@ function updatePlayer() {
   D.crosshair.classList.toggle('on-target', _onTarget);
 }
 
-// ══════════ الخريطة المصغرة المطوّرة ══════════
 const minimapCtx = D.minimapCanvas.getContext('2d');
 const minimapImg = new Image(); minimapImg.src = 'art/map_topdown.png';
 let minimapReady = false; minimapImg.onload = () => minimapReady = true;
@@ -2426,7 +2394,6 @@ function updateMinimap() {
   const scale = W / (AR * 2);
   minimapCtx.clearRect(0, 0, W, H);
 
-  // الخلفية
   if (minimapReady) {
     minimapCtx.globalAlpha = 0.5;
     minimapCtx.drawImage(minimapImg, 0, 0, W, H);
@@ -2436,14 +2403,14 @@ function updateMinimap() {
     minimapCtx.fillRect(0, 0, W, H);
   }
 
-  // حروف المناطق A/B/C/D
+  // حروف المناطق
   const zones = [
-    { l: 'A', x: -28, z: -28, c: 'rgba(0,255,136,0.4)' },
-    { l: 'B', x: 28, z: -28, c: 'rgba(255,68,68,0.4)' },
-    { l: 'C', x: -28, z: 28, c: 'rgba(68,136,255,0.4)' },
-    { l: 'D', x: 28, z: 28, c: 'rgba(255,170,0,0.4)' }
+    { l: 'A', x: -28, z: -28, c: 'rgba(0,255,136,0.5)' },
+    { l: 'B', x: 28, z: -28, c: 'rgba(255,68,68,0.5)' },
+    { l: 'C', x: -28, z: 28, c: 'rgba(68,136,255,0.5)' },
+    { l: 'D', x: 28, z: 28, c: 'rgba(255,170,0,0.5)' }
   ];
-  minimapCtx.font = 'bold 10px Courier New';
+  minimapCtx.font = 'bold 9px Courier New';
   minimapCtx.textAlign = 'center';
   minimapCtx.textBaseline = 'middle';
   zones.forEach(z => {
@@ -2451,30 +2418,54 @@ function updateMinimap() {
     minimapCtx.fillText(z.l, cx + z.x * scale, cy + z.z * scale);
   });
 
-  // العقبات (الجدران، الأعمدة، الصناديق)
-  minimapCtx.fillStyle = 'rgba(90,105,130,0.75)';
-  minimapCtx.strokeStyle = 'rgba(140,160,190,0.4)';
-  minimapCtx.lineWidth = 0.5;
+  // العقبات — تمييز الأعمدة (دوائر) عن الجدران/الصناديق (مستطيلات)
   for (let i = 0; i < colliders.length; i++) {
     const c = colliders[i];
-    const x = cx + c.min.x * scale;
-    const y = cy + c.min.z * scale;
-    const w = (c.max.x - c.min.x) * scale;
-    const h = (c.max.z - c.min.z) * scale;
-    if (w < 0.4 || h < 0.4) continue;
-    minimapCtx.fillRect(x, y, w, h);
-    minimapCtx.strokeRect(x, y, w, h);
+    const mesh = obstacleMeshes[i];
+    if (!mesh || !mesh.geometry) continue;
+    const worldW = c.max.x - c.min.x;
+    const worldH = c.max.z - c.min.z;
+    if (worldW > 50 || worldH > 50) continue; // تجاهل الجدران الخارجية
+
+    const isCylinder = mesh.geometry.type === 'CylinderGeometry';
+    if (isCylinder) {
+      // دائرة (عمود أو برميل أو عمود كهرباء)
+      const ccx = cx + (c.min.x + worldW / 2) * scale;
+      const ccy = cy + (c.min.z + worldH / 2) * scale;
+      const radius = Math.max(worldW, worldH) * scale / 2;
+      const isPillar = worldW > 1;
+      minimapCtx.fillStyle = isPillar ? '#66ccff' : '#4488aa';
+      minimapCtx.strokeStyle = isPillar ? '#ccedff' : '#66aadd';
+      minimapCtx.lineWidth = 0.6;
+      minimapCtx.beginPath();
+      minimapCtx.arc(ccx, ccy, Math.max(radius, 1.5), 0, Math.PI * 2);
+      minimapCtx.fill();
+      minimapCtx.stroke();
+    } else {
+      // مستطيل (صندوق أو حاجز)
+      const x = cx + c.min.x * scale;
+      const y = cy + c.min.z * scale;
+      const w = Math.max(worldW * scale, 0.8);
+      const h = Math.max(worldH * scale, 0.8);
+      minimapCtx.fillStyle = 'rgba(130,140,160,0.8)';
+      minimapCtx.fillRect(x, y, w, h);
+    }
   }
 
-  // حلقة الـspawn
-  minimapCtx.strokeStyle = 'rgba(0,200,255,0.35)';
-  minimapCtx.setLineDash([2, 2]);
+  // حلقة الـspawn — واضحة
+  minimapCtx.fillStyle = 'rgba(0,200,255,0.12)';
+  minimapCtx.beginPath();
+  minimapCtx.arc(cx, cy, 2.8 * scale, 0, Math.PI * 2);
+  minimapCtx.fill();
+  minimapCtx.strokeStyle = 'rgba(0,220,255,0.9)';
+  minimapCtx.lineWidth = 1.5;
+  minimapCtx.setLineDash([3, 2]);
   minimapCtx.beginPath();
   minimapCtx.arc(cx, cy, 2.8 * scale, 0, Math.PI * 2);
   minimapCtx.stroke();
   minimapCtx.setLineDash([]);
 
-  // اللوت (مكافآت)
+  // اللوت
   for (let i = 0; i < lootDrops.length; i++) {
     const loot = lootDrops[i];
     let col = '#00ff00';
@@ -2484,7 +2475,7 @@ function updateMinimap() {
     else if (loot.effect === 'score') col = '#0088ff';
     minimapCtx.fillStyle = col;
     minimapCtx.beginPath();
-    minimapCtx.arc(cx + loot.mesh.position.x * scale, cy + loot.mesh.position.z * scale, 1.6, 0, Math.PI * 2);
+    minimapCtx.arc(cx + loot.mesh.position.x * scale, cy + loot.mesh.position.z * scale, 1.8, 0, Math.PI * 2);
     minimapCtx.fill();
   }
 
@@ -2492,9 +2483,12 @@ function updateMinimap() {
   for (let i = 0; i < enemies.length; i++) {
     const en = enemies[i]; if (!en.alive) continue;
     minimapCtx.fillStyle = en.isArmored ? '#ff8800' : '#ff2222';
+    minimapCtx.strokeStyle = en.isArmored ? '#ffcc66' : '#ff6666';
+    minimapCtx.lineWidth = 0.5;
     minimapCtx.beginPath();
-    minimapCtx.arc(cx + en.g.position.x * scale, cy + en.g.position.z * scale, en.isArmored ? 2.6 : 2.1, 0, Math.PI * 2);
+    minimapCtx.arc(cx + en.g.position.x * scale, cy + en.g.position.z * scale, en.isArmored ? 2.8 : 2.2, 0, Math.PI * 2);
     minimapCtx.fill();
+    minimapCtx.stroke();
   }
 
   // المرتزقة
@@ -2502,23 +2496,21 @@ function updateMinimap() {
     const m = gs.mercenaries[i]; if (!m.alive) continue;
     minimapCtx.fillStyle = m.isElite ? '#00ffaa' : '#00ff44';
     minimapCtx.beginPath();
-    minimapCtx.arc(cx + m.g.position.x * scale, cy + m.g.position.z * scale, 2, 0, Math.PI * 2);
+    minimapCtx.arc(cx + m.g.position.x * scale, cy + m.g.position.z * scale, 2.1, 0, Math.PI * 2);
     minimapCtx.fill();
   }
 
-  // اللاعب — سهم يشير للاتجاه
+  // اللاعب — سهم + هالة
   camera.getWorldDirection(_minimapDir);
   const angle = Math.atan2(_minimapDir.z, _minimapDir.x);
   const px = cx + camera.position.x * scale;
   const py = cy + camera.position.z * scale;
 
-  // هالة حول اللاعب
-  minimapCtx.fillStyle = 'rgba(0,255,136,0.25)';
+  minimapCtx.fillStyle = 'rgba(0,255,136,0.3)';
   minimapCtx.beginPath();
-  minimapCtx.arc(px, py, 6.5, 0, Math.PI * 2);
+  minimapCtx.arc(px, py, 7, 0, Math.PI * 2);
   minimapCtx.fill();
 
-  // السهم
   minimapCtx.save();
   minimapCtx.translate(px, py);
   minimapCtx.rotate(angle);
@@ -2526,10 +2518,10 @@ function updateMinimap() {
   minimapCtx.strokeStyle = '#003322';
   minimapCtx.lineWidth = 1;
   minimapCtx.beginPath();
-  minimapCtx.moveTo(5.5, 0);
-  minimapCtx.lineTo(-3.5, -4);
+  minimapCtx.moveTo(6, 0);
+  minimapCtx.lineTo(-3.5, -4.5);
   minimapCtx.lineTo(-1.5, 0);
-  minimapCtx.lineTo(-3.5, 4);
+  minimapCtx.lineTo(-3.5, 4.5);
   minimapCtx.closePath();
   minimapCtx.fill();
   minimapCtx.stroke();
@@ -2745,15 +2737,6 @@ function pauseGame() { if (!gs.running) return; gs.running = false; pauseTimers(
 function resumeGame() { D.pauseUI.style.display = 'none'; gs.running = true; resumeTimers(); }
 function pauseToMenu() { gs.running = false; stopFiring(); saveGame(); D.pauseUI.style.display = 'none'; D.menu.style.display = 'flex'; D.menu.classList.remove('hiding'); updateMenuStartButton(); }
 
-function showTutorialIfNeeded() {
-  if (localStorage.getItem('shadowOps_tutorialShown') === '1') return;
-  if (!D.tutorialOverlay) return;
-  D.tutorialOverlay.style.display = 'flex';
-  const hide = () => { D.tutorialOverlay.style.display = 'none'; try { localStorage.setItem('shadowOps_tutorialShown', '1'); } catch (e) {} D.tutorialOverlay.removeEventListener('click', hide); };
-  D.tutorialOverlay.addEventListener('click', hide);
-  setTimeout(hide, 8000);
-}
-
 function saveGame() {
   const data = { score: gs.score, wave: gs.wave, kills: gs.kills, maxHp: gs.maxHp, movementEnhanced: gs.movementEnhanced, mercenariesInventory: gs.mercenariesInventory, eliteMercenariesInventory: gs.eliteMercenariesInventory, weapons: {}, achievements: {}, shopLevel: gs.shopLevel, armors: gs.armors, currentWeapon: currentWeapon };
   Object.keys(weapons).forEach(k => { const w = weapons[k]; data.weapons[k] = { owned: w.owned, currentClip: w.currentClip, reserveAmmo: w.reserveAmmo, upgrades: w.upgrades }; });
@@ -2883,7 +2866,6 @@ function startGame() {
   showLoadingScreen(() => {
     D.menu.style.display = 'none'; D.menu.classList.remove('hiding');
     resetGame();
-    setTimeout(() => showTutorialIfNeeded(), 500);
   });
 }
 function retryGame() { D.gameover.style.display = 'none'; resetGame(); }
@@ -2945,4 +2927,4 @@ updateMercenaryUI();
 updateMenuStartButton();
 </script>
 </body>
-      </html>
+  </html>
