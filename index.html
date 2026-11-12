@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SHADOW OPS - v1.4</title>
+<title>SHADOW OPS - v1.5</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;user-select:none;}
@@ -100,6 +100,10 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 #pause-btn:active, #settings-btn:active{transform:scale(0.88);opacity:1;}
 #wave-progress{position:fixed;top:82px;left:50%;transform:translateX(-50%);width:200px;height:3px;background:rgba(0,200,255,0.15);border-radius:2px;overflow:hidden;z-index:15;}
 #wave-fill{height:100%;width:0%;background:linear-gradient(90deg,#0af,#0ff);box-shadow:0 0 10px #0af;transition:width 0.3s;}
+#enemies-remaining{position:fixed;top:89px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(0,200,255,0.65);letter-spacing:2px;z-index:15;font-weight:bold;text-shadow:0 0 8px rgba(0,200,255,0.5);transition:color 0.3s,text-shadow 0.3s;pointer-events:none;white-space:nowrap;}
+#enemies-remaining.low{color:#ffaa00;text-shadow:0 0 10px rgba(255,170,0,0.7);}
+#enemies-remaining.danger{color:#ff4444;text-shadow:0 0 10px rgba(255,50,50,0.8);animation:enemiesPulse 0.8s ease-in-out infinite;}
+@keyframes enemiesPulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
 #shop-ui{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1000;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;overflow-y:auto;}
 .shop-container{background:linear-gradient(135deg,#0a0a0a,#1a1a1a);border:2px solid #0f8;border-radius:15px;max-width:520px;width:100%;color:#fff;margin-bottom:20px;overflow:hidden;}
 .shop-sticky-header{position:sticky;top:0;background:linear-gradient(180deg,#0f1a0f,#0a0a0a);padding:20px;border-bottom:2px solid #0f8;z-index:10;text-align:center;}
@@ -223,6 +227,9 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 @keyframes btnPulse{0%,100%{box-shadow:0 0 25px rgba(0,200,255,.35);}50%{box-shadow:0 0 45px rgba(0,220,255,.7);}}
 #start-btn:active{transform:scale(.96);}
 #difficulty-btn{position:relative;margin-top:14px;padding:12px 32px;background:rgba(255,215,0,0.08);border:1.5px solid rgba(255,215,0,0.5);color:#ffd700;font-size:13px;font-family:'Courier New',monospace;letter-spacing:4px;cursor:pointer;border-radius:6px;}
+#tutorial-menu-btn{position:relative;margin-top:10px;padding:11px 30px;background:rgba(0,200,255,0.08);border:1.5px solid rgba(0,200,255,0.5);color:#0cf;font-size:12px;font-family:'Courier New',monospace;letter-spacing:4px;cursor:pointer;border-radius:6px;transition:all 0.2s;}
+#tutorial-menu-btn:hover{background:rgba(0,200,255,0.15);box-shadow:0 0 20px rgba(0,200,255,0.4);}
+#tutorial-menu-btn:active{transform:scale(0.96);}
 .m-hint{position:relative;margin-top:22px;font-size:11px;color:rgba(180,220,255,.45);text-align:center;line-height:2.1;padding:12px 26px;border:1px solid rgba(0,200,255,.15);border-radius:8px;background:rgba(0,20,40,.35);}
 .menu-ver{position:absolute;bottom:14px;font-size:10px;letter-spacing:3px;color:rgba(0,200,255,.4);}
 .portrait{width:58px;height:58px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid rgba(255,255,255,.25);margin-left:10px;flex:0 0 auto;}
@@ -230,7 +237,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 #wave-notif.show{animation:waveShow 2.2s cubic-bezier(.34,1.56,.64,1) forwards;}
 @keyframes waveShow{0%{opacity:0;transform:translate(-50%,-50%) scale(.6);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.06);}25%{transform:translate(-50%,-50%) scale(1);}85%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-50%) scale(.9);}}
 
-/* ══════════ العد التنازلي بين الموجات ══════════ */
 #wave-countdown{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:51;opacity:0;pointer-events:none;transition:opacity 0.35s ease-out;}
 #wave-countdown.show{opacity:1;}
 #countdown-num{font-size:clamp(80px,22vw,130px);font-weight:900;color:#ffcc00;line-height:1;letter-spacing:4px;text-shadow:0 0 30px rgba(255,200,0,1),0 0 60px rgba(255,100,0,.8),0 0 100px rgba(255,50,0,.5);font-family:'Courier New',monospace;}
@@ -312,6 +318,31 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 .diff-option.active[data-diff="hard"]{border-color:#ff8800;background:rgba(255,136,0,0.13);}
 .diff-option.active[data-diff="very_hard"]{border-color:#ff2222;background:rgba(255,34,34,0.13);}
 .difficulty-close{width:100%;margin-top:10px;padding:12px;background:rgba(255,0,0,0.15);border:1.5px solid rgba(255,0,0,0.5);color:#f44;border-radius:8px;cursor:pointer;font-weight:bold;font-size:14px;font-family:inherit;}
+
+/* ══════════ نافذة دليل اللعب الكاملة ══════════ */
+#tutorial-ui{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:2100;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;overflow-y:auto;}
+.tutorial-container{background:linear-gradient(135deg,#0a0f1a,#1a1f2a);border:2px solid #0cf;border-radius:15px;max-width:560px;width:100%;color:#fff;margin-bottom:16px;overflow:hidden;box-shadow:0 0 40px rgba(0,200,255,0.3);}
+.tut-header{padding:18px 20px;background:linear-gradient(180deg,rgba(0,200,255,0.15),rgba(0,200,255,0.02));border-bottom:1px solid rgba(0,200,255,0.3);text-align:center;}
+.tut-header h2{color:#0cf;font-size:20px;margin:0;letter-spacing:2px;text-shadow:0 0 15px rgba(0,200,255,0.6);}
+.tut-tabs{display:flex;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(0,200,255,0.2);}
+.tut-tab{flex:1;padding:12px;background:transparent;border:none;color:rgba(200,220,240,0.6);font-family:inherit;font-size:13px;font-weight:bold;cursor:pointer;letter-spacing:1px;transition:all 0.2s;border-bottom:2px solid transparent;}
+.tut-tab.active{color:#0cf;background:rgba(0,200,255,0.1);border-bottom-color:#0cf;text-shadow:0 0 10px rgba(0,200,255,0.7);}
+.tut-tab:active{transform:scale(0.97);}
+.tut-scroll{padding:16px;max-height:60vh;overflow-y:auto;}
+.tut-panel{display:none;}
+.tut-panel.active{display:block;animation:tutFadeIn 0.3s ease-out;}
+@keyframes tutFadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.tut-section{margin-bottom:18px;}
+.tut-section-title{font-size:14px;color:#0cf;font-weight:bold;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,200,255,0.25);letter-spacing:1px;}
+.tut-row{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;margin-bottom:6px;background:rgba(255,255,255,0.03);border-radius:8px;border-right:2px solid rgba(0,200,255,0.4);}
+.tut-icon{font-size:16px;min-width:44px;text-align:center;flex-shrink:0;background:rgba(0,200,255,0.1);padding:4px 8px;border-radius:6px;font-weight:bold;color:#0cf;font-family:'Courier New',monospace;}
+.tut-row > div{flex:1;}
+.tut-row strong{display:block;font-size:13px;color:#fff;margin-bottom:2px;}
+.tut-row small{font-size:11px;color:#8899aa;line-height:1.5;display:block;}
+.tut-tip{padding:8px 12px;margin-bottom:6px;background:rgba(255,215,0,0.05);border-right:2px solid rgba(255,215,0,0.5);border-radius:6px;font-size:12px;color:#dde3ea;line-height:1.6;}
+.tutorial-close{padding:14px 24px;background:rgba(0,200,255,0.15);border:2px solid rgba(0,200,255,0.7);color:#0cf;border-radius:10px;font-weight:bold;font-size:15px;font-family:inherit;cursor:pointer;width:100%;max-width:560px;letter-spacing:2px;transition:all 0.2s;}
+.tutorial-close:hover{background:rgba(0,200,255,0.25);box-shadow:0 0 20px rgba(0,200,255,0.5);}
+.tutorial-close:active{transform:scale(0.97);}
 
 /* ══════════ تحسينات v1.3 ══════════ */
 #crosshair{transition:transform 0.12s cubic-bezier(.34,1.56,.64,1);}
@@ -420,7 +451,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 
 <div id="tutorial-overlay">
   <div class="tutorial-box">
-    <h3>🎮 دليل التحكم</h3>
+    <h3>🎮 دليل التحكم السريع</h3>
     <div class="tutorial-row"><span>👈</span> عصا التحرك (يسار)</div>
     <div class="tutorial-row"><span>👆</span> اسحب لتدوير الكاميرا</div>
     <div class="tutorial-row"><span>🔥</span> زر الإطلاق</div>
@@ -429,6 +460,58 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
     <div class="tutorial-row"><span>⚙</span> إعدادات (سرعة/حساسية)</div>
     <div class="tutorial-hint">اضغط في أي مكان للمتابعة</div>
   </div>
+</div>
+
+<div id="tutorial-ui">
+<div class="tutorial-container">
+  <div class="tut-header"><h2>📖 دليل اللعب الكامل</h2></div>
+  <div class="tut-tabs">
+    <button class="tut-tab active" data-tab="mobile" onclick="switchTutTab('mobile')">📱 الهاتف</button>
+    <button class="tut-tab" data-tab="desktop" onclick="switchTutTab('desktop')">🖥️ الكمبيوتر</button>
+  </div>
+  <div class="tut-scroll">
+    <div id="tut-mobile" class="tut-panel active">
+      <div class="tut-section">
+        <div class="tut-section-title">🎮 عناصر التحكم — الهاتف</div>
+        <div class="tut-row"><span class="tut-icon">👈</span><div><strong>عصا التحرك</strong><small>أسفل يسار الشاشة — حرّك إبهامك في أي اتجاه للتنقل</small></div></div>
+        <div class="tut-row"><span class="tut-icon">👆</span><div><strong>الكاميرا</strong><small>اسحب على النصف الأيمن من الشاشة لتدوير الكاميرا</small></div></div>
+        <div class="tut-row"><span class="tut-icon">🔥</span><div><strong>زر الإطلاق</strong><small>أسفل يمين — اضغط باستمرار للسلاح الآلي</small></div></div>
+        <div class="tut-row"><span class="tut-icon">↺</span><div><strong>التعمير</strong><small>أعد تعمير السلاح عند نفاد الذخيرة</small></div></div>
+        <div class="tut-row"><span class="tut-icon">💣</span><div><strong>القنبلة</strong><small>تأثير انفجاري في منطقة — لا تؤذيك</small></div></div>
+        <div class="tut-row"><span class="tut-icon">👥</span><div><strong>المرتزق</strong><small>انشر مرتزقاً من الاحتياط لدعمك</small></div></div>
+        <div class="tut-row"><span class="tut-icon">⏸</span><div><strong>الإيقاف المؤقت</strong><small>أعلى يسار الشاشة</small></div></div>
+        <div class="tut-row"><span class="tut-icon">⚙</span><div><strong>الإعدادات</strong><small>ضبط الحساسية وسرعة اللعبة</small></div></div>
+        <div class="tut-row"><span class="tut-icon">🛒</span><div><strong>المتجر</strong><small>أعلى يسار — شراء أسلحة وترقيات</small></div></div>
+        <div class="tut-row"><span class="tut-icon">🎒</span><div><strong>المخزون</strong><small>عرض الأسلحة والدروع المملوكة</small></div></div>
+      </div>
+    </div>
+    <div id="tut-desktop" class="tut-panel">
+      <div class="tut-section">
+        <div class="tut-section-title">⌨️ لوحة المفاتيح</div>
+        <div class="tut-row"><span class="tut-icon">W A S D</span><div><strong>التحرك</strong><small>أو الأسهم — للأمام/خلف/يمين/يسار</small></div></div>
+        <div class="tut-row"><span class="tut-icon">🖱️</span><div><strong>الكاميرا</strong><small>حرّك الماوس بعد النقر على الشاشة (قفل الماوس)</small></div></div>
+        <div class="tut-row"><span class="tut-icon">Space</span><div><strong>الإطلاق</strong><small>أو زر F — للإطلاق</small></div></div>
+        <div class="tut-row"><span class="tut-icon">R</span><div><strong>التعمير</strong><small>أعد تعمير السلاح</small></div></div>
+        <div class="tut-row"><span class="tut-icon">G</span><div><strong>القنبلة</strong><small>اقذف قنبلة</small></div></div>
+        <div class="tut-row"><span class="tut-icon">M</span><div><strong>نشر المرتزق</strong></div></div>
+        <div class="tut-row"><span class="tut-icon">1 - 6</span><div><strong>تبديل الأسلحة</strong><small>اختر من 6 أسلحة</small></div></div>
+        <div class="tut-row"><span class="tut-icon">P / Esc</span><div><strong>إيقاف مؤقت</strong></div></div>
+      </div>
+    </div>
+    <div class="tut-section">
+      <div class="tut-section-title">💡 نصائح احترافية</div>
+      <div class="tut-tip">🎯 الأعداء المدرعون (بالأزرق) يحتاجون رصاصاً أكثر — استخدم AK-47 أو M4A1</div>
+      <div class="tut-tip">🔥 كل 5 قتلات متتالية = Damage Boost تلقائياً</div>
+      <div class="tut-tip">🛡️ الدروع تمتص الضرر: الجلدي 20% والحديدي 50%</div>
+      <div class="tut-tip">🏛️ استخدم الأعمدة والصناديق كغطاء — الرصاص لا يخترقها</div>
+      <div class="tut-tip">💀 كل 7 موجات يبدأ ظهور المدرعين بنسبة أكبر</div>
+      <div class="tut-tip">💣 القنابل لا تؤذيك — استخدمها بجرأة على مجموعات</div>
+      <div class="tut-tip">⭐ جمع الـ Loot الملوّن يمنحك صحة/ذخيرة/سلاح مؤقت</div>
+      <div class="tut-tip">🛒 طوّر المتجر لفتح أسلحة ومرتزقة أفضل</div>
+    </div>
+  </div>
+</div>
+<button class="tutorial-close" onclick="closeTutorialUI()">✓ فهمت، عودة</button>
 </div>
 
 <div id="shop-ui">
@@ -501,11 +584,12 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <div class="menu-divider"><span></span><i>◆</i><span></span></div>
 <button id="start-btn" onclick="startGame()">▶ ابدأ القتال</button>
 <button id="difficulty-btn" onclick="openDifficultyUI()">⚙ الصعوبة: 🟡 متوسط</button>
+<button id="tutorial-menu-btn" onclick="openTutorialUI()">📖 دليل اللعب</button>
 <div class="m-hint">
 👈 عصا التحرك | 👉 الكاميرا<br>
 🔥 إطلاق | ↺ تعمير | 💣 قنبلة | ⚙ إعدادات
 </div>
-<div class="menu-ver">v1.4 // AEGIS CORP</div>
+<div class="menu-ver">v1.5 // AEGIS CORP</div>
 </div>
 
 <div id="gameover">
@@ -568,6 +652,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
 </div>
 <div id="wave-progress"><div id="wave-fill"></div></div>
+<div id="enemies-remaining">0 / 0</div>
 <div id="minimap"><canvas id="minimap-canvas" width="110" height="110"></canvas></div>
 <div id="joy-area"><div id="joy-ring"><div id="joy-knob"></div></div></div>
 <div id="look-area"></div>
@@ -677,6 +762,7 @@ const D = {
   powerUp: document.getElementById('power-up-ui'), achievement: document.getElementById('achievement-popup'),
   waveNotif: document.getElementById('wave-notif'), waveFill: document.getElementById('wave-fill'),
   waveCountdown: document.getElementById('wave-countdown'), countdownNum: document.getElementById('countdown-num'),
+  enemiesRemaining: document.getElementById('enemies-remaining'),
   fireFlash: document.getElementById('fire-flash'), dmgFlash: document.getElementById('dmg-flash'),
   chromatic: document.getElementById('chromatic'), dmgIndicators: document.getElementById('dmg-indicators'),
   weapon: document.getElementById('weapon'), crosshair: document.getElementById('crosshair'),
@@ -688,6 +774,7 @@ const D = {
   shopUI: document.getElementById('shop-ui'), inventoryUI: document.getElementById('inventory-ui'),
   mercenaryUI: document.getElementById('mercenary-ui'), pauseUI: document.getElementById('pause-ui'),
   settingsUI: document.getElementById('settings-ui'), tutorialOverlay: document.getElementById('tutorial-overlay'),
+  tutorialUI: document.getElementById('tutorial-ui'),
   confirmDialog: document.getElementById('confirm-dialog'), difficultyOverlay: document.getElementById('difficulty-overlay'),
   difficultyBtn: document.getElementById('difficulty-btn'), mercCmds: document.getElementById('merc-commands'),
   shopScoreVal: document.getElementById('shop-score-val'), shopLevelDisplay: document.getElementById('shop-level-display'),
@@ -726,6 +813,15 @@ function playSound(type, params = {}) {
     case 'armor_break': { const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sawtooth'; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(50, t + 0.3); g.gain.setValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.4); o.connect(g); g.connect(actx.destination); o.start(); o.stop(t + 0.4); break; }
     case 'slowmo': { const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(400, t); o.frequency.exponentialRampToValueAtTime(100, t + 0.4); g.gain.setValueAtTime(0.25, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.4); o.connect(g); g.connect(actx.destination); o.start(); o.stop(t + 0.4); break; }
   }
+}
+
+// ══════════ دوال دليل اللعب ══════════
+function openTutorialUI() { D.tutorialUI.style.display = 'flex'; playSound('ui', { freq: 700 }); }
+function closeTutorialUI() { D.tutorialUI.style.display = 'none'; playSound('ui', { freq: 700 }); }
+function switchTutTab(tab) {
+  document.querySelectorAll('.tut-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.tut-panel').forEach(p => p.classList.toggle('active', p.id === 'tut-' + tab));
+  playSound('ui', { freq: 600 });
 }
 
 let confirmCallback = null;
@@ -1661,6 +1757,15 @@ function updateEnemies() {
   }
 }
 
+function updateEnemiesRemaining() {
+  if (!D.enemiesRemaining) return;
+  const remaining = Math.max(0, gs.waveTotal - gs.waveKilled);
+  D.enemiesRemaining.textContent = `${remaining} / ${gs.waveTotal}`;
+  D.enemiesRemaining.classList.remove('low', 'danger');
+  if (remaining <= 2) D.enemiesRemaining.classList.add('danger');
+  else if (remaining <= 5) D.enemiesRemaining.classList.add('low');
+}
+
 function spawnWave(w) {
   let baseCount = 3 + w * 2;
   if (w > 5) { const chance = w > 10 ? 0.25 : 0.15; if (Math.random() < chance) baseCount += Math.floor(Math.random() * 3) + 1; }
@@ -1673,6 +1778,7 @@ function spawnWave(w) {
     mkEnemy(Math.cos(a) * r, Math.sin(a) * r, w, isArmored);
   }
   gs.waveTotal = n; gs.waveKilled = 0;
+  updateEnemiesRemaining();
   if (D.waveFill) D.waveFill.style.width = '0%';
   D.waveNotif.textContent = `WAVE ${w}`;
   D.waveNotif.style.opacity = '';
@@ -1845,6 +1951,7 @@ function killEnemy(en) {
   const points = Math.round((18 + gs.wave * 6 + (en.isArmored ? 40 : 0)) * pointsMul);
   gs.score += points; gs.kills++; gs.waveKilled = (gs.waveKilled || 0) + 1;
   updateScoreUI();
+  updateEnemiesRemaining();
   showScorePopup(en.g.position.clone().add(new THREE.Vector3(0, 2.5, 0)), points);
   if (D.waveFill && gs.waveTotal) D.waveFill.style.width = Math.min(100, (gs.waveKilled / gs.waveTotal) * 100) + '%';
   const d = document.createElement('div'); d.className = 'kf';
@@ -2115,7 +2222,6 @@ function gameOver() {
   document.getElementById('go-wave').textContent = gs.wave;
   document.getElementById('go-kills').textContent = gs.kills;
   D.gameover.style.display = 'flex';
-  // ✅ إعادة تشغيل الأنيميشن في كل مرة
   const animEls = D.gameover.querySelectorAll('.go-bg, .go-skull, .go-title, .go-subline, .go-stat, #retry-btn, #new-game-btn, #reset-all-btn');
   animEls.forEach(el => {
     el.style.animation = 'none';
@@ -2309,20 +2415,125 @@ function updatePlayer() {
   D.crosshair.classList.toggle('on-target', _onTarget);
 }
 
+// ══════════ الخريطة المصغرة المطوّرة ══════════
 const minimapCtx = D.minimapCanvas.getContext('2d');
 const minimapImg = new Image(); minimapImg.src = 'art/map_topdown.png';
 let minimapReady = false; minimapImg.onload = () => minimapReady = true;
+const _minimapDir = new THREE.Vector3();
+
 function updateMinimap() {
-  minimapCtx.clearRect(0, 0, 110, 110);
-  if (minimapReady) { minimapCtx.globalAlpha = 0.55; minimapCtx.drawImage(minimapImg, 0, 0, 110, 110); minimapCtx.globalAlpha = 1; }
-  else { minimapCtx.fillStyle = 'rgba(0,0,0,0.6)'; minimapCtx.fillRect(0, 0, 110, 110); }
-  const scale = 110 / (AR * 2), cx = 55, cy = 55;
-  minimapCtx.fillStyle = '#00ff00';
-  minimapCtx.beginPath(); minimapCtx.arc(cx + camera.position.x * scale, cy + camera.position.z * scale, 3, 0, Math.PI * 2); minimapCtx.fill();
-  minimapCtx.fillStyle = '#ff0000';
-  for (let i = 0; i < enemies.length; i++) { const en = enemies[i]; if (!en.alive) continue; minimapCtx.beginPath(); minimapCtx.arc(cx + en.g.position.x * scale, cy + en.g.position.z * scale, 2, 0, Math.PI * 2); minimapCtx.fill(); }
-  minimapCtx.fillStyle = '#00ff44';
-  for (let i = 0; i < gs.mercenaries.length; i++) { const m = gs.mercenaries[i]; if (!m.alive) continue; minimapCtx.beginPath(); minimapCtx.arc(cx + m.g.position.x * scale, cy + m.g.position.z * scale, 2, 0, Math.PI * 2); minimapCtx.fill(); }
+  const W = 110, H = 110, cx = W / 2, cy = H / 2;
+  const scale = W / (AR * 2);
+  minimapCtx.clearRect(0, 0, W, H);
+
+  // الخلفية
+  if (minimapReady) {
+    minimapCtx.globalAlpha = 0.5;
+    minimapCtx.drawImage(minimapImg, 0, 0, W, H);
+    minimapCtx.globalAlpha = 1;
+  } else {
+    minimapCtx.fillStyle = 'rgba(5,12,22,0.85)';
+    minimapCtx.fillRect(0, 0, W, H);
+  }
+
+  // حروف المناطق A/B/C/D
+  const zones = [
+    { l: 'A', x: -28, z: -28, c: 'rgba(0,255,136,0.4)' },
+    { l: 'B', x: 28, z: -28, c: 'rgba(255,68,68,0.4)' },
+    { l: 'C', x: -28, z: 28, c: 'rgba(68,136,255,0.4)' },
+    { l: 'D', x: 28, z: 28, c: 'rgba(255,170,0,0.4)' }
+  ];
+  minimapCtx.font = 'bold 10px Courier New';
+  minimapCtx.textAlign = 'center';
+  minimapCtx.textBaseline = 'middle';
+  zones.forEach(z => {
+    minimapCtx.fillStyle = z.c;
+    minimapCtx.fillText(z.l, cx + z.x * scale, cy + z.z * scale);
+  });
+
+  // العقبات (الجدران، الأعمدة، الصناديق)
+  minimapCtx.fillStyle = 'rgba(90,105,130,0.75)';
+  minimapCtx.strokeStyle = 'rgba(140,160,190,0.4)';
+  minimapCtx.lineWidth = 0.5;
+  for (let i = 0; i < colliders.length; i++) {
+    const c = colliders[i];
+    const x = cx + c.min.x * scale;
+    const y = cy + c.min.z * scale;
+    const w = (c.max.x - c.min.x) * scale;
+    const h = (c.max.z - c.min.z) * scale;
+    if (w < 0.4 || h < 0.4) continue;
+    minimapCtx.fillRect(x, y, w, h);
+    minimapCtx.strokeRect(x, y, w, h);
+  }
+
+  // حلقة الـspawn
+  minimapCtx.strokeStyle = 'rgba(0,200,255,0.35)';
+  minimapCtx.setLineDash([2, 2]);
+  minimapCtx.beginPath();
+  minimapCtx.arc(cx, cy, 2.8 * scale, 0, Math.PI * 2);
+  minimapCtx.stroke();
+  minimapCtx.setLineDash([]);
+
+  // اللوت (مكافآت)
+  for (let i = 0; i < lootDrops.length; i++) {
+    const loot = lootDrops[i];
+    let col = '#00ff00';
+    if (loot.type === 'legendary') col = '#ffd700';
+    else if (loot.type === 'rare') col = '#0088ff';
+    else if (loot.effect === 'ammo') col = '#ffff00';
+    else if (loot.effect === 'score') col = '#0088ff';
+    minimapCtx.fillStyle = col;
+    minimapCtx.beginPath();
+    minimapCtx.arc(cx + loot.mesh.position.x * scale, cy + loot.mesh.position.z * scale, 1.6, 0, Math.PI * 2);
+    minimapCtx.fill();
+  }
+
+  // الأعداء
+  for (let i = 0; i < enemies.length; i++) {
+    const en = enemies[i]; if (!en.alive) continue;
+    minimapCtx.fillStyle = en.isArmored ? '#ff8800' : '#ff2222';
+    minimapCtx.beginPath();
+    minimapCtx.arc(cx + en.g.position.x * scale, cy + en.g.position.z * scale, en.isArmored ? 2.6 : 2.1, 0, Math.PI * 2);
+    minimapCtx.fill();
+  }
+
+  // المرتزقة
+  for (let i = 0; i < gs.mercenaries.length; i++) {
+    const m = gs.mercenaries[i]; if (!m.alive) continue;
+    minimapCtx.fillStyle = m.isElite ? '#00ffaa' : '#00ff44';
+    minimapCtx.beginPath();
+    minimapCtx.arc(cx + m.g.position.x * scale, cy + m.g.position.z * scale, 2, 0, Math.PI * 2);
+    minimapCtx.fill();
+  }
+
+  // اللاعب — سهم يشير للاتجاه
+  camera.getWorldDirection(_minimapDir);
+  const angle = Math.atan2(_minimapDir.z, _minimapDir.x);
+  const px = cx + camera.position.x * scale;
+  const py = cy + camera.position.z * scale;
+
+  // هالة حول اللاعب
+  minimapCtx.fillStyle = 'rgba(0,255,136,0.25)';
+  minimapCtx.beginPath();
+  minimapCtx.arc(px, py, 6.5, 0, Math.PI * 2);
+  minimapCtx.fill();
+
+  // السهم
+  minimapCtx.save();
+  minimapCtx.translate(px, py);
+  minimapCtx.rotate(angle);
+  minimapCtx.fillStyle = '#00ff88';
+  minimapCtx.strokeStyle = '#003322';
+  minimapCtx.lineWidth = 1;
+  minimapCtx.beginPath();
+  minimapCtx.moveTo(5.5, 0);
+  minimapCtx.lineTo(-3.5, -4);
+  minimapCtx.lineTo(-1.5, 0);
+  minimapCtx.lineTo(-3.5, 4);
+  minimapCtx.closePath();
+  minimapCtx.fill();
+  minimapCtx.stroke();
+  minimapCtx.restore();
 }
 
 function shootEnemyBullet(startPos, targetPos) {
