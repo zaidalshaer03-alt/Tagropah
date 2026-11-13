@@ -630,8 +630,6 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <svg id="weapon" viewBox="0 0 230 150" xmlns="http://www.w3.org/2000/svg"></svg>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
 <script>
 const CFG = {
   PLAYER_SPEED: 0.022, SPEED_BOOST_MULT: 1.4, ARENA_RADIUS: 36, WALL_HEIGHT: 10,
@@ -663,12 +661,61 @@ try {
 function saveSettings() { try { localStorage.setItem('shadowOps_settings', JSON.stringify(settings)); } catch (e) {} }
 
 const WEAPON_SVGS = {
-  pistol: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs><rect x="70" y="62" width="90" height="20" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/><rect x="155" y="66" width="28" height="12" rx="2" fill="#151515"/><rect x="180" y="64" width="5" height="16" rx="1" fill="#0a0a0a"/><path d="M85 82 L92 118 L112 118 L105 82 Z" fill="#1a1a1a" stroke="#333"/><path d="M100 82 Q115 100 120 82" fill="none" stroke="#333" stroke-width="2"/><rect x="95" y="52" width="40" height="10" rx="2" fill="#151515"/><circle cx="105" cy="57" r="3" fill="#1a2535" stroke="#0cf" opacity="0.8"/><circle cx="130" cy="57" r="3" fill="#1a2535" stroke="#0cf" opacity="0.8"/>`,
-  shotgun: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs><rect x="30" y="58" width="180" height="24" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/><rect x="60" y="52" width="90" height="8" rx="2" fill="#222"/><rect x="195" y="62" width="25" height="16" rx="2" fill="#0a0a0a"/><path d="M50 82 L58 128 L85 128 L78 82 Z" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/><path d="M78 82 Q100 105 105 82" fill="none" stroke="#333" stroke-width="2"/><rect x="100" y="82" width="55" height="12" rx="3" fill="#151515"/><circle cx="115" cy="88" r="4" fill="#1a2535" stroke="#ff4444"/>`,
-  smg: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs><rect x="65" y="60" width="110" height="22" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/><rect x="170" y="64" width="40" height="14" rx="2" fill="#151515"/><rect x="205" y="60" width="6" height="20" rx="1" fill="#0a0a0a"/><path d="M80 82 L88 118 L108 118 L100 82 Z" fill="#1a1a1a" stroke="#333"/><rect x="110" y="82" width="18" height="35" rx="2" fill="#181818"/><rect x="90" y="50" width="55" height="12" rx="2" fill="#151515"/><circle cx="100" cy="56" r="3" fill="#1a2535" stroke="#44ff88"/><circle cx="135" cy="56" r="3" fill="#1a2535" stroke="#44ff88"/>`,
-  ak117: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs><rect x="55" y="60" width="135" height="22" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/><rect x="168" y="64" width="55" height="14" rx="2" fill="#151515"/><rect x="220" y="62" width="7" height="18" rx="1" fill="#0a0a0a"/><path d="M70 82 L78 118 L98 118 L92 82 Z" fill="#1a1a1a" stroke="#333"/><path d="M92 82 Q108 100 113 82" fill="none" stroke="#333" stroke-width="2"/><rect x="96" y="50" width="58" height="13" rx="2" fill="#151515"/><circle cx="105" cy="56.5" r="4" fill="#1a2535" stroke="#8844ff"/><circle cx="146" cy="56.5" r="4" fill="#1a2535" stroke="#8844ff"/><rect x="100" y="82" width="20" height="30" rx="2" fill="#181818"/>`,
-  ak47: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3a2a1a"/><stop offset="100%" stop-color="#1a1a1a"/></linearGradient></defs><rect x="50" y="62" width="140" height="22" rx="3" fill="url(#g1)" stroke="#5a3a2a" stroke-width="1.5"/><rect x="185" y="66" width="35" height="12" rx="2" fill="#151515"/><rect x="214" y="62" width="6" height="18" rx="1" fill="#0a0a0a"/><path d="M65 84 L75 122 L96 122 L88 84 Z" fill="#4a2a1a" stroke="#333"/><path d="M88 84 Q105 105 112 84" fill="none" stroke="#333" stroke-width="2.5"/><rect x="96" y="50" width="55" height="14" rx="2" fill="#2a1a0a"/><circle cx="105" cy="57" r="4" fill="#1a2535" stroke="#4488ff"/><circle cx="143" cy="57" r="4" fill="#1a2535" stroke="#4488ff"/><rect x="100" y="84" width="22" height="32" rx="3" fill="#3a2a1a" stroke="#555"/>`,
-  m4a1: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a35"/><stop offset="100%" stop-color="#111"/></linearGradient></defs><rect x="55" y="60" width="140" height="24" rx="3" fill="url(#g1)" stroke="#3a3a4a" stroke-width="1.5"/><rect x="175" y="64" width="45" height="16" rx="2" fill="#151515"/><rect x="215" y="62" width="6" height="20" rx="1" fill="#0a0a0a"/><path d="M70 84 L78 120 L100 120 L94 84 Z" fill="#1a1a1a" stroke="#333"/><rect x="100" y="84" width="22" height="34" rx="2" fill="#181818"/><rect x="90" y="52" width="60" height="12" rx="2" fill="#151515"/><circle cx="105" cy="58" r="4" fill="#1a2535" stroke="#8888ff"/><circle cx="145" cy="58" r="4" fill="#1a2535" stroke="#8888ff"/>`
+  pistol: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs>
+    <rect x="70" y="62" width="90" height="20" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/>
+    <rect x="155" y="66" width="28" height="12" rx="2" fill="#151515"/>
+    <rect x="180" y="64" width="5" height="16" rx="1" fill="#0a0a0a"/>
+    <path d="M85 82 L92 118 L112 118 L105 82 Z" fill="#1a1a1a" stroke="#333"/>
+    <path d="M100 82 Q115 100 120 82" fill="none" stroke="#333" stroke-width="2"/>
+    <rect x="95" y="52" width="40" height="10" rx="2" fill="#151515"/>
+    <circle cx="105" cy="57" r="3" fill="#1a2535" stroke="#0cf" opacity="0.8"/>
+    <circle cx="130" cy="57" r="3" fill="#1a2535" stroke="#0cf" opacity="0.8"/>`,
+  shotgun: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs>
+    <rect x="30" y="58" width="180" height="24" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/>
+    <rect x="60" y="52" width="90" height="8" rx="2" fill="#222"/>
+    <rect x="195" y="62" width="25" height="16" rx="2" fill="#0a0a0a"/>
+    <path d="M50 82 L58 128 L85 128 L78 82 Z" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+    <path d="M78 82 Q100 105 105 82" fill="none" stroke="#333" stroke-width="2"/>
+    <rect x="100" y="82" width="55" height="12" rx="3" fill="#151515"/>
+    <circle cx="115" cy="88" r="4" fill="#1a2535" stroke="#ff4444"/>`,
+  smg: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs>
+    <rect x="65" y="60" width="110" height="22" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/>
+    <rect x="170" y="64" width="40" height="14" rx="2" fill="#151515"/>
+    <rect x="205" y="60" width="6" height="20" rx="1" fill="#0a0a0a"/>
+    <path d="M80 82 L88 118 L108 118 L100 82 Z" fill="#1a1a1a" stroke="#333"/>
+    <rect x="110" y="82" width="18" height="35" rx="2" fill="#181818"/>
+    <rect x="90" y="50" width="55" height="12" rx="2" fill="#151515"/>
+    <circle cx="100" cy="56" r="3" fill="#1a2535" stroke="#44ff88"/>
+    <circle cx="135" cy="56" r="3" fill="#1a2535" stroke="#44ff88"/>`,
+  ak117: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#111"/></linearGradient></defs>
+    <rect x="55" y="60" width="135" height="22" rx="3" fill="url(#g1)" stroke="#3a3a3a" stroke-width="1.5"/>
+    <rect x="168" y="64" width="55" height="14" rx="2" fill="#151515"/>
+    <rect x="220" y="62" width="7" height="18" rx="1" fill="#0a0a0a"/>
+    <path d="M70 82 L78 118 L98 118 L92 82 Z" fill="#1a1a1a" stroke="#333"/>
+    <path d="M92 82 Q108 100 113 82" fill="none" stroke="#333" stroke-width="2"/>
+    <rect x="96" y="50" width="58" height="13" rx="2" fill="#151515"/>
+    <circle cx="105" cy="56.5" r="4" fill="#1a2535" stroke="#8844ff"/>
+    <circle cx="146" cy="56.5" r="4" fill="#1a2535" stroke="#8844ff"/>
+    <rect x="100" y="82" width="20" height="30" rx="2" fill="#181818"/>`,
+  ak47: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3a2a1a"/><stop offset="100%" stop-color="#1a1a1a"/></linearGradient></defs>
+    <rect x="50" y="62" width="140" height="22" rx="3" fill="url(#g1)" stroke="#5a3a2a" stroke-width="1.5"/>
+    <rect x="185" y="66" width="35" height="12" rx="2" fill="#151515"/>
+    <rect x="214" y="62" width="6" height="18" rx="1" fill="#0a0a0a"/>
+    <path d="M65 84 L75 122 L96 122 L88 84 Z" fill="#4a2a1a" stroke="#333"/>
+    <path d="M88 84 Q105 105 112 84" fill="none" stroke="#333" stroke-width="2.5"/>
+    <rect x="96" y="50" width="55" height="14" rx="2" fill="#2a1a0a"/>
+    <circle cx="105" cy="57" r="4" fill="#1a2535" stroke="#4488ff"/>
+    <circle cx="143" cy="57" r="4" fill="#1a2535" stroke="#4488ff"/>
+    <rect x="100" y="84" width="22" height="32" rx="3" fill="#3a2a1a" stroke="#555"/>`,
+  m4a1: `<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a35"/><stop offset="100%" stop-color="#111"/></linearGradient></defs>
+    <rect x="55" y="60" width="140" height="24" rx="3" fill="url(#g1)" stroke="#3a3a4a" stroke-width="1.5"/>
+    <rect x="175" y="64" width="45" height="16" rx="2" fill="#151515"/>
+    <rect x="215" y="62" width="6" height="20" rx="1" fill="#0a0a0a"/>
+    <path d="M70 84 L78 120 L100 120 L94 84 Z" fill="#1a1a1a" stroke="#333"/>
+    <rect x="100" y="84" width="22" height="34" rx="2" fill="#181818"/>
+    <rect x="90" y="52" width="60" height="12" rx="2" fill="#151515"/>
+    <circle cx="105" cy="58" r="4" fill="#1a2535" stroke="#8888ff"/>
+    <circle cx="145" cy="58" r="4" fill="#1a2535" stroke="#8888ff"/>`
 };
 
 const D = {
@@ -694,7 +741,8 @@ const D = {
   menu: document.getElementById('menu'), gameover: document.getElementById('gameover'),
   shopUI: document.getElementById('shop-ui'), inventoryUI: document.getElementById('inventory-ui'),
   mercenaryUI: document.getElementById('mercenary-ui'), pauseUI: document.getElementById('pause-ui'),
-  settingsUI: document.getElementById('settings-ui'), tutorialUI: document.getElementById('tutorial-ui'),
+  settingsUI: document.getElementById('settings-ui'),
+  tutorialUI: document.getElementById('tutorial-ui'),
   confirmDialog: document.getElementById('confirm-dialog'), difficultyOverlay: document.getElementById('difficulty-overlay'),
   difficultyBtn: document.getElementById('difficulty-btn'), mercCmds: document.getElementById('merc-commands'),
   shopScoreVal: document.getElementById('shop-score-val'), shopLevelDisplay: document.getElementById('shop-level-display'),
@@ -842,16 +890,31 @@ function makeZoneLetterTexture(letter, color) {
   ctx.fillText(letter, 256, 256);
   const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex;
 }
+// ✅ جديد: نجمة الـmuzzle flash
 function makeStarTexture() {
   const c = document.createElement('canvas'); c.width = c.height = 128;
   const ctx = c.getContext('2d');
-  ctx.translate(64, 64);
+  const cx = 64, cy = 64;
+  ctx.translate(cx, cy);
+  // halo
   const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 64);
-  g.addColorStop(0, 'rgba(255,240,180,1)'); g.addColorStop(0.3, 'rgba(255,200,80,0.6)'); g.addColorStop(1, 'rgba(255,100,0,0)');
-  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 64, 0, Math.PI * 2); ctx.fill();
+  g.addColorStop(0, 'rgba(255,240,180,1)');
+  g.addColorStop(0.3, 'rgba(255,200,80,0.6)');
+  g.addColorStop(1, 'rgba(255,100,0,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(0, 0, 64, 0, Math.PI * 2); ctx.fill();
+  // 4-point star
   ctx.fillStyle = 'rgba(255,255,220,0.95)';
-  for (let i = 0; i < 4; i++) { ctx.save(); ctx.rotate(i * Math.PI / 2); ctx.beginPath(); ctx.moveTo(0, -60); ctx.lineTo(10, -12); ctx.lineTo(60, 0); ctx.lineTo(10, 12); ctx.lineTo(0, 60); ctx.lineTo(-10, 12); ctx.lineTo(-60, 0); ctx.lineTo(-10, -12); ctx.closePath(); ctx.fill(); ctx.restore(); }
-  ctx.fillStyle = 'rgba(255,255,255,1)'; ctx.beginPath(); ctx.arc(0, 0, 10, 0, Math.PI * 2); ctx.fill();
+  for (let i = 0; i < 4; i++) {
+    ctx.save(); ctx.rotate(i * Math.PI / 2);
+    ctx.beginPath();
+    ctx.moveTo(0, -60); ctx.lineTo(10, -12); ctx.lineTo(60, 0); ctx.lineTo(10, 12);
+    ctx.lineTo(0, 60); ctx.lineTo(-10, 12); ctx.lineTo(-60, 0); ctx.lineTo(-10, -12);
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+  // center
+  ctx.fillStyle = 'rgba(255,255,255,1)';
+  ctx.beginPath(); ctx.arc(0, 0, 10, 0, Math.PI * 2); ctx.fill();
   const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex;
 }
 
@@ -1071,26 +1134,41 @@ function updateParts() {
   for (let i = sparkPool.active.length - 1; i >= 0; i--) { const p = sparkPool.active[i]; p.vel.y -= 0.02 * dt; p.mesh.position.addScaledVector(p.vel, dt); p.life -= 0.05 * dt; p.mesh.material.opacity = Math.max(0, p.life); if (p.life <= 0) sparkPool.release(p); }
 }
 
+// ✅ جديد: نظام الدخان
 const smokePool = [];
 function spawnExplosionSmoke(pos, count = 15) {
   for (let i = 0; i < count; i++) {
     const size = 0.35 + Math.random() * 0.35;
-    const smoke = new THREE.Mesh(new THREE.SphereGeometry(size, 6, 6), new THREE.MeshBasicMaterial({ color: 0x444444, transparent: true, opacity: 0.6, depthWrite: false }));
+    const smoke = new THREE.Mesh(
+      new THREE.SphereGeometry(size, 6, 6),
+      new THREE.MeshBasicMaterial({ color: 0x444444, transparent: true, opacity: 0.6, depthWrite: false })
+    );
     smoke.position.copy(pos);
     smoke.position.x += (Math.random() - 0.5) * 1.8;
     smoke.position.y += Math.random() * 1.5;
     smoke.position.z += (Math.random() - 0.5) * 1.8;
     scene.add(smoke);
-    smokePool.push({ mesh: smoke, vel: new THREE.Vector3((Math.random() - 0.5) * 0.04, 0.03 + Math.random() * 0.05, (Math.random() - 0.5) * 0.04), life: 1 });
+    smokePool.push({
+      mesh: smoke,
+      vel: new THREE.Vector3((Math.random() - 0.5) * 0.04, 0.03 + Math.random() * 0.05, (Math.random() - 0.5) * 0.04),
+      life: 1
+    });
   }
 }
 function spawnMuzzleSmoke(camPos, dir) {
   for (let i = 0; i < 2; i++) {
-    const smoke = new THREE.Mesh(new THREE.SphereGeometry(0.07 + Math.random() * 0.04, 5, 5), new THREE.MeshBasicMaterial({ color: 0x999999, transparent: true, opacity: 0.35, depthWrite: false }));
+    const smoke = new THREE.Mesh(
+      new THREE.SphereGeometry(0.07 + Math.random() * 0.04, 5, 5),
+      new THREE.MeshBasicMaterial({ color: 0x999999, transparent: true, opacity: 0.35, depthWrite: false })
+    );
     smoke.position.copy(camPos).addScaledVector(dir, 0.6 + Math.random() * 0.3);
     smoke.position.y -= 0.15 + Math.random() * 0.1;
     scene.add(smoke);
-    smokePool.push({ mesh: smoke, vel: new THREE.Vector3(dir.x * 0.02 + (Math.random() - 0.5) * 0.02, 0.015 + Math.random() * 0.02, dir.z * 0.02 + (Math.random() - 0.5) * 0.02), life: 0.5 });
+    smokePool.push({
+      mesh: smoke,
+      vel: new THREE.Vector3(dir.x * 0.02 + (Math.random() - 0.5) * 0.02, 0.015 + Math.random() * 0.02, dir.z * 0.02 + (Math.random() - 0.5) * 0.02),
+      life: 0.5
+    });
   }
 }
 function updateSmoke() {
@@ -1105,9 +1183,13 @@ function updateSmoke() {
   }
 }
 
+// ✅ جديد: نظام decals (آثار الرصاص)
 const decals = [];
 const decalGeo = new THREE.CircleGeometry(0.06, 6);
-const decalMat = new THREE.MeshBasicMaterial({ color: 0x1a1a1a, transparent: true, opacity: 0.9, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
+const decalMat = new THREE.MeshBasicMaterial({
+  color: 0x1a1a1a, transparent: true, opacity: 0.9,
+  depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4
+});
 function addBulletDecal(point, normal) {
   const mesh = new THREE.Mesh(decalGeo, decalMat);
   mesh.position.copy(point).addScaledVector(normal, 0.02);
@@ -1115,21 +1197,31 @@ function addBulletDecal(point, normal) {
   mesh.rotation.z = Math.random() * Math.PI;
   scene.add(mesh);
   decals.push({ mesh, life: CFG.DECAL_LIFE });
-  if (decals.length > CFG.MAX_DECALS) { const old = decals.shift(); scene.remove(old.mesh); }
+  if (decals.length > CFG.MAX_DECALS) {
+    const old = decals.shift();
+    scene.remove(old.mesh);
+  }
 }
 function updateDecals() {
-  for (let i = decals.length - 1; i >= 0; i--) { decals[i].life -= deltaTime; if (decals[i].life <= 0) { scene.remove(decals[i].mesh); decals.splice(i, 1); } }
+  for (let i = decals.length - 1; i >= 0; i--) {
+    decals[i].life -= deltaTime;
+    if (decals[i].life <= 0) { scene.remove(decals[i].mesh); decals.splice(i, 1); }
+  }
 }
-function clearDecals() { for (const d of decals) scene.remove(d.mesh); decals.length = 0; }
-function clearSmoke() { for (const s of smokePool) scene.remove(s.mesh); smokePool.length = 0; }
+function clearDecals() {
+  for (const d of decals) scene.remove(d.mesh);
+  decals.length = 0;
+}
+function clearSmoke() {
+  for (const s of smokePool) scene.remove(s.mesh);
+  smokePool.length = 0;
+}
 
 const dyingEnemies = [];
 function startDeathAnimation(en) {
   const g = en.g;
   g.userData.deathTime = 0.5;
   g.userData.deathDir = Math.random() > 0.5 ? 1 : -1;
-  g.userData.mixer = en.mixer || null;
-  g.userData.isGLTF = !!en.mixer;
   dyingEnemies.push(g);
 }
 function updateDeathAnimations() {
@@ -1138,48 +1230,19 @@ function updateDeathAnimations() {
     const g = dyingEnemies[i];
     g.userData.deathTime -= dt * 0.04;
     const p = Math.max(0, g.userData.deathTime / 0.5);
-    
-    if (g.userData.isGLTF) {
-      g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -Math.PI / 2, 0.15);
-      g.traverse(c => {
-        if (c.isMesh && c.material) {
-          c.material.transparent = true;
-          c.material.opacity = p;
-        }
-      });
-    } else {
-      const spr = g.children.find(c => c.isSprite);
-      if (spr && spr.userData.baseHeight) {
-        spr.material.opacity = p;
-        spr.scale.y = spr.userData.baseHeight * (0.15 + p * 0.85);
-        spr.position.y = spr.userData.baseY * (0.5 + p * 0.5);
-      }
-      const bars = g.children.filter(c => c.geometry && (c.geometry.type === 'PlaneGeometry' || c.geometry.type === 'CircleGeometry'));
-      bars.forEach(b => { if (b.material.transparent) b.material.opacity = p; });
-      g.rotation.z = (1 - p) * 0.5 * g.userData.deathDir;
+    const spr = g.children.find(c => c.isSprite);
+    if (spr && spr.userData.baseHeight) {
+      spr.material.opacity = p;
+      spr.scale.y = spr.userData.baseHeight * (0.15 + p * 0.85);
+      spr.position.y = spr.userData.baseY * (0.5 + p * 0.5);
     }
-    
-    if (g.userData.deathTime <= 0) {
-      // ✅ إصلاح تسرب الذاكرة: حذف العدو من مصفوفة enemies
-      const eIdx = enemies.findIndex(e => e.g === g);
-      if (eIdx > -1) enemies.splice(eIdx, 1);
-      
-      scene.remove(g);
-      if (g.userData.mixer) { try { g.userData.mixer.stopAllAction(); } catch(e) {} }
-      
-      g.traverse(c => {
-        if ((c.isMesh || c.isSprite) && c.material) {
-          if (Array.isArray(c.material)) c.material.forEach(m => m.dispose());
-          else c.material.dispose();
-        }
-        if (c.geometry && !c.geometry._shared) c.geometry.dispose();
-      });
-      
-      dyingEnemies.splice(i, 1);
-    }
+    const bars = g.children.filter(c => c.geometry && (c.geometry.type === 'PlaneGeometry' || c.geometry.type === 'CircleGeometry'));
+    bars.forEach(b => { if (b.material.transparent) b.material.opacity = p; });
+    g.rotation.z = (1 - p) * 0.5 * g.userData.deathDir;
+    if (g.userData.deathTime <= 0) { scene.remove(g); dyingEnemies.splice(i, 1); }
   }
 }
-  
+
 function showDamageIndicator(worldPos) {
   const localPos = worldPos.clone().sub(camera.position);
   const camDir = new THREE.Vector3(); camera.getWorldDirection(camDir);
@@ -1208,10 +1271,14 @@ function showSpawnEffect(worldPos) {
   setTimeout(() => ring.remove(), 800);
 }
 
+// ✅ استبدال muzzleFlash القديم بنظام متعدد الطبقات
 const starTex = makeStarTexture();
 const muzzleFlashGroup = new THREE.Group();
 muzzleFlashGroup.position.set(0.12, -0.15, -0.85);
-const flashStar = new THREE.Sprite(new THREE.SpriteMaterial({ map: starTex, color: 0xffeedd, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false }));
+const flashStar = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: starTex, color: 0xffeedd, transparent: true, opacity: 0,
+  blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false
+}));
 flashStar.scale.set(1, 1, 1);
 muzzleFlashGroup.add(flashStar);
 const flashLight = new THREE.PointLight(0xffaa44, 0, 12);
@@ -1236,7 +1303,7 @@ function updateShells() {
     const s = shells[i];
     s.vel.y -= 0.008 * dt; s.mesh.position.addScaledVector(s.vel, dt); s.mesh.rotation.x += 0.2 * dt; s.mesh.rotation.z += 0.15 * dt;
     if (s.mesh.position.y < 0) { s.mesh.position.y = 0; s.vel.y *= -0.3; s.vel.x *= 0.5; s.vel.z *= 0.5; }
-    s.life -= dt; if (s.life <= 0) { scene.remove(s.mesh); s.mesh.geometry.dispose(); s.mesh.material.dispose(); shells.splice(i, 1); }
+    s.life -= dt; if (s.life <= 0) { scene.remove(s.mesh); shells.splice(i, 1); }
   }
 }
 
@@ -1392,9 +1459,9 @@ function renderShopAmmo() {
 }
 function renderShopMercsAndArmor() {
   const c = D.mercsListContainer; if (!c) return;
-  let html = `<div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">👥 مرتزق عادي</div><div class="shop-item-desc">صحة: 80+موجة×6</div><div class="shop-item-price">💰 800</div></div><button class="shop-item-btn" onclick="buyMercenary()">شراء</button></div>`;
+  let html = `<div class="shop-item"><img class="portrait" src="art/merc_normal.png"><div class="shop-item-info"><div class="shop-item-name">👥 مرتزق عادي</div><div class="shop-item-desc">صحة: 80+موجة×6</div><div class="shop-item-price">💰 800</div></div><button class="shop-item-btn" onclick="buyMercenary()">شراء</button></div>`;
   if (gs.shopLevel >= 2) {
-    html += `<div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">👑 نخبة</div><div class="shop-item-desc">صحة: 300+موجة×12</div><div class="shop-item-price">💰 1650</div></div><button class="shop-item-btn" onclick="buyEliteMercenary()">شراء</button></div>
+    html += `<div class="shop-item"><img class="portrait" src="art/merc_elite.png"><div class="shop-item-info"><div class="shop-item-name">👑 نخبة</div><div class="shop-item-desc">صحة: 300+موجة×12</div><div class="shop-item-price">💰 1650</div></div><button class="shop-item-btn" onclick="buyEliteMercenary()">شراء</button></div>
       <div class="shop-item"><div class="shop-item-info"><div class="shop-item-name">🛡️ درع جلدي</div><div class="shop-item-desc">-20% ضرر | 40 HP</div><div class="shop-item-price">💰 750</div></div><button class="shop-item-btn" onclick="buyArmor('leather')">شراء</button></div>`;
   }
   if (gs.shopLevel >= 3) {
@@ -1507,7 +1574,7 @@ function updateMercenaryManagementUI() {
     active.forEach(merc => {
       const idx = gs.mercenaries.indexOf(merc); const cmd = merc.command || 'auto';
       const div = document.createElement('div'); div.className = 'merc-card';
-      div.innerHTML = `<div class="merc-header"><span class="merc-name">${merc.isElite ? '👑 نخبة' : '👥 عادي'}</span><span class="merc-hp">❤️ ${Math.ceil(merc.hp)}/${merc.maxHp}</span></div><div style="font-size:11px;color:#888;margin-bottom:8px;">الأمر: <span style="color:#fff;">${cmd === 'attack' ? '⚔ هجوم' : cmd === 'defend' ? '🛡 دفاع' : cmd === 'retreat' ? '🏃 انسحاب' : '🤖 تلقائي'}</span></div><div class="merc-cmd-row"><button class="merc-cmd attack ${cmd === 'attack' ? 'active' : ''}" onclick="setMercCommand(${idx},'attack')">⚔</button><button class="merc-cmd defend ${cmd === 'defend' ? 'active' : ''}" onclick="setMercCommand(${idx},'defend')">🛡</button><button class="merc-cmd retreat ${cmd === 'retreat' ? 'active' : ''}" onclick="setMercCommand(${idx},'retreat')">🏃</button></div>`;
+      div.innerHTML = `<div class="merc-header"><img class="portrait" style="width:44px;height:44px;" src="${merc.isElite ? 'art/merc_elite.png' : 'art/merc_normal.png'}"><span class="merc-name">${merc.isElite ? '👑 نخبة' : '👥 عادي'}</span><span class="merc-hp">❤️ ${Math.ceil(merc.hp)}/${merc.maxHp}</span></div><div style="font-size:11px;color:#888;margin-bottom:8px;">الأمر: <span style="color:#fff;">${cmd === 'attack' ? '⚔ هجوم' : cmd === 'defend' ? '🛡 دفاع' : cmd === 'retreat' ? '🏃 انسحاب' : '🤖 تلقائي'}</span></div><div class="merc-cmd-row"><button class="merc-cmd attack ${cmd === 'attack' ? 'active' : ''}" onclick="setMercCommand(${idx},'attack')">⚔</button><button class="merc-cmd defend ${cmd === 'defend' ? 'active' : ''}" onclick="setMercCommand(${idx},'defend')">🛡</button><button class="merc-cmd retreat ${cmd === 'retreat' ? 'active' : ''}" onclick="setMercCommand(${idx},'retreat')">🏃</button></div>`;
       D.activeMercsList.appendChild(div);
     });
   }
@@ -1609,119 +1676,7 @@ function addHealthBar(g, y, fgColor) {
   const fg = new THREE.Mesh(CHAR_GEO.barFg, glowMat(fgColor)); fg.position.set(0, y, 0.01); g.add(fg);
   return fg;
 }
-
-// ═══════════════════════════════════════════════════════════════
-// 🎖️ تحميل جندي Mixamo الحقيقي من CDN
-// ═══════════════════════════════════════════════════════════════
-const SOLDIER_URL = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/models/gltf/Soldier.glb';
-const SOLDIER_Y_OFFSET = 0;
-const SOLDIER_ROTATION_Y = 0;
-const SOLDIER_SCALE = 1.0;
-
-let SOLDIER_READY = false;
-let SOLDIER_BASE = null;
-const SOLDIER_CLIPS = {};
-
-function loadSoldierModel() {
-  return new Promise((resolve) => {
-    if (typeof THREE.GLTFLoader === 'undefined') { console.warn('GLTFLoader missing — using procedural'); return resolve(); }
-    new THREE.GLTFLoader().load(SOLDIER_URL, (gltf) => {
-      SOLDIER_BASE = gltf.scene;
-      SOLDIER_BASE.traverse(c => {
-        if (c.isMesh) {
-          c.castShadow = true;
-          c.frustumCulled = false;
-          if (c.geometry) c.geometry._shared = true;
-        }
-      });
-      gltf.animations.forEach(clip => { SOLDIER_CLIPS[clip.name] = clip; });
-      SOLDIER_READY = !!(SOLDIER_CLIPS.Idle && SOLDIER_CLIPS.Walk);
-      console.log('✅ Soldier ready:', SOLDIER_READY, '| Clips:', Object.keys(SOLDIER_CLIPS));
-      resolve();
-    }, undefined, (err) => {
-      console.warn('❌ Soldier load failed — using procedural fallback:', err);
-      resolve();
-    });
-  });
-}
-
-function buildSoldierEnemy(isArmored) {
-  const wrapper = new THREE.Group();
-  const model = SkeletonUtils.clone(SOLDIER_BASE);
-  model.position.y = SOLDIER_Y_OFFSET;
-  model.rotation.y = SOLDIER_ROTATION_Y;
-  model.scale.setScalar(SOLDIER_SCALE * (isArmored ? 1.08 : 1.0));
-  
-  model.traverse(c => {
-    if (c.isMesh && c.material) {
-      c.material = c.material.clone();
-      if (isArmored && c.material.color) {
-        c.material.color.lerp(new THREE.Color(0x1a3a6b), 0.55);
-        c.material.color.multiplyScalar(0.72);
-        if (c.material.emissive) { c.material.emissive.setHex(0x0a1a3a); c.material.emissiveIntensity = 0.3; }
-      }
-    }
-  });
-  
-  wrapper.add(model);
-  const fgB = addHealthBar(wrapper, isArmored ? 2.25 : 2.1, 0x00ff44);
-  
-  const mixer = new THREE.AnimationMixer(model);
-  const actions = {
-    idle: mixer.clipAction(SOLDIER_CLIPS.Idle),
-    walk: mixer.clipAction(SOLDIER_CLIPS.Walk)
-  };
-  actions.idle.play();
-  
-  return { g: wrapper, fgB, mixer, actions, model, currentAnim: 'idle' };
-}
-
-function buildSoldierMerc(isElite) {
-  const wrapper = new THREE.Group();
-  const model = SkeletonUtils.clone(SOLDIER_BASE);
-  model.position.y = SOLDIER_Y_OFFSET;
-  model.rotation.y = SOLDIER_ROTATION_Y;
-  model.scale.setScalar(SOLDIER_SCALE * (isElite ? 1.1 : 1.0));
-  
-  const tint = new THREE.Color(isElite ? 0x0a2a0a : 0x2a5a2a);
-  const amount = isElite ? 0.65 : 0.45;
-  model.traverse(c => {
-    if (c.isMesh && c.material) {
-      c.material = c.material.clone();
-      if (c.material.color) {
-        c.material.color.lerp(tint, amount);
-        if (isElite && c.material.emissive) { c.material.emissive.setHex(0x003300); c.material.emissiveIntensity = 0.25; }
-      }
-    }
-  });
-  
-  wrapper.add(model);
-  const hpBar = addHealthBar(wrapper, isElite ? 2.25 : 2.1, isElite ? 0x00ff88 : 0x00ff00);
-  
-  const mixer = new THREE.AnimationMixer(model);
-  const actions = {
-    idle: mixer.clipAction(SOLDIER_CLIPS.Idle),
-    walk: mixer.clipAction(SOLDIER_CLIPS.Walk)
-  };
-  actions.idle.play();
-  
-  return { g: wrapper, hpBar, mixer, actions, model, currentAnim: 'idle' };
-}
-
-function updateSoldierAnim(entity, isMoving, dt) {
-  if (!entity.mixer) return;
-  entity.mixer.update(dt / 60);
-  const target = isMoving ? 'walk' : 'idle';
-  if (entity.currentAnim !== target && entity.actions[target]) {
-    if (entity.actions[entity.currentAnim]) entity.actions[entity.currentAnim].fadeOut(0.2);
-    entity.actions[target].reset().fadeIn(0.2).play();
-    entity.currentAnim = target;
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// 🔧 دوال البناء الإجرائي (Fallback احتياطي فقط)
-// ═══════════════════════════════════════════════════════════════
+// ✅ تعديل: إرجاع legs
 function buildStandardTrooper() {
   const g = new THREE.Group();
   const cloth = stdMat(0x141414, 0.9, 0.1), vestM = stdMat(0x8b0000, 0.7, 0.2);
@@ -1788,17 +1743,11 @@ function makeCharacterBillboard(tex, height) {
   return g;
 }
 
-// ✅ mkEnemy المعدلة — تستخدم glTF أولاً
 function mkEnemy(x, z, wave, isArmored = false) {
-  let g, fgB, legs = null, mixer = null, actions = null, model = null, currentAnim = 'idle';
-  if (SOLDIER_READY) {
-    const b = buildSoldierEnemy(isArmored);
-    g = b.g; fgB = b.fgB; mixer = b.mixer; actions = b.actions; model = b.model; currentAnim = b.currentAnim;
-  } else {
-    const tex = isArmored ? ART.armored : ART.enemy;
-    if (tex) { g = makeCharacterBillboard(tex, isArmored ? 2.4 : 2.2); fgB = addHealthBar(g, isArmored ? 2.6 : 2.4, 0x00ff44); }
-    else { const b = isArmored ? buildArmoredTrooper() : buildStandardTrooper(); g = b.g; fgB = b.fgB; legs = b.legs; }
-  }
+  let g, fgB, legs = null;
+  const tex = isArmored ? ART.armored : ART.enemy;
+  if (tex) { g = makeCharacterBillboard(tex, isArmored ? 2.4 : 2.2); fgB = addHealthBar(g, isArmored ? 2.6 : 2.4, 0x00ff44); }
+  else { const b = isArmored ? buildArmoredTrooper() : buildStandardTrooper(); g = b.g; fgB = b.fgB; legs = b.legs; }
   let spawnX = x, spawnZ = z;
   if (checkCollision(x, z, 0.8)) {
     const len = Math.sqrt(x * x + z * z);
@@ -1817,26 +1766,19 @@ function mkEnemy(x, z, wave, isArmored = false) {
   const hp = Math.round(baseHp * diff.hpMul);
   const baseSpeed = isArmored ? (0.005 + wave * 0.0015) : (0.010 + wave * 0.0025);
   const speed = baseSpeed * diff.speedMul;
-  const en = { g, fgB, legs, hp, maxHp: hp, speed, alive: true, sTmr: 50 + Math.random() * 70, bob: Math.random() * Math.PI * 2, hit: 0, isArmored, aiState: 'chase', stateTimer: 0, flankDir: 1, stuckFrames: 0, walkPhase: 0, mixer, actions, model, currentAnim };
+  const en = { g, fgB, legs, hp, maxHp: hp, speed, alive: true, sTmr: 50 + Math.random() * 70, bob: Math.random() * Math.PI * 2, hit: 0, isArmored, aiState: 'chase', stateTimer: 0, flankDir: 1, stuckFrames: 0, walkPhase: 0 };
   scene.add(g); enemies.push(en);
 }
-
-// ✅ createMercenary المعدلة — تستخدم glTF أولاً
 function createMercenary(isElite = false) {
-  let g, hpBar, legs = null, mixer = null, actions = null, model = null, currentAnim = 'idle';
-  if (SOLDIER_READY) {
-    const b = buildSoldierMerc(isElite);
-    g = b.g; hpBar = b.hpBar; mixer = b.mixer; actions = b.actions; model = b.model; currentAnim = b.currentAnim;
-  } else {
-    const tex = isElite ? ART.elite : ART.merc;
-    if (tex) { g = makeCharacterBillboard(tex, isElite ? 2.3 : 2.15); hpBar = addHealthBar(g, isElite ? 2.5 : 2.35, isElite ? 0x00ff88 : 0x00ff00); }
-    else { const b = buildMercModel(isElite); g = b.g; hpBar = b.hpBar; legs = b.legs; }
-  }
+  let g, hpBar, legs = null;
+  const tex = isElite ? ART.elite : ART.merc;
+  if (tex) { g = makeCharacterBillboard(tex, isElite ? 2.3 : 2.15); hpBar = addHealthBar(g, isElite ? 2.5 : 2.35, isElite ? 0x00ff88 : 0x00ff00); }
+  else { const b = buildMercModel(isElite); g = b.g; hpBar = b.hpBar; legs = b.legs; }
   const sp = camera.position.clone(); sp.x += (Math.random() - 0.5) * 5; sp.z += (Math.random() - 0.5) * 5; sp.y = 0;
   g.position.copy(sp); scene.add(g);
   const startHp = isElite ? calcStat(300, 25, gs.wave) : calcStat(80, 12, gs.wave);
   const dmg = isElite ? { min: calcStat(60, 5, gs.wave), max: calcStat(85, 7, gs.wave) } : { min: calcStat(22, 2, gs.wave), max: calcStat(30, 3, gs.wave) };
-  const merc = { g, hpBar, legs, hp: startHp, maxHp: startHp, alive: true, shootTimer: isElite ? 35 : 25, isElite, damage: dmg, command: 'auto', commandEndTime: 0, commandIcon: null, walkPhase: 0, mixer, actions, model, currentAnim };
+  const merc = { g, hpBar, legs, hp: startHp, maxHp: startHp, alive: true, shootTimer: isElite ? 35 : 25, isElite, damage: dmg, command: 'auto', commandEndTime: 0, commandIcon: null, walkPhase: 0 };
   gs.mercenaries.push(merc); gs.mercenaryCount++;
   return merc;
 }
@@ -1845,7 +1787,6 @@ function updateEnemyBar(en) {
   en.fgB.scale.x = r; en.fgB.position.x = -(1 - r) * 0.4;
   en.fgB.material.color.setHex(r > 0.5 ? 0x00ff44 : r > 0.25 ? 0xffaa00 : 0xff2200);
 }
-
 function updateEnemies() {
   const dt = deltaTime;
   for (let i = 0; i < enemies.length; i++) {
@@ -1896,11 +1837,8 @@ function updateEnemies() {
     }
     en.g.position.y = Math.sin(Date.now() * 0.0025 + en.bob) * 0.06;
     en.g.rotation.y = Math.atan2(targetPos.x - p.x, targetPos.z - p.z);
-
-    // تحريك (glTF → procedural → sprite)
-    if (en.mixer) {
-      updateSoldierAnim(en, isMoving, dt);
-    } else if (en.legs && en.legs.length === 2) {
+    // ✅ جديد: تحريك الأرجل أو sway
+    if (en.legs && en.legs.length === 2) {
       if (isMoving) {
         en.walkPhase += dt * 0.25;
         const swing = Math.sin(en.walkPhase * 2) * 0.5;
@@ -1911,6 +1849,7 @@ function updateEnemies() {
         en.legs[1].rotation.x *= 0.9;
       }
     } else {
+      // sway للـsprites
       if (isMoving) {
         en.walkPhase += dt * 0.2;
         en.g.rotation.z = Math.sin(en.walkPhase * 2) * 0.05;
@@ -2050,6 +1989,7 @@ function shoot() {
   shake = weapon.fireRate < 10 ? 0.08 : 0.06;
   gs.camPitch += 0.015 + Math.random() * 0.01;
   gs.camYaw += (Math.random() - 0.5) * 0.008;
+  // ✅ جديد: flash متعدد الطبقات
   flashStar.material.opacity = 1;
   flashStar.material.rotation = Math.random() * Math.PI;
   flashStar.scale.setScalar(0.85 + Math.random() * 0.4);
@@ -2062,6 +2002,7 @@ function shoot() {
     D.weapon.classList.add('recoil');
     setTimeout(() => { if (D.weapon) D.weapon.classList.remove('recoil'); }, 100);
   }
+  // ✅ جديد: دخان من الفوهة
   camera.getWorldDirection(_smokeDir);
   spawnMuzzleSmoke(camera.position, _smokeDir);
   let best = null, bd = Infinity;
@@ -2117,6 +2058,7 @@ function shoot() {
         showDamageNumber(hitEnemy.g.position.clone().add(_v2.set(0, 2.5, 0)), finalDmg, false);
         if (hitEnemy.hp <= 0) killEnemy(hitEnemy); else updateEnemyBar(hitEnemy);
       } else {
+        // ✅ جديد: decal على الجدار
         if (its[0].face && its[0].object && its[0].object.matrixWorld) {
           const nrm = its[0].face.normal.clone().transformDirection(its[0].object.matrixWorld);
           addBulletDecal(its[0].point, nrm);
@@ -2209,8 +2151,8 @@ function updateLoot() {
         playSound('loot_rare');
       }
       playSound('loot');
-      scene.remove(loot.mesh); loot.mesh.geometry.dispose(); loot.mesh.material.dispose(); lootDrops.splice(i, 1); updateInventoryUI();
-    } else if (now - loot.spawnTime > loot.duration) { scene.remove(loot.mesh); loot.mesh.geometry.dispose(); loot.mesh.material.dispose(); lootDrops.splice(i, 1); }
+      scene.remove(loot.mesh); lootDrops.splice(i, 1); updateInventoryUI();
+    } else if (now - loot.spawnTime > loot.duration) { scene.remove(loot.mesh); lootDrops.splice(i, 1); }
   }
   if (gs.temporaryWeapon && now > gs.temporaryWeapon.expiry) {
     const tw = gs.temporaryWeapon; gs.temporaryWeapon = null;
@@ -2249,6 +2191,7 @@ function explodeGrenade(g) {
   const light = new THREE.PointLight(0xff6600, 6, 12); light.position.copy(g.position); scene.add(light);
   setTimeout(() => scene.remove(light), 400);
   sparks(g.position, 25, 0xff6600, 0xff8800);
+  // ✅ جديد: دخان الانفجار
   spawnExplosionSmoke(g.position, 16);
   shake = 0.35; haptic(80);
   for (let i = 0; i < enemies.length; i++) {
@@ -2261,7 +2204,7 @@ function explodeGrenade(g) {
       if (en.hp <= 0) killEnemy(en); else updateEnemyBar(en);
     }
   }
-  scene.remove(g.mesh); g.mesh.geometry.dispose(); g.mesh.material.dispose(); grenades.splice(grenades.indexOf(g), 1);
+  scene.remove(g.mesh); grenades.splice(grenades.indexOf(g), 1);
   playSound('explosion');
   setTimeout(() => { if (grenadeCount < 3) { grenadeCount++; updateGrenadeUI(); } }, 8000);
 }
@@ -2399,13 +2342,20 @@ function takeDamage(d, sourcePos = null) {
 
 function gameOver() {
   gs.running = false;
-  if (gs.waveCountdownActive) { gs.waveCountdownActive = false; if (D.waveCountdown) D.waveCountdown.classList.remove('show'); }
+  if (gs.waveCountdownActive) {
+    gs.waveCountdownActive = false;
+    if (D.waveCountdown) D.waveCountdown.classList.remove('show');
+  }
   document.getElementById('go-score').textContent = gs.score.toLocaleString();
   document.getElementById('go-wave').textContent = gs.wave;
   document.getElementById('go-kills').textContent = gs.kills;
   D.gameover.style.display = 'flex';
   const animEls = D.gameover.querySelectorAll('.go-bg, .go-skull, .go-title, .go-subline, .go-stat, #retry-btn, #new-game-btn, #reset-all-btn');
-  animEls.forEach(el => { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
+  animEls.forEach(el => {
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = '';
+  });
   saveGame();
 }
 function nextWave() {
@@ -2581,11 +2531,15 @@ function updatePlayer() {
     gs.damageBoost = false; gs.damageBoostCooldownEnd = performance.now() + 5000;
     if (D.powerUp) D.powerUp.style.opacity = '0'; pl1.color.setHex(0xff6622);
   }
+  // ✅ جديد: تحديث flashStar و flashLight
   if (muzzleTimer > 0) {
     muzzleTimer -= dt;
     flashStar.material.opacity = Math.max(0, muzzleTimer * 0.35);
     flashLight.intensity = Math.max(0, muzzleTimer * 1.5);
-    if (muzzleTimer <= 0) { flashStar.material.opacity = 0; flashLight.intensity = 0; }
+    if (muzzleTimer <= 0) {
+      flashStar.material.opacity = 0;
+      flashLight.intensity = 0;
+    }
   }
   let _onTarget = false;
   const _aimAsst = (DIFFICULTY[gs.difficulty] || DIFFICULTY.normal).aimAssist;
@@ -2607,59 +2561,119 @@ function updateMinimap() {
   const W = 110, H = 110, cx = W / 2, cy = H / 2;
   const scale = W / (AR * 2);
   minimapCtx.clearRect(0, 0, W, H);
-  if (minimapReady) { minimapCtx.globalAlpha = 0.5; minimapCtx.drawImage(minimapImg, 0, 0, W, H); minimapCtx.globalAlpha = 1; }
-  else { minimapCtx.fillStyle = 'rgba(5,12,22,0.85)'; minimapCtx.fillRect(0, 0, W, H); }
-  const zones = [{ l: 'A', x: -28, z: -28, c: 'rgba(0,255,136,0.5)' },{ l: 'B', x: 28, z: -28, c: 'rgba(255,68,68,0.5)' },{ l: 'C', x: -28, z: 28, c: 'rgba(68,136,255,0.5)' },{ l: 'D', x: 28, z: 28, c: 'rgba(255,170,0,0.5)' }];
-  minimapCtx.font = 'bold 9px Courier New'; minimapCtx.textAlign = 'center'; minimapCtx.textBaseline = 'middle';
-  zones.forEach(z => { minimapCtx.fillStyle = z.c; minimapCtx.fillText(z.l, cx + z.x * scale, cy + z.z * scale); });
+  if (minimapReady) {
+    minimapCtx.globalAlpha = 0.5;
+    minimapCtx.drawImage(minimapImg, 0, 0, W, H);
+    minimapCtx.globalAlpha = 1;
+  } else {
+    minimapCtx.fillStyle = 'rgba(5,12,22,0.85)';
+    minimapCtx.fillRect(0, 0, W, H);
+  }
+  const zones = [
+    { l: 'A', x: -28, z: -28, c: 'rgba(0,255,136,0.5)' },
+    { l: 'B', x: 28, z: -28, c: 'rgba(255,68,68,0.5)' },
+    { l: 'C', x: -28, z: 28, c: 'rgba(68,136,255,0.5)' },
+    { l: 'D', x: 28, z: 28, c: 'rgba(255,170,0,0.5)' }
+  ];
+  minimapCtx.font = 'bold 9px Courier New';
+  minimapCtx.textAlign = 'center';
+  minimapCtx.textBaseline = 'middle';
+  zones.forEach(z => {
+    minimapCtx.fillStyle = z.c;
+    minimapCtx.fillText(z.l, cx + z.x * scale, cy + z.z * scale);
+  });
   for (let i = 0; i < colliders.length; i++) {
-    const c = colliders[i]; const mesh = obstacleMeshes[i];
+    const c = colliders[i];
+    const mesh = obstacleMeshes[i];
     if (!mesh || !mesh.geometry) continue;
-    const worldW = c.max.x - c.min.x; const worldH = c.max.z - c.min.z;
+    const worldW = c.max.x - c.min.x;
+    const worldH = c.max.z - c.min.z;
     if (worldW > 50 || worldH > 50) continue;
     const isCylinder = mesh.geometry.type === 'CylinderGeometry';
     if (isCylinder) {
-      const ccx = cx + (c.min.x + worldW / 2) * scale; const ccy = cy + (c.min.z + worldH / 2) * scale;
-      const radius = Math.max(worldW, worldH) * scale / 2; const isPillar = worldW > 1;
-      minimapCtx.fillStyle = isPillar ? '#66ccff' : '#4488aa'; minimapCtx.strokeStyle = isPillar ? '#ccedff' : '#66aadd'; minimapCtx.lineWidth = 0.6;
-      minimapCtx.beginPath(); minimapCtx.arc(ccx, ccy, Math.max(radius, 1.5), 0, Math.PI * 2); minimapCtx.fill(); minimapCtx.stroke();
+      const ccx = cx + (c.min.x + worldW / 2) * scale;
+      const ccy = cy + (c.min.z + worldH / 2) * scale;
+      const radius = Math.max(worldW, worldH) * scale / 2;
+      const isPillar = worldW > 1;
+      minimapCtx.fillStyle = isPillar ? '#66ccff' : '#4488aa';
+      minimapCtx.strokeStyle = isPillar ? '#ccedff' : '#66aadd';
+      minimapCtx.lineWidth = 0.6;
+      minimapCtx.beginPath();
+      minimapCtx.arc(ccx, ccy, Math.max(radius, 1.5), 0, Math.PI * 2);
+      minimapCtx.fill();
+      minimapCtx.stroke();
     } else {
-      const x = cx + c.min.x * scale; const y = cy + c.min.z * scale;
-      const w = Math.max(worldW * scale, 0.8); const h = Math.max(worldH * scale, 0.8);
-      minimapCtx.fillStyle = 'rgba(130,140,160,0.8)'; minimapCtx.fillRect(x, y, w, h);
+      const x = cx + c.min.x * scale;
+      const y = cy + c.min.z * scale;
+      const w = Math.max(worldW * scale, 0.8);
+      const h = Math.max(worldH * scale, 0.8);
+      minimapCtx.fillStyle = 'rgba(130,140,160,0.8)';
+      minimapCtx.fillRect(x, y, w, h);
     }
   }
-  minimapCtx.fillStyle = 'rgba(0,200,255,0.12)'; minimapCtx.beginPath(); minimapCtx.arc(cx, cy, 2.8 * scale, 0, Math.PI * 2); minimapCtx.fill();
-  minimapCtx.strokeStyle = 'rgba(0,220,255,0.9)'; minimapCtx.lineWidth = 1.5; minimapCtx.setLineDash([3, 2]);
-  minimapCtx.beginPath(); minimapCtx.arc(cx, cy, 2.8 * scale, 0, Math.PI * 2); minimapCtx.stroke(); minimapCtx.setLineDash([]);
+  minimapCtx.fillStyle = 'rgba(0,200,255,0.12)';
+  minimapCtx.beginPath();
+  minimapCtx.arc(cx, cy, 2.8 * scale, 0, Math.PI * 2);
+  minimapCtx.fill();
+  minimapCtx.strokeStyle = 'rgba(0,220,255,0.9)';
+  minimapCtx.lineWidth = 1.5;
+  minimapCtx.setLineDash([3, 2]);
+  minimapCtx.beginPath();
+  minimapCtx.arc(cx, cy, 2.8 * scale, 0, Math.PI * 2);
+  minimapCtx.stroke();
+  minimapCtx.setLineDash([]);
   for (let i = 0; i < lootDrops.length; i++) {
-    const loot = lootDrops[i]; let col = '#00ff00';
-    if (loot.type === 'legendary') col = '#ffd700'; else if (loot.type === 'rare') col = '#0088ff';
-    else if (loot.effect === 'ammo') col = '#ffff00'; else if (loot.effect === 'score') col = '#0088ff';
-    minimapCtx.fillStyle = col; minimapCtx.beginPath();
-    minimapCtx.arc(cx + loot.mesh.position.x * scale, cy + loot.mesh.position.z * scale, 1.8, 0, Math.PI * 2); minimapCtx.fill();
+    const loot = lootDrops[i];
+    let col = '#00ff00';
+    if (loot.type === 'legendary') col = '#ffd700';
+    else if (loot.type === 'rare') col = '#0088ff';
+    else if (loot.effect === 'ammo') col = '#ffff00';
+    else if (loot.effect === 'score') col = '#0088ff';
+    minimapCtx.fillStyle = col;
+    minimapCtx.beginPath();
+    minimapCtx.arc(cx + loot.mesh.position.x * scale, cy + loot.mesh.position.z * scale, 1.8, 0, Math.PI * 2);
+    minimapCtx.fill();
   }
   for (let i = 0; i < enemies.length; i++) {
     const en = enemies[i]; if (!en.alive) continue;
     minimapCtx.fillStyle = en.isArmored ? '#ff8800' : '#ff2222';
     minimapCtx.strokeStyle = en.isArmored ? '#ffcc66' : '#ff6666';
     minimapCtx.lineWidth = 0.5;
-    minimapCtx.beginPath(); minimapCtx.arc(cx + en.g.position.x * scale, cy + en.g.position.z * scale, en.isArmored ? 2.8 : 2.2, 0, Math.PI * 2);
-    minimapCtx.fill(); minimapCtx.stroke();
+    minimapCtx.beginPath();
+    minimapCtx.arc(cx + en.g.position.x * scale, cy + en.g.position.z * scale, en.isArmored ? 2.8 : 2.2, 0, Math.PI * 2);
+    minimapCtx.fill();
+    minimapCtx.stroke();
   }
   for (let i = 0; i < gs.mercenaries.length; i++) {
     const m = gs.mercenaries[i]; if (!m.alive) continue;
     minimapCtx.fillStyle = m.isElite ? '#00ffaa' : '#00ff44';
-    minimapCtx.beginPath(); minimapCtx.arc(cx + m.g.position.x * scale, cy + m.g.position.z * scale, 2.1, 0, Math.PI * 2); minimapCtx.fill();
+    minimapCtx.beginPath();
+    minimapCtx.arc(cx + m.g.position.x * scale, cy + m.g.position.z * scale, 2.1, 0, Math.PI * 2);
+    minimapCtx.fill();
   }
   camera.getWorldDirection(_minimapDir);
   const angle = Math.atan2(_minimapDir.z, _minimapDir.x);
-  const px = cx + camera.position.x * scale; const py = cy + camera.position.z * scale;
-  minimapCtx.fillStyle = 'rgba(0,255,136,0.3)'; minimapCtx.beginPath(); minimapCtx.arc(px, py, 7, 0, Math.PI * 2); minimapCtx.fill();
-  minimapCtx.save(); minimapCtx.translate(px, py); minimapCtx.rotate(angle);
-  minimapCtx.fillStyle = '#00ff88'; minimapCtx.strokeStyle = '#003322'; minimapCtx.lineWidth = 1;
-  minimapCtx.beginPath(); minimapCtx.moveTo(6, 0); minimapCtx.lineTo(-3.5, -4.5); minimapCtx.lineTo(-1.5, 0); minimapCtx.lineTo(-3.5, 4.5); minimapCtx.closePath();
-  minimapCtx.fill(); minimapCtx.stroke(); minimapCtx.restore();
+  const px = cx + camera.position.x * scale;
+  const py = cy + camera.position.z * scale;
+  minimapCtx.fillStyle = 'rgba(0,255,136,0.3)';
+  minimapCtx.beginPath();
+  minimapCtx.arc(px, py, 7, 0, Math.PI * 2);
+  minimapCtx.fill();
+  minimapCtx.save();
+  minimapCtx.translate(px, py);
+  minimapCtx.rotate(angle);
+  minimapCtx.fillStyle = '#00ff88';
+  minimapCtx.strokeStyle = '#003322';
+  minimapCtx.lineWidth = 1;
+  minimapCtx.beginPath();
+  minimapCtx.moveTo(6, 0);
+  minimapCtx.lineTo(-3.5, -4.5);
+  minimapCtx.lineTo(-1.5, 0);
+  minimapCtx.lineTo(-3.5, 4.5);
+  minimapCtx.closePath();
+  minimapCtx.fill();
+  minimapCtx.stroke();
+  minimapCtx.restore();
 }
 
 function shootEnemyBullet(startPos, targetPos) {
@@ -2678,9 +2692,12 @@ function updateEnemyBullets() {
     _bulletPrev.copy(b.mesh.position);
     b.mesh.position.addScaledVector(b.dir, b.speed * dt);
     b.life -= dt;
-    if (bulletHitsObstacle(_bulletPrev, b.mesh.position)) { sparks(b.mesh.position, 4, 0xff3300, 0xff6600); scene.remove(b.mesh); b.mesh.geometry.dispose(); b.mesh.material.dispose(); enemyBullets.splice(i, 1); continue; }
-    if (b.mesh.position.distanceTo(camera.position) < 1.0) { takeDamage((4 + Math.random() * 5) * dmgMult, b.source); scene.remove(b.mesh); b.mesh.geometry.dispose(); b.mesh.material.dispose(); enemyBullets.splice(i, 1); continue; }
-    if (b.life <= 0) { scene.remove(b.mesh); b.mesh.geometry.dispose(); b.mesh.material.dispose(); enemyBullets.splice(i, 1); }
+    if (bulletHitsObstacle(_bulletPrev, b.mesh.position)) {
+      sparks(b.mesh.position, 4, 0xff3300, 0xff6600);
+      scene.remove(b.mesh); enemyBullets.splice(i, 1); continue;
+    }
+    if (b.mesh.position.distanceTo(camera.position) < 1.0) { takeDamage((4 + Math.random() * 5) * dmgMult, b.source); scene.remove(b.mesh); enemyBullets.splice(i, 1); continue; }
+    if (b.life <= 0) { scene.remove(b.mesh); enemyBullets.splice(i, 1); }
   }
 }
 function shootAllyBullet(startPos, targetPos, merc) {
@@ -2701,7 +2718,7 @@ function updateAllyBullets() {
     _bulletPrev.copy(b.mesh.position);
     b.mesh.position.addScaledVector(b.dir, b.speed * dt);
     b.life -= dt;
-    if (bulletHitsObstacle(_bulletPrev, b.mesh.position)) { sparks(b.mesh.position, 4, b.isElite ? 0x00ff88 : 0x00ff00, 0xffffff); scene.remove(b.mesh); b.mesh.geometry.dispose(); b.mesh.material.dispose(); allyBullets.splice(i, 1); continue; }
+    if (bulletHitsObstacle(_bulletPrev, b.mesh.position)) { sparks(b.mesh.position, 4, b.isElite ? 0x00ff88 : 0x00ff00, 0xffffff); scene.remove(b.mesh); allyBullets.splice(i, 1); continue; }
     let hit = false;
     for (let j = 0; j < enemies.length; j++) {
       const en = enemies[j]; if (!en.alive) continue;
@@ -2711,10 +2728,10 @@ function updateAllyBullets() {
         sparks(b.mesh.position, b.isElite ? 10 : 6, b.isElite ? 0x00ff88 : 0x00ff00, 0xffffff);
         showDamageNumber(en.g.position.clone().add(_v2.set(0, 2.5, 0)), dmg, false);
         if (en.hp <= 0) killEnemy(en); else updateEnemyBar(en);
-        scene.remove(b.mesh); b.mesh.geometry.dispose(); b.mesh.material.dispose(); allyBullets.splice(i, 1); hit = true; break;
+        scene.remove(b.mesh); allyBullets.splice(i, 1); hit = true; break;
       }
     }
-    if (!hit && b.life <= 0) { scene.remove(b.mesh); b.mesh.geometry.dispose(); b.mesh.material.dispose(); allyBullets.splice(i, 1); }
+    if (!hit && b.life <= 0) { scene.remove(b.mesh); allyBullets.splice(i, 1); }
   }
 }
 
@@ -2756,10 +2773,8 @@ function updateMercenaries() {
       }
       if (shouldShoot) { merc.shootTimer -= dt; if (merc.shootTimer <= 0) { merc.shootTimer = (merc.isElite ? 35 : 25) + Math.random() * 25; shootAllyBullet(merc.g.position, target.g.position, merc); } }
     }
-    // تحريك (glTF → procedural)
-    if (merc.mixer) {
-      updateSoldierAnim(merc, mercMoving, dt);
-    } else if (merc.legs && merc.legs.length === 2) {
+    // ✅ جديد: تحريك أرجل المرتزقة
+    if (merc.legs && merc.legs.length === 2) {
       if (mercMoving) {
         merc.walkPhase += dt * 0.25;
         const swing = Math.sin(merc.walkPhase * 2) * 0.5;
@@ -2783,7 +2798,7 @@ function checkMercBulletCollisions() {
       const merc = gs.mercenaries[mi]; if (!merc.alive) continue;
       if (b.mesh.position.distanceTo(merc.g.position) < 0.8) {
         merc.hp -= (8 + Math.random() * 6) * dmgMult;
-        scene.remove(b.mesh); b.mesh.geometry.dispose(); b.mesh.material.dispose(); enemyBullets.splice(bi, 1);
+        scene.remove(b.mesh); enemyBullets.splice(bi, 1);
         const hpPct = Math.max(0, merc.hp / merc.maxHp); merc.hpBar.scale.x = hpPct; merc.hpBar.position.x = -(1 - hpPct) * 0.35;
         if (merc.hp <= 0) { merc.alive = false; if (merc.commandIcon && merc.commandIcon.parentNode) { merc.commandIcon.parentNode.removeChild(merc.commandIcon); merc.commandIcon = null; } sparks(merc.g.position, merc.isElite ? 25 : 15, merc.isElite ? 0x00ff88 : 0x00ff00, 0xffffff); playSound('enemyDeath'); }
         break;
@@ -2843,9 +2858,9 @@ function openDifficultyUI() {
     showConfirmDialog('⚠️ تغيير الصعوبة', 'لتغيير الصعوبة، يجب مسح تقدم المهمة الحالية أولاً.\n\n❌ سيتم حذف:\n- الموجة الحالية\n- النقاط\n- عدد القتلى\n\n✅ ستحتفظ بـ:\n- الأسلحة والترقيات\n- الإنجازات\n- المرتزقة في الاحتياط\n- مستوى المتجر\n- الدروع\n\nهل تريد مسح التقدم والمتابعة؟',
       () => {
         gs.wave = 1; gs.score = 0; gs.kills = 0; gs.hp = gs.maxHp;
-        for (let i = 0; i < gs.mercenaries.length; i++) { if (gs.mercenaries[i].mixer) { try { gs.mercenaries[i].mixer.stopAllAction(); } catch(e) {} } if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon); scene.remove(gs.mercenaries[i].g); }
+        for (let i = 0; i < gs.mercenaries.length; i++) { if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon); scene.remove(gs.mercenaries[i].g); }
         gs.mercenaries = []; gs.mercenaryCount = 0;
-        for (let i = 0; i < enemies.length; i++) { if (enemies[i].mixer) { try { enemies[i].mixer.stopAllAction(); } catch(e) {} } scene.remove(enemies[i].g); }
+        for (let i = 0; i < enemies.length; i++) scene.remove(enemies[i].g);
         enemies.length = 0;
         for (let i = 0; i < enemyBullets.length; i++) scene.remove(enemyBullets[i].mesh);
         enemyBullets.length = 0;
@@ -3012,15 +3027,12 @@ function showLoadingScreen(callback) {
   }, 100);
 }
 
-// ✅ startGame المعدلة — تحميل glTF أولاً
 function startGame() {
   initAudio(); loadGame(); initWeather(); resizeRainCanvas();
   D.menu.classList.add('hiding');
-  loadSoldierModel().then(() => {
-    showLoadingScreen(() => {
-      D.menu.style.display = 'none'; D.menu.classList.remove('hiding');
-      resetGame();
-    });
+  showLoadingScreen(() => {
+    D.menu.style.display = 'none'; D.menu.classList.remove('hiding');
+    resetGame();
   });
 }
 function retryGame() { D.gameover.style.display = 'none'; resetGame(); }
@@ -3028,33 +3040,26 @@ function resetGame() {
   comboCount = 0;
   if (comboTimer) { clearTimeout(comboTimer); comboTimer = null; }
   if (D.combo) D.combo.style.opacity = '0';
-  for (let i = 0; i < enemies.length; i++) {
-    if (enemies[i].mixer) { try { enemies[i].mixer.stopAllAction(); } catch(e) {} }
-    scene.remove(enemies[i].g);
-  }
+  for (let i = 0; i < enemies.length; i++) scene.remove(enemies[i].g);
   enemies.length = 0;
-  for (let i = 0; i < enemyBullets.length; i++) { scene.remove(enemyBullets[i].mesh); enemyBullets[i].mesh.geometry.dispose(); enemyBullets[i].mesh.material.dispose(); }
+  for (let i = 0; i < enemyBullets.length; i++) scene.remove(enemyBullets[i].mesh);
   enemyBullets.length = 0;
-  for (let i = 0; i < allyBullets.length; i++) { scene.remove(allyBullets[i].mesh); allyBullets[i].mesh.geometry.dispose(); allyBullets[i].mesh.material.dispose(); }
+  for (let i = 0; i < allyBullets.length; i++) scene.remove(allyBullets[i].mesh);
   allyBullets.length = 0;
   for (let i = 0; i < parts.length; i++) scene.remove(parts[i].mesh);
   parts.length = 0;
-  for (let i = 0; i < grenades.length; i++) { scene.remove(grenades[i].mesh); grenades[i].mesh.geometry.dispose(); grenades[i].mesh.material.dispose(); }
+  for (let i = 0; i < grenades.length; i++) scene.remove(grenades[i].mesh);
   grenades.length = 0;
-  for (let i = 0; i < lootDrops.length; i++) { scene.remove(lootDrops[i].mesh); lootDrops[i].mesh.geometry.dispose(); lootDrops[i].mesh.material.dispose(); }
+  for (let i = 0; i < lootDrops.length; i++) scene.remove(lootDrops[i].mesh);
   lootDrops.length = 0;
   for (let i = 0; i < gs.mercenaries.length; i++) {
-    if (gs.mercenaries[i].mixer) { try { gs.mercenaries[i].mixer.stopAllAction(); } catch(e) {} }
     if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon);
     scene.remove(gs.mercenaries[i].g);
   }
   gs.mercenaries.length = 0;
   rainDrops.length = 0; sparkPool.releaseAll();
   clearDecals(); clearSmoke();
-  for (const g of dyingEnemies) {
-    if (g.userData.mixer) { try { g.userData.mixer.stopAllAction(); } catch(e) {} }
-    scene.remove(g);
-  }
+  for (const g of dyingEnemies) scene.remove(g);
   dyingEnemies.length = 0;
   pVelX = 0; pVelZ = 0;
   Object.assign(gs, { running: true, hp: gs.maxHp, reloading: false, reloadTmr: 0, cd: 0, camYaw: 0, camPitch: 0, damageBoost: false, damageBoostEndTime: 0, damageBoostCooldownEnd: 0, speedBoost: false, speedBoostEndTime: 0, pauseStartTime: 0, _reloadRemainingAtPause: 0, armorActive: false, armorTimer: 0, mercenaries: [], mercenaryCount: 0, stepTimer: 0, temporaryWeapon: null, waveTotal: 0, waveKilled: 0, difficulty: settings.difficulty || 'normal', waveCountdownActive: false, waveCountdownEndTime: 0, waveCountdownLastDisplay: -1, _waveCountdownRemainingAtPause: 0 });
@@ -3090,4 +3095,4 @@ updateMercenaryUI();
 updateMenuStartButton();
 </script>
 </body>
-</html>
+  </html>
