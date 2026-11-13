@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SHADOW OPS - v1.7 3D</title>
+<title>SHADOW OPS - v1.6</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;user-select:none;}
@@ -556,7 +556,7 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <button id="start-btn" onclick="startGame()">▶ ابدأ القتال</button>
 <button id="difficulty-btn" onclick="openDifficultyUI()">⚙ الصعوبة: 🟡 متوسط</button>
 <button id="tutorial-menu-btn" onclick="openTutorialUI()">📖 دليل اللعب</button>
-<div class="menu-ver">v1.7 // 3D EDITION</div>
+<div class="menu-ver">v1.6 // AEGIS CORP</div>
 </div>
 
 <div id="gameover">
@@ -630,15 +630,16 @@ body{background:#000;overflow:hidden;font-family:'Courier New',monospace;touch-a
 <svg id="weapon" viewBox="0 0 230 150" xmlns="http://www.w3.org/2000/svg"></svg>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
 <script>
-  const CFG = {
+const CFG = {
   PLAYER_SPEED: 0.022, SPEED_BOOST_MULT: 1.4, ARENA_RADIUS: 36, WALL_HEIGHT: 10,
   MAX_ENEMIES: 24, ARMORED_WAVE_START: 7, COMBO_RESET_MS: 3000,
   POWERUP_DURATION: 8000, GRENADE_RADIUS: 6, GRENADE_DAMAGE: 90,
   FRICTION: 0.86, MAX_DAMAGE_NUMBERS: 15, AUTOSAVE_INTERVAL_MS: 30000,
   AIM_ASSIST: 0.22, RELOAD_TIME: 1.8, WAVE_COUNTDOWN_MS: 5000,
-  MAX_DECALS: 30, DECAL_LIFE: 600,
-  LOD_FULL_DIST: 22, LOD_CULL_DIST: 42
+  MAX_DECALS: 30, DECAL_LIFE: 600
 };
 const isMobile = /Android|iPhone|iPad|iPod|Mobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 0 && window.innerWidth < 900);
 
@@ -883,7 +884,9 @@ const zoneLetters = [
 zoneLetters.forEach(z => {
   const tex = makeZoneLetterTexture(z.letter, z.color);
   const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.9, depthWrite: false, side: THREE.DoubleSide }));
-  plane.rotation.x = -Math.PI / 2; plane.position.set(z.pos[0], 0.15, z.pos[1]); scene.add(plane);
+  plane.rotation.x = -Math.PI / 2;
+  plane.position.set(z.pos[0], 0.15, z.pos[1]);
+  scene.add(plane);
 });
 
 const spawnCircle = new THREE.Group();
@@ -1098,7 +1101,7 @@ function updateSmoke() {
     s.mesh.scale.multiplyScalar(1 + 0.012 * dt);
     s.life -= 0.012 * dt;
     s.mesh.material.opacity = Math.max(0, s.life * 0.6);
-    if (s.life <= 0) { scene.remove(s.mesh); s.mesh.geometry.dispose(); s.mesh.material.dispose(); smokePool.splice(i, 1); }
+    if (s.life <= 0) { scene.remove(s.mesh); smokePool.splice(i, 1); }
   }
 }
 
@@ -1118,236 +1121,52 @@ function updateDecals() {
   for (let i = decals.length - 1; i >= 0; i--) { decals[i].life -= deltaTime; if (decals[i].life <= 0) { scene.remove(decals[i].mesh); decals.splice(i, 1); } }
 }
 function clearDecals() { for (const d of decals) scene.remove(d.mesh); decals.length = 0; }
-function clearSmoke() { for (const s of smokePool) { scene.remove(s.mesh); s.mesh.geometry.dispose(); s.mesh.material.dispose(); } smokePool.length = 0; }
+function clearSmoke() { for (const s of smokePool) scene.remove(s.mesh); smokePool.length = 0; }
 
 const dyingEnemies = [];
-
-// ═══════════════════════════════════════════════════════════════
-// 🦴 نظام الشخصيات 3D الإجرائي (بديل glTF)
-// ═══════════════════════════════════════════════════════════════
-const HG = {
-  head:        new THREE.SphereGeometry(0.13, 12, 10),
-  helmet:      new THREE.SphereGeometry(0.145, 12, 10, 0, Math.PI * 2, 0, Math.PI * 0.7),
-  torso:       new THREE.BoxGeometry(0.4, 0.5, 0.25),
-  pelvis:      new THREE.BoxGeometry(0.32, 0.2, 0.22),
-  upperArm:    new THREE.CylinderGeometry(0.05, 0.055, 0.28, 8),
-  lowerArm:    new THREE.CylinderGeometry(0.045, 0.05, 0.26, 8),
-  hand:        new THREE.SphereGeometry(0.05, 6, 6),
-  upperLeg:    new THREE.CylinderGeometry(0.065, 0.07, 0.4, 8),
-  lowerLeg:    new THREE.CylinderGeometry(0.055, 0.06, 0.38, 8),
-  boot:        new THREE.BoxGeometry(0.1, 0.08, 0.22),
-  vest:        new THREE.BoxGeometry(0.44, 0.42, 0.29),
-  neck:        new THREE.CylinderGeometry(0.06, 0.06, 0.08, 8),
-  visor:       new THREE.BoxGeometry(0.16, 0.03, 0.02),
-  shoulderPad: new THREE.SphereGeometry(0.09, 8, 6),
-  shadow:      new THREE.CircleGeometry(0.35, 16)
-};
-Object.values(HG).forEach(geo => { if (geo && geo.isBufferGeometry) geo._shared = true; });
-
-function stdMat(color, rough = 0.7, metal = 0.3) { return new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal }); }
-function glowMat(color) { return new THREE.MeshBasicMaterial({ color }); }
-
-function buildRifle(bodyColor, glowColor) {
-  const r = new THREE.Group(), m = stdMat(bodyColor, 0.4, 0.7);
-  const body = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.09, 0.55), m); body.position.z = 0.25;
-  const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.35, 6), m); barrel.rotation.x = Math.PI / 2; barrel.position.z = 0.65;
-  const mag = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.17, 0.09), m); mag.position.set(0, -0.11, 0.22); mag.rotation.x = 0.3;
-  const stock = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.08, 0.18), m); stock.position.z = -0.08;
-  const dot = new THREE.Mesh(new THREE.SphereGeometry(0.016, 6, 6), glowMat(glowColor)); dot.position.set(0, 0.08, 0.35);
-  r.add(body, barrel, mag, stock, dot);
-  return r;
-}
-
-function addHealthBar(g, y, fgColor) {
-  const bg = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x333333, depthWrite: false, depthTest: false }));
-  bg.scale.set(0.8, 0.08, 1);
-  bg.position.set(0, y, 0);
-  g.add(bg);
-  const fg = new THREE.Sprite(new THREE.SpriteMaterial({ color: fgColor, depthWrite: false, depthTest: false }));
-  fg.scale.set(0.8, 0.08, 1);
-  fg.position.set(0, y, 0.01);
-  g.add(fg);
-  return fg;
-}
-
-function buildHumanoid(cfg) {
-  const root = new THREE.Group();
-  const mk = (c, r = 0.85, m = 0.1) => new THREE.MeshStandardMaterial({ color: c, roughness: r, metalness: m });
-  const skinMat   = mk(cfg.skin   ?? 0xc49a7a, 0.8, 0.05);
-  const shirtMat  = mk(cfg.shirt  ?? 0x1a1a1a, 0.9, 0.1);
-  const pantsMat  = mk(cfg.pants  ?? 0x0a0a0a, 0.9, 0.1);
-  const bootMat   = mk(0x050505, 0.7, 0.3);
-  const armorMat  = cfg.armor  ? mk(cfg.armor,  0.35, 0.8) : null;
-  const helmetMat = cfg.helmet ? mk(cfg.helmet, 0.5, 0.4)  : null;
-
-  const shadow = new THREE.Mesh(HG.shadow, new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.4, depthWrite: false }));
-  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.02; root.add(shadow);
-
-  const hips = new THREE.Group(); hips.position.y = 0.92; root.add(hips);
-  const pelvis = new THREE.Mesh(HG.pelvis, pantsMat); pelvis.castShadow = true; hips.add(pelvis);
-
-  const spine = new THREE.Group(); spine.position.y = 0.1; hips.add(spine);
-  const torso = new THREE.Mesh(HG.torso, shirtMat); torso.position.y = 0.25; torso.castShadow = true; spine.add(torso);
-  if (armorMat) { const vest = new THREE.Mesh(HG.vest, armorMat); vest.position.y = 0.25; vest.castShadow = true; spine.add(vest); }
-
-  const neck = new THREE.Group(); neck.position.y = 0.5; spine.add(neck);
-  neck.add(new THREE.Mesh(HG.neck, skinMat));
-
-  const head = new THREE.Group(); head.position.y = 0.15; neck.add(head);
-  const headMesh = new THREE.Mesh(HG.head, skinMat); headMesh.scale.set(0.9, 1, 0.95); headMesh.castShadow = true; head.add(headMesh);
-  if (helmetMat) { const helmet = new THREE.Mesh(HG.helmet, helmetMat); helmet.castShadow = true; head.add(helmet); }
-  const visor = new THREE.Mesh(HG.visor, new THREE.MeshBasicMaterial({ color: cfg.rifleGlow || 0xff3300 }));
-  visor.position.set(0, 0.02, 0.12); head.add(visor);
-
-  const buildArm = (sign) => {
-    const shoulder = new THREE.Group(); shoulder.position.set(sign * 0.22, 0.42, 0); spine.add(shoulder);
-    if (armorMat) { const pad = new THREE.Mesh(HG.shoulderPad, armorMat); pad.scale.setScalar(1.3); shoulder.add(pad); }
-    const upperArm = new THREE.Mesh(HG.upperArm, shirtMat); upperArm.position.y = -0.14; upperArm.castShadow = true; shoulder.add(upperArm);
-    const elbow = new THREE.Group(); elbow.position.y = -0.28; shoulder.add(elbow);
-    const lowerArm = new THREE.Mesh(HG.lowerArm, shirtMat); lowerArm.position.y = -0.13; lowerArm.castShadow = true; elbow.add(lowerArm);
-    const hand = new THREE.Group(); hand.position.y = -0.26; elbow.add(hand);
-    hand.add(new THREE.Mesh(HG.hand, skinMat));
-    return { shoulder, elbow, hand };
-  };
-  const leftArm  = buildArm(-1);
-  const rightArm = buildArm(1);
-
-  const rifle = buildRifle(cfg.rifleBody || 0x151515, cfg.rifleGlow || 0xff3300);
-  rifle.scale.setScalar(0.7); rifle.position.set(0, -0.02, 0.15); rifle.rotation.x = Math.PI / 2;
-  rightArm.hand.add(rifle);
-
-  const buildLeg = (sign) => {
-    const hip = new THREE.Group(); hip.position.set(sign * 0.1, -0.1, 0); hips.add(hip);
-    const upperLeg = new THREE.Mesh(HG.upperLeg, pantsMat); upperLeg.position.y = -0.2; upperLeg.castShadow = true; hip.add(upperLeg);
-    const knee = new THREE.Group(); knee.position.y = -0.4; hip.add(knee);
-    const lowerLeg = new THREE.Mesh(HG.lowerLeg, pantsMat); lowerLeg.position.y = -0.19; lowerLeg.castShadow = true; knee.add(lowerLeg);
-    const boot = new THREE.Mesh(HG.boot, bootMat); boot.position.set(0, -0.38, 0.05); boot.castShadow = true; knee.add(boot);
-    return { hip, knee };
-  };
-  const leftLeg  = buildLeg(-1);
-  const rightLeg = buildLeg(1);
-
-  return { root, parts: { hips, spine, neck, head, torso, leftArm, rightArm, leftLeg, rightLeg, rifle } };
-}
-
-function animateCharacter(parts, state, dt) {
-  if (!parts) return;
-  const p = state.walkPhase || 0;
-
-  if (state.isDead) {
-    parts.hips.rotation.x = THREE.MathUtils.lerp(parts.hips.rotation.x, -1.4, 0.12);
-    parts.hips.position.y = THREE.MathUtils.lerp(parts.hips.position.y, 0.35, 0.1);
-    parts.leftArm.shoulder.rotation.x  = THREE.MathUtils.lerp(parts.leftArm.shoulder.rotation.x,  -0.3, 0.1);
-    parts.rightArm.shoulder.rotation.x = THREE.MathUtils.lerp(parts.rightArm.shoulder.rotation.x, -0.3, 0.1);
-    parts.leftLeg.knee.rotation.x  = THREE.MathUtils.lerp(parts.leftLeg.knee.rotation.x,  0.6, 0.1);
-    parts.rightLeg.knee.rotation.x = THREE.MathUtils.lerp(parts.rightLeg.knee.rotation.x, 0.6, 0.1);
-    return;
-  }
-
-  if (state.isMoving) {
-    const swing = Math.sin(p * 2) * 0.55;
-    parts.leftLeg.hip.rotation.x   =  swing;
-    parts.rightLeg.hip.rotation.x  = -swing;
-    parts.leftLeg.knee.rotation.x  = Math.max(0,  Math.cos(p * 2)) * 0.55;
-    parts.rightLeg.knee.rotation.x = Math.max(0, -Math.cos(p * 2)) * 0.55;
-    if (!state.isAiming) {
-      parts.leftArm.shoulder.rotation.x  = -swing * 0.6;
-      parts.rightArm.shoulder.rotation.x =  swing * 0.6;
-      parts.leftArm.elbow.rotation.x  = -0.2;
-      parts.rightArm.elbow.rotation.x = -0.2;
-    }
-    parts.spine.position.y = 0.1 + Math.abs(Math.sin(p * 2)) * 0.025;
-  } else {
-    const breath = Math.sin(Date.now() * 0.002 + (state.bobOffset || 0)) * 0.012;
-    parts.spine.position.y = 0.1 + breath;
-    parts.leftLeg.hip.rotation.x  *= 0.9;
-    parts.rightLeg.hip.rotation.x *= 0.9;
-    parts.leftLeg.knee.rotation.x  *= 0.9;
-    parts.rightLeg.knee.rotation.x *= 0.9;
-    if (!state.isAiming) {
-      parts.leftArm.shoulder.rotation.x  *= 0.9;
-      parts.rightArm.shoulder.rotation.x *= 0.9;
-    }
-  }
-
-  if (state.isAiming) {
-    const pitch = state.aimPitch || 0;
-    parts.rightArm.shoulder.rotation.x = THREE.MathUtils.lerp(parts.rightArm.shoulder.rotation.x, -1.35 - pitch * 0.4, 0.25);
-    parts.rightArm.shoulder.rotation.z = THREE.MathUtils.lerp(parts.rightArm.shoulder.rotation.z, 0.08, 0.25);
-    parts.rightArm.elbow.rotation.x    = THREE.MathUtils.lerp(parts.rightArm.elbow.rotation.x, -0.12, 0.25);
-    parts.leftArm.shoulder.rotation.x  = THREE.MathUtils.lerp(parts.leftArm.shoulder.rotation.x, -1.2 - pitch * 0.3, 0.25);
-    parts.leftArm.shoulder.rotation.z  = THREE.MathUtils.lerp(parts.leftArm.shoulder.rotation.z, -0.45, 0.25);
-    parts.leftArm.elbow.rotation.x     = THREE.MathUtils.lerp(parts.leftArm.elbow.rotation.x, -0.65, 0.25);
-    parts.neck.rotation.x              = THREE.MathUtils.lerp(parts.neck.rotation.x, -pitch * 0.4, 0.25);
-  } else {
-    parts.neck.rotation.x *= 0.9;
-    if (state.isMoving) {
-      parts.rightArm.shoulder.rotation.z *= 0.9;
-      parts.leftArm.shoulder.rotation.z  *= 0.9;
-    }
-  }
-
-  if (state.isShooting && state.shootCooldown > 0) {
-    parts.rightArm.shoulder.rotation.x -= 0.06;
-    parts.rifle.position.z = 0.15 - Math.random() * 0.04;
-  } else {
-    parts.rifle.position.z = 0.15;
-  }
-}
-
-function buildStandardTrooper() {
-  const { root, parts } = buildHumanoid({ skin: 0xc49a7a, shirt: 0x141414, pants: 0x0a0a0a, helmet: 0x0f0f0f, rifleGlow: 0xff3300 });
-  const fgB = addHealthBar(root, 1.95, 0x00ff44);
-  return { g: root, fgB, legs: [parts.leftLeg.hip, parts.rightLeg.hip], parts };
-}
-function buildArmoredTrooper() {
-  const { root, parts } = buildHumanoid({ skin: 0xa08060, shirt: 0x101820, pants: 0x080808, armor: 0x2a4d8f, helmet: 0x1a3a6b, rifleGlow: 0x33aaff });
-  const fgB = addHealthBar(root, 2.05, 0x00ff44);
-  return { g: root, fgB, legs: [parts.leftLeg.hip, parts.rightLeg.hip], parts };
-}
-function buildMercModel(isElite) {
-  const { root, parts } = buildHumanoid({
-    skin: 0xb08870,
-    shirt: isElite ? 0x1e3320 : 0x2a3a1a,
-    pants: 0x0d0f0a,
-    armor: isElite ? 0x14291a : 0x1a1a1a,
-    helmet: isElite ? 0x0e1a10 : 0x0a0a0a,
-    rifleGlow: isElite ? 0x00ff66 : 0x00cc44
-  });
-  const hpBar = addHealthBar(root, 1.95, isElite ? 0x00ff88 : 0x00ff00);
-  return { g: root, hpBar, legs: [parts.leftLeg.hip, parts.rightLeg.hip], parts };
-}
-
 function startDeathAnimation(en) {
   const g = en.g;
   g.userData.deathTime = 0.5;
   g.userData.deathDir = Math.random() > 0.5 ? 1 : -1;
-  g.userData.parts = en.parts;
+  g.userData.mixer = en.mixer || null;
+  g.userData.isGLTF = !!en.mixer;
   dyingEnemies.push(g);
 }
-
-// ✅ إصلاح تسرب الذاكرة + تحريك الموت
 function updateDeathAnimations() {
   const dt = deltaTime;
   for (let i = dyingEnemies.length - 1; i >= 0; i--) {
     const g = dyingEnemies[i];
     g.userData.deathTime -= dt * 0.04;
     const p = Math.max(0, g.userData.deathTime / 0.5);
-
-    if (g.userData.parts) animateCharacter(g.userData.parts, { isDead: true }, dt);
-
-    g.rotation.z = (1 - p) * 0.5 * g.userData.deathDir;
-    g.traverse(c => {
-      if ((c.isMesh || c.isSprite) && c.material) {
-        c.material.transparent = true;
-        c.material.opacity = p;
+    
+    if (g.userData.isGLTF) {
+      g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -Math.PI / 2, 0.15);
+      g.traverse(c => {
+        if (c.isMesh && c.material) {
+          c.material.transparent = true;
+          c.material.opacity = p;
+        }
+      });
+    } else {
+      const spr = g.children.find(c => c.isSprite);
+      if (spr && spr.userData.baseHeight) {
+        spr.material.opacity = p;
+        spr.scale.y = spr.userData.baseHeight * (0.15 + p * 0.85);
+        spr.position.y = spr.userData.baseY * (0.5 + p * 0.5);
       }
-    });
-
+      const bars = g.children.filter(c => c.geometry && (c.geometry.type === 'PlaneGeometry' || c.geometry.type === 'CircleGeometry'));
+      bars.forEach(b => { if (b.material.transparent) b.material.opacity = p; });
+      g.rotation.z = (1 - p) * 0.5 * g.userData.deathDir;
+    }
+    
     if (g.userData.deathTime <= 0) {
+      // ✅ إصلاح تسرب الذاكرة: حذف العدو من مصفوفة enemies
+      const eIdx = enemies.findIndex(e => e.g === g);
+      if (eIdx > -1) enemies.splice(eIdx, 1);
+      
       scene.remove(g);
-
-      // تحرير المواد والهندسات الفريدة
+      if (g.userData.mixer) { try { g.userData.mixer.stopAllAction(); } catch(e) {} }
+      
       g.traverse(c => {
         if ((c.isMesh || c.isSprite) && c.material) {
           if (Array.isArray(c.material)) c.material.forEach(m => m.dispose());
@@ -1355,16 +1174,12 @@ function updateDeathAnimations() {
         }
         if (c.geometry && !c.geometry._shared) c.geometry.dispose();
       });
-
-      // ✅ حذف العدو من مصفوفة enemies — الجذر الحقيقي للتسرب
-      const eIdx = enemies.findIndex(e => e.g === g);
-      if (eIdx > -1) enemies.splice(eIdx, 1);
-
+      
       dyingEnemies.splice(i, 1);
     }
   }
 }
-
+  
 function showDamageIndicator(worldPos) {
   const localPos = worldPos.clone().sub(camera.position);
   const camDir = new THREE.Vector3(); camera.getWorldDirection(camDir);
@@ -1768,13 +1583,222 @@ const enemies = [], enemyBullets = [], allyBullets = [], lootDrops = [];
 const KNAMES = ['الصقر', 'العقرب', 'الظل', 'الرعد', 'المارد', 'الشبح', 'الفهد', 'التنين'];
 
 function calcStat(base, perWave, wave) { return base + Math.floor((wave - 1) * perWave * 0.4); }
+function stdMat(color, rough = 0.7, metal = 0.3) { return new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal }); }
+function glowMat(color) { return new THREE.MeshBasicMaterial({ color }); }
 
+const CHAR_GEO = {
+  leg: new THREE.CylinderGeometry(0.09, 0.11, 0.9, 6), boot: new THREE.BoxGeometry(0.14, 0.16, 0.24),
+  torso: new THREE.BoxGeometry(0.42, 0.6, 0.26), vest: new THREE.BoxGeometry(0.46, 0.38, 0.3),
+  shoulder: new THREE.SphereGeometry(0.13, 8, 6), arm: new THREE.CylinderGeometry(0.07, 0.08, 0.55, 6),
+  helmet: new THREE.SphereGeometry(0.19, 10, 8), lens: new THREE.SphereGeometry(0.045, 8, 8),
+  visor: new THREE.BoxGeometry(0.17, 0.05, 0.03),
+  barBg: new THREE.PlaneGeometry(0.8, 0.08), barFg: new THREE.PlaneGeometry(0.8, 0.08)
+};
+function buildRifle(bodyColor, glowColor) {
+  const r = new THREE.Group(), m = stdMat(bodyColor, 0.4, 0.7);
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.09, 0.55), m); body.position.z = 0.25;
+  const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.35, 6), m); barrel.rotation.x = Math.PI / 2; barrel.position.z = 0.65;
+  const mag = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.17, 0.09), m); mag.position.set(0, -0.11, 0.22); mag.rotation.x = 0.3;
+  const stock = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.08, 0.18), m); stock.position.z = -0.08;
+  const dot = new THREE.Mesh(new THREE.SphereGeometry(0.016, 6, 6), glowMat(glowColor)); dot.position.set(0, 0.08, 0.35);
+  r.add(body, barrel, mag, stock, dot);
+  return r;
+}
+function addHealthBar(g, y, fgColor) {
+  const bg = new THREE.Mesh(CHAR_GEO.barBg, glowMat(0x333333)); bg.position.set(0, y, 0); g.add(bg);
+  const fg = new THREE.Mesh(CHAR_GEO.barFg, glowMat(fgColor)); fg.position.set(0, y, 0.01); g.add(fg);
+  return fg;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 🎖️ تحميل جندي Mixamo الحقيقي من CDN
+// ═══════════════════════════════════════════════════════════════
+const SOLDIER_URL = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/models/gltf/Soldier.glb';
+const SOLDIER_Y_OFFSET = 0;
+const SOLDIER_ROTATION_Y = 0;
+const SOLDIER_SCALE = 1.0;
+
+let SOLDIER_READY = false;
+let SOLDIER_BASE = null;
+const SOLDIER_CLIPS = {};
+
+function loadSoldierModel() {
+  return new Promise((resolve) => {
+    if (typeof THREE.GLTFLoader === 'undefined') { console.warn('GLTFLoader missing — using procedural'); return resolve(); }
+    new THREE.GLTFLoader().load(SOLDIER_URL, (gltf) => {
+      SOLDIER_BASE = gltf.scene;
+      SOLDIER_BASE.traverse(c => {
+        if (c.isMesh) {
+          c.castShadow = true;
+          c.frustumCulled = false;
+          if (c.geometry) c.geometry._shared = true;
+        }
+      });
+      gltf.animations.forEach(clip => { SOLDIER_CLIPS[clip.name] = clip; });
+      SOLDIER_READY = !!(SOLDIER_CLIPS.Idle && SOLDIER_CLIPS.Walk);
+      console.log('✅ Soldier ready:', SOLDIER_READY, '| Clips:', Object.keys(SOLDIER_CLIPS));
+      resolve();
+    }, undefined, (err) => {
+      console.warn('❌ Soldier load failed — using procedural fallback:', err);
+      resolve();
+    });
+  });
+}
+
+function buildSoldierEnemy(isArmored) {
+  const wrapper = new THREE.Group();
+  const model = SkeletonUtils.clone(SOLDIER_BASE);
+  model.position.y = SOLDIER_Y_OFFSET;
+  model.rotation.y = SOLDIER_ROTATION_Y;
+  model.scale.setScalar(SOLDIER_SCALE * (isArmored ? 1.08 : 1.0));
+  
+  model.traverse(c => {
+    if (c.isMesh && c.material) {
+      c.material = c.material.clone();
+      if (isArmored && c.material.color) {
+        c.material.color.lerp(new THREE.Color(0x1a3a6b), 0.55);
+        c.material.color.multiplyScalar(0.72);
+        if (c.material.emissive) { c.material.emissive.setHex(0x0a1a3a); c.material.emissiveIntensity = 0.3; }
+      }
+    }
+  });
+  
+  wrapper.add(model);
+  const fgB = addHealthBar(wrapper, isArmored ? 2.25 : 2.1, 0x00ff44);
+  
+  const mixer = new THREE.AnimationMixer(model);
+  const actions = {
+    idle: mixer.clipAction(SOLDIER_CLIPS.Idle),
+    walk: mixer.clipAction(SOLDIER_CLIPS.Walk)
+  };
+  actions.idle.play();
+  
+  return { g: wrapper, fgB, mixer, actions, model, currentAnim: 'idle' };
+}
+
+function buildSoldierMerc(isElite) {
+  const wrapper = new THREE.Group();
+  const model = SkeletonUtils.clone(SOLDIER_BASE);
+  model.position.y = SOLDIER_Y_OFFSET;
+  model.rotation.y = SOLDIER_ROTATION_Y;
+  model.scale.setScalar(SOLDIER_SCALE * (isElite ? 1.1 : 1.0));
+  
+  const tint = new THREE.Color(isElite ? 0x0a2a0a : 0x2a5a2a);
+  const amount = isElite ? 0.65 : 0.45;
+  model.traverse(c => {
+    if (c.isMesh && c.material) {
+      c.material = c.material.clone();
+      if (c.material.color) {
+        c.material.color.lerp(tint, amount);
+        if (isElite && c.material.emissive) { c.material.emissive.setHex(0x003300); c.material.emissiveIntensity = 0.25; }
+      }
+    }
+  });
+  
+  wrapper.add(model);
+  const hpBar = addHealthBar(wrapper, isElite ? 2.25 : 2.1, isElite ? 0x00ff88 : 0x00ff00);
+  
+  const mixer = new THREE.AnimationMixer(model);
+  const actions = {
+    idle: mixer.clipAction(SOLDIER_CLIPS.Idle),
+    walk: mixer.clipAction(SOLDIER_CLIPS.Walk)
+  };
+  actions.idle.play();
+  
+  return { g: wrapper, hpBar, mixer, actions, model, currentAnim: 'idle' };
+}
+
+function updateSoldierAnim(entity, isMoving, dt) {
+  if (!entity.mixer) return;
+  entity.mixer.update(dt / 60);
+  const target = isMoving ? 'walk' : 'idle';
+  if (entity.currentAnim !== target && entity.actions[target]) {
+    if (entity.actions[entity.currentAnim]) entity.actions[entity.currentAnim].fadeOut(0.2);
+    entity.actions[target].reset().fadeIn(0.2).play();
+    entity.currentAnim = target;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 🔧 دوال البناء الإجرائي (Fallback احتياطي فقط)
+// ═══════════════════════════════════════════════════════════════
+function buildStandardTrooper() {
+  const g = new THREE.Group();
+  const cloth = stdMat(0x141414, 0.9, 0.1), vestM = stdMat(0x8b0000, 0.7, 0.2);
+  const legs = [];
+  [-0.12, 0.12].forEach(x => {
+    const leg = new THREE.Mesh(CHAR_GEO.leg, cloth); leg.position.set(x, 0.55, 0); g.add(leg); legs.push(leg);
+    const arm = new THREE.Mesh(CHAR_GEO.arm, cloth); arm.position.set(x * 2.2, 1.4, 0.12); arm.rotation.x = -0.7; g.add(arm);
+    const sh = new THREE.Mesh(CHAR_GEO.shoulder, cloth); sh.position.set(x * 2.4, 1.62, 0); g.add(sh);
+  });
+  const torso = new THREE.Mesh(CHAR_GEO.torso, cloth); torso.position.y = 1.35; g.add(torso);
+  const vest = new THREE.Mesh(CHAR_GEO.vest, vestM); vest.position.y = 1.42; g.add(vest);
+  const helmet = new THREE.Mesh(CHAR_GEO.helmet, cloth); helmet.position.y = 1.85; g.add(helmet);
+  [-0.07, 0.07].forEach(x => { const lens = new THREE.Mesh(CHAR_GEO.lens, glowMat(0xff2200)); lens.position.set(x, 1.86, 0.16); g.add(lens); });
+  const rifle = buildRifle(0x151515, 0xff3300); rifle.position.set(0.16, 1.32, 0.18); g.add(rifle);
+  return { g, fgB: addHealthBar(g, 2.35, 0x00ff44), legs };
+}
+function buildArmoredTrooper() {
+  const g = new THREE.Group();
+  const plate = stdMat(0x2a4d8f, 0.35, 0.8), dark = stdMat(0x101820, 0.6, 0.5);
+  const legs = [];
+  [-0.14, 0.14].forEach(x => {
+    const leg = new THREE.Mesh(CHAR_GEO.leg, dark); leg.position.set(x, 0.55, 0); leg.scale.set(1.2, 1.1, 1.2); g.add(leg); legs.push(leg);
+    const arm = new THREE.Mesh(CHAR_GEO.arm, plate); arm.position.set(x * 2.4, 1.45, 0.12); arm.rotation.x = -0.7; g.add(arm);
+    for (let i = 0; i < 2; i++) { const p = new THREE.Mesh(CHAR_GEO.shoulder, plate); p.position.set(x * 2.6, 1.68 - i * 0.12, 0); p.scale.setScalar(1.5 - i * 0.3); g.add(p); }
+  });
+  const torso = new THREE.Mesh(CHAR_GEO.torso, plate); torso.position.y = 1.4; torso.scale.set(1.25, 1.15, 1.2); g.add(torso);
+  const helmet = new THREE.Mesh(CHAR_GEO.helmet, plate); helmet.position.y = 1.95; g.add(helmet);
+  const visor = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.045, 0.03), glowMat(0x33aaff)); visor.position.set(0, 1.96, 0.18); g.add(visor);
+  const rifle = buildRifle(0x0a0f1a, 0x33aaff); rifle.position.set(0.2, 1.4, 0.2); g.add(rifle);
+  return { g, fgB: addHealthBar(g, 2.55, 0x00ff44), legs };
+}
+function buildMercModel(isElite) {
+  const g = new THREE.Group();
+  const uni = stdMat(isElite ? 0x1e3320 : 0x556b2f, 0.85, 0.1);
+  const vestM = stdMat(isElite ? 0x14291a : 0x1a1a1a, 0.7, 0.2);
+  const legs = [];
+  [-0.12, 0.12].forEach(x => {
+    const leg = new THREE.Mesh(CHAR_GEO.leg, uni); leg.position.set(x, 0.55, 0); g.add(leg); legs.push(leg);
+    const arm = new THREE.Mesh(CHAR_GEO.arm, uni); arm.position.set(x * 2.2, 1.4, 0.12); arm.rotation.x = -0.7; g.add(arm);
+    const sh = new THREE.Mesh(CHAR_GEO.shoulder, uni); sh.position.set(x * 2.4, 1.62, 0); g.add(sh);
+  });
+  const torso = new THREE.Mesh(CHAR_GEO.torso, uni); torso.position.y = 1.35; g.add(torso);
+  const vest = new THREE.Mesh(CHAR_GEO.vest, vestM); vest.position.y = 1.42; g.add(vest);
+  const helmet = new THREE.Mesh(CHAR_GEO.helmet, uni); helmet.position.y = 1.82; g.add(helmet);
+  const goggles = new THREE.Mesh(CHAR_GEO.visor, glowMat(isElite ? 0x00ff66 : 0x00cc44)); goggles.position.set(0, 1.83, 0.16); g.add(goggles);
+  const rifle = buildRifle(isElite ? 0x101a10 : 0x4a5527, 0x00ff66); rifle.position.set(0.16, 1.32, 0.18); g.add(rifle);
+  return { g, hpBar: addHealthBar(g, 2.3, isElite ? 0x00ff88 : 0x00ff00), legs };
+}
+
+const ART = { enemy: null, armored: null, merc: null, elite: null };
+const _texLoader = new THREE.TextureLoader();
+function loadArt(key, url) { _texLoader.load(url, t => { ART[key] = t; }, undefined, () => { ART[key] = null; }); }
+loadArt('enemy', 'art/enemy_trooper.png'); loadArt('armored', 'art/enemy_armored.png');
+loadArt('merc', 'art/merc_normal.png'); loadArt('elite', 'art/merc_elite.png');
+
+function makeCharacterBillboard(tex, height) {
+  const g = new THREE.Group();
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: 0.12, depthWrite: false }));
+  sp.scale.set(height * 0.66, height, 1); sp.position.y = height / 2;
+  sp.userData.baseHeight = height; sp.userData.baseWidth = height * 0.66; sp.userData.baseY = height / 2;
+  g.add(sp);
+  const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.45, 16), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.45 }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.02; g.add(shadow);
+  return g;
+}
+
+// ✅ mkEnemy المعدلة — تستخدم glTF أولاً
 function mkEnemy(x, z, wave, isArmored = false) {
-  const b = isArmored ? buildArmoredTrooper() : buildStandardTrooper();
-  const g = b.g;
-  const fgB = b.fgB;
-  const legs = b.legs;
-  const parts = b.parts;
+  let g, fgB, legs = null, mixer = null, actions = null, model = null, currentAnim = 'idle';
+  if (SOLDIER_READY) {
+    const b = buildSoldierEnemy(isArmored);
+    g = b.g; fgB = b.fgB; mixer = b.mixer; actions = b.actions; model = b.model; currentAnim = b.currentAnim;
+  } else {
+    const tex = isArmored ? ART.armored : ART.enemy;
+    if (tex) { g = makeCharacterBillboard(tex, isArmored ? 2.4 : 2.2); fgB = addHealthBar(g, isArmored ? 2.6 : 2.4, 0x00ff44); }
+    else { const b = isArmored ? buildArmoredTrooper() : buildStandardTrooper(); g = b.g; fgB = b.fgB; legs = b.legs; }
+  }
   let spawnX = x, spawnZ = z;
   if (checkCollision(x, z, 0.8)) {
     const len = Math.sqrt(x * x + z * z);
@@ -1793,21 +1817,26 @@ function mkEnemy(x, z, wave, isArmored = false) {
   const hp = Math.round(baseHp * diff.hpMul);
   const baseSpeed = isArmored ? (0.005 + wave * 0.0015) : (0.010 + wave * 0.0025);
   const speed = baseSpeed * diff.speedMul;
-  const en = { g, fgB, legs, parts, hp, maxHp: hp, speed, alive: true, sTmr: 50 + Math.random() * 70, bob: Math.random() * Math.PI * 2, hit: 0, isArmored, aiState: 'chase', stateTimer: 0, flankDir: 1, stuckFrames: 0, walkPhase: 0 };
+  const en = { g, fgB, legs, hp, maxHp: hp, speed, alive: true, sTmr: 50 + Math.random() * 70, bob: Math.random() * Math.PI * 2, hit: 0, isArmored, aiState: 'chase', stateTimer: 0, flankDir: 1, stuckFrames: 0, walkPhase: 0, mixer, actions, model, currentAnim };
   scene.add(g); enemies.push(en);
 }
 
+// ✅ createMercenary المعدلة — تستخدم glTF أولاً
 function createMercenary(isElite = false) {
-  const b = buildMercModel(isElite);
-  const g = b.g;
-  const hpBar = b.hpBar;
-  const legs = b.legs;
-  const parts = b.parts;
+  let g, hpBar, legs = null, mixer = null, actions = null, model = null, currentAnim = 'idle';
+  if (SOLDIER_READY) {
+    const b = buildSoldierMerc(isElite);
+    g = b.g; hpBar = b.hpBar; mixer = b.mixer; actions = b.actions; model = b.model; currentAnim = b.currentAnim;
+  } else {
+    const tex = isElite ? ART.elite : ART.merc;
+    if (tex) { g = makeCharacterBillboard(tex, isElite ? 2.3 : 2.15); hpBar = addHealthBar(g, isElite ? 2.5 : 2.35, isElite ? 0x00ff88 : 0x00ff00); }
+    else { const b = buildMercModel(isElite); g = b.g; hpBar = b.hpBar; legs = b.legs; }
+  }
   const sp = camera.position.clone(); sp.x += (Math.random() - 0.5) * 5; sp.z += (Math.random() - 0.5) * 5; sp.y = 0;
   g.position.copy(sp); scene.add(g);
   const startHp = isElite ? calcStat(300, 25, gs.wave) : calcStat(80, 12, gs.wave);
   const dmg = isElite ? { min: calcStat(60, 5, gs.wave), max: calcStat(85, 7, gs.wave) } : { min: calcStat(22, 2, gs.wave), max: calcStat(30, 3, gs.wave) };
-  const merc = { g, hpBar, legs, parts, hp: startHp, maxHp: startHp, alive: true, shootTimer: isElite ? 35 : 25, isElite, damage: dmg, command: 'auto', commandEndTime: 0, commandIcon: null, walkPhase: 0 };
+  const merc = { g, hpBar, legs, hp: startHp, maxHp: startHp, alive: true, shootTimer: isElite ? 35 : 25, isElite, damage: dmg, command: 'auto', commandEndTime: 0, commandIcon: null, walkPhase: 0, mixer, actions, model, currentAnim };
   gs.mercenaries.push(merc); gs.mercenaryCount++;
   return merc;
 }
@@ -1865,31 +1894,30 @@ function updateEnemies() {
         }
       }
     }
-    en.g.position.y = Math.sin(Date.now() * 0.0025 + en.bob) * 0.02;
+    en.g.position.y = Math.sin(Date.now() * 0.0025 + en.bob) * 0.06;
     en.g.rotation.y = Math.atan2(targetPos.x - p.x, targetPos.z - p.z);
 
-    // تحريك 3D
-    if (isMoving) en.walkPhase += dt * 0.25;
-    animateCharacter(en.parts, {
-      isMoving, isDead: false, isAiming: dist < 20, aimPitch: 0,
-      walkPhase: en.walkPhase,
-      isShooting: en.sTmr < 15, shootCooldown: Math.max(0, 15 - en.sTmr),
-      bobOffset: en.bob
-    }, dt);
-
-    // LOD + culling
-    const distToCam = en.g.position.distanceTo(camera.position);
-    en.g.visible = distToCam < CFG.LOD_CULL_DIST;
-    if (en.g.visible && distToCam > CFG.LOD_FULL_DIST) {
-      en.parts.leftArm.hand.visible = false;
-      en.parts.rightArm.hand.visible = false;
-      en.parts.rifle.visible = false;
+    // تحريك (glTF → procedural → sprite)
+    if (en.mixer) {
+      updateSoldierAnim(en, isMoving, dt);
+    } else if (en.legs && en.legs.length === 2) {
+      if (isMoving) {
+        en.walkPhase += dt * 0.25;
+        const swing = Math.sin(en.walkPhase * 2) * 0.5;
+        en.legs[0].rotation.x = swing;
+        en.legs[1].rotation.x = -swing;
+      } else {
+        en.legs[0].rotation.x *= 0.9;
+        en.legs[1].rotation.x *= 0.9;
+      }
     } else {
-      en.parts.leftArm.hand.visible = true;
-      en.parts.rightArm.hand.visible = true;
-      en.parts.rifle.visible = true;
+      if (isMoving) {
+        en.walkPhase += dt * 0.2;
+        en.g.rotation.z = Math.sin(en.walkPhase * 2) * 0.05;
+      } else {
+        en.g.rotation.z *= 0.9;
+      }
     }
-
     if (en.hit > 0) {
       en.hit -= dt;
       const hex = en.hit > 0 ? 0xff2200 : 0x000000, int = en.hit > 0 ? 0.5 : 0;
@@ -1943,7 +1971,6 @@ function startWaveCountdown() {
   playSound('ui', { freq: 800 });
 }
 
-// Weather
 const rainCtx = D.rainCanvas.getContext('2d');
 const rainDrops = [];
 let weatherState = { type: 'clear', intensity: 0, transition: 0, stormTimer: 0, changeTimer: 0 };
@@ -2695,17 +2722,7 @@ function updateMercenaries() {
   const dt = deltaTime;
   for (let i = gs.mercenaries.length - 1; i >= 0; i--) {
     const merc = gs.mercenaries[i];
-    if (!merc || !merc.alive) {
-      if (merc && merc.g) {
-        if (merc.commandIcon && merc.commandIcon.parentNode) { merc.commandIcon.parentNode.removeChild(merc.commandIcon); merc.commandIcon = null; }
-        scene.remove(merc.g);
-        merc.g.traverse(c => {
-          if ((c.isMesh || c.isSprite) && c.material) { if (Array.isArray(c.material)) c.material.forEach(m => m.dispose()); else c.material.dispose(); }
-          if (c.geometry && !c.geometry._shared) c.geometry.dispose();
-        });
-      }
-      gs.mercenaries.splice(i, 1); continue;
-    }
+    if (!merc || !merc.alive) { if (merc && merc.g) scene.remove(merc.g); gs.mercenaries.splice(i, 1); continue; }
     if (merc.commandEndTime > 0 && performance.now() >= merc.commandEndTime) { merc.command = 'auto'; merc.commandEndTime = 0; }
     let target = null, maxThreat = -1;
     for (let e = 0; e < enemies.length; e++) {
@@ -2739,13 +2756,20 @@ function updateMercenaries() {
       }
       if (shouldShoot) { merc.shootTimer -= dt; if (merc.shootTimer <= 0) { merc.shootTimer = (merc.isElite ? 35 : 25) + Math.random() * 25; shootAllyBullet(merc.g.position, target.g.position, merc); } }
     }
-    if (mercMoving) merc.walkPhase += dt * 0.25;
-    animateCharacter(merc.parts, {
-      isMoving: mercMoving, isDead: false, isAiming: !!target, aimPitch: 0,
-      walkPhase: merc.walkPhase,
-      isShooting: merc.shootTimer < 10, shootCooldown: Math.max(0, 10 - merc.shootTimer),
-      bobOffset: i
-    }, dt);
+    // تحريك (glTF → procedural)
+    if (merc.mixer) {
+      updateSoldierAnim(merc, mercMoving, dt);
+    } else if (merc.legs && merc.legs.length === 2) {
+      if (mercMoving) {
+        merc.walkPhase += dt * 0.25;
+        const swing = Math.sin(merc.walkPhase * 2) * 0.5;
+        merc.legs[0].rotation.x = swing;
+        merc.legs[1].rotation.x = -swing;
+      } else {
+        merc.legs[0].rotation.x *= 0.9;
+        merc.legs[1].rotation.x *= 0.9;
+      }
+    }
     const hpPct = Math.max(0, merc.hp / merc.maxHp);
     merc.hpBar.scale.x = hpPct; merc.hpBar.position.x = -(1 - hpPct) * 0.35;
   }
@@ -2819,9 +2843,9 @@ function openDifficultyUI() {
     showConfirmDialog('⚠️ تغيير الصعوبة', 'لتغيير الصعوبة، يجب مسح تقدم المهمة الحالية أولاً.\n\n❌ سيتم حذف:\n- الموجة الحالية\n- النقاط\n- عدد القتلى\n\n✅ ستحتفظ بـ:\n- الأسلحة والترقيات\n- الإنجازات\n- المرتزقة في الاحتياط\n- مستوى المتجر\n- الدروع\n\nهل تريد مسح التقدم والمتابعة؟',
       () => {
         gs.wave = 1; gs.score = 0; gs.kills = 0; gs.hp = gs.maxHp;
-        for (let i = 0; i < gs.mercenaries.length; i++) { if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon); scene.remove(gs.mercenaries[i].g); }
+        for (let i = 0; i < gs.mercenaries.length; i++) { if (gs.mercenaries[i].mixer) { try { gs.mercenaries[i].mixer.stopAllAction(); } catch(e) {} } if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon); scene.remove(gs.mercenaries[i].g); }
         gs.mercenaries = []; gs.mercenaryCount = 0;
-        for (let i = 0; i < enemies.length; i++) scene.remove(enemies[i].g);
+        for (let i = 0; i < enemies.length; i++) { if (enemies[i].mixer) { try { enemies[i].mixer.stopAllAction(); } catch(e) {} } scene.remove(enemies[i].g); }
         enemies.length = 0;
         for (let i = 0; i < enemyBullets.length; i++) scene.remove(enemyBullets[i].mesh);
         enemyBullets.length = 0;
@@ -2988,12 +3012,15 @@ function showLoadingScreen(callback) {
   }, 100);
 }
 
+// ✅ startGame المعدلة — تحميل glTF أولاً
 function startGame() {
   initAudio(); loadGame(); initWeather(); resizeRainCanvas();
   D.menu.classList.add('hiding');
-  showLoadingScreen(() => {
-    D.menu.style.display = 'none'; D.menu.classList.remove('hiding');
-    resetGame();
+  loadSoldierModel().then(() => {
+    showLoadingScreen(() => {
+      D.menu.style.display = 'none'; D.menu.classList.remove('hiding');
+      resetGame();
+    });
   });
 }
 function retryGame() { D.gameover.style.display = 'none'; resetGame(); }
@@ -3002,13 +3029,8 @@ function resetGame() {
   if (comboTimer) { clearTimeout(comboTimer); comboTimer = null; }
   if (D.combo) D.combo.style.opacity = '0';
   for (let i = 0; i < enemies.length; i++) {
-    if (enemies[i].g) {
-      scene.remove(enemies[i].g);
-      enemies[i].g.traverse(c => {
-        if ((c.isMesh || c.isSprite) && c.material) { if (Array.isArray(c.material)) c.material.forEach(m => m.dispose()); else c.material.dispose(); }
-        if (c.geometry && !c.geometry._shared) c.geometry.dispose();
-      });
-    }
+    if (enemies[i].mixer) { try { enemies[i].mixer.stopAllAction(); } catch(e) {} }
+    scene.remove(enemies[i].g);
   }
   enemies.length = 0;
   for (let i = 0; i < enemyBullets.length; i++) { scene.remove(enemyBullets[i].mesh); enemyBullets[i].mesh.geometry.dispose(); enemyBullets[i].mesh.material.dispose(); }
@@ -3022,25 +3044,16 @@ function resetGame() {
   for (let i = 0; i < lootDrops.length; i++) { scene.remove(lootDrops[i].mesh); lootDrops[i].mesh.geometry.dispose(); lootDrops[i].mesh.material.dispose(); }
   lootDrops.length = 0;
   for (let i = 0; i < gs.mercenaries.length; i++) {
-    const m = gs.mercenaries[i];
-    if (m.commandIcon && m.commandIcon.parentNode) m.commandIcon.parentNode.removeChild(m.commandIcon);
-    if (m.g) {
-      scene.remove(m.g);
-      m.g.traverse(c => {
-        if ((c.isMesh || c.isSprite) && c.material) { if (Array.isArray(c.material)) c.material.forEach(mm => mm.dispose()); else c.material.dispose(); }
-        if (c.geometry && !c.geometry._shared) c.geometry.dispose();
-      });
-    }
+    if (gs.mercenaries[i].mixer) { try { gs.mercenaries[i].mixer.stopAllAction(); } catch(e) {} }
+    if (gs.mercenaries[i].commandIcon && gs.mercenaries[i].commandIcon.parentNode) gs.mercenaries[i].commandIcon.parentNode.removeChild(gs.mercenaries[i].commandIcon);
+    scene.remove(gs.mercenaries[i].g);
   }
   gs.mercenaries.length = 0;
   rainDrops.length = 0; sparkPool.releaseAll();
   clearDecals(); clearSmoke();
   for (const g of dyingEnemies) {
+    if (g.userData.mixer) { try { g.userData.mixer.stopAllAction(); } catch(e) {} }
     scene.remove(g);
-    g.traverse(c => {
-      if ((c.isMesh || c.isSprite) && c.material) { if (Array.isArray(c.material)) c.material.forEach(m => m.dispose()); else c.material.dispose(); }
-      if (c.geometry && !c.geometry._shared) c.geometry.dispose();
-    });
   }
   dyingEnemies.length = 0;
   pVelX = 0; pVelZ = 0;
